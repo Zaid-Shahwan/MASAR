@@ -1,0 +1,302 @@
+/* ==========================================================================
+   MASAR — AI Guide page (ai.css)
+   Loads AFTER style.css and reuses its tokens (--c-*, --font-*, --radius-*).
+   Sections: 1 Page layout · 2 Character · 3 Conversation · 4 Clouds ·
+             5 Chips · 6 Input · 7 Responsive
+   ========================================================================== */
+
+/* ------------------------- 1. Page layout ------------------------- */
+.ai-page {
+  padding-top: calc(var(--nav-h) + clamp(1rem, 2.5vw, 1.75rem));
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.ai-intro { text-align: center; }
+.ai-intro .eyebrow { margin-bottom: 0.3rem; }
+.ai-intro .lead { margin: 0.4rem auto 0; max-width: none; }
+.ai-intro h1 { font-size: clamp(2rem, 1.7rem + 1.4vw, 2.75rem); }
+
+.ai-chat {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ------------------------- 2. Character ------------------------- */
+.ai-stage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 1.25rem 0 0.25rem;
+}
+
+/* soft sand circle + dashed "trail" ring behind the character */
+.ai-stage::before,
+.ai-stage::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -46%);
+  pointer-events: none;
+}
+.ai-stage::before { width: 208px; height: 208px; background: var(--c-secondary); opacity: 0.55; }
+.ai-stage::after  { width: 238px; height: 238px; border: 1.5px dashed rgba(140, 63, 50, 0.35); }
+
+.ai-character {
+  position: relative;
+  z-index: 1;
+  width: 176px;
+  animation: ai-float 4.5s ease-in-out infinite;
+  /* eye direction: JS changes these two numbers (SVG units, about -7 to 7) */
+  --look-x: 0;
+  --look-y: 0;
+}
+.ai-svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+@keyframes ai-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+
+/* head leans a little toward where the eyes look */
+.ai-head {
+  transform: translate(calc(var(--look-x) * 0.5px), calc(var(--look-y) * 0.3px));
+  transition: transform 0.45s var(--ease);
+}
+
+/* pupils glide toward the look direction */
+.ai-pupil {
+  transform: translate(calc(var(--look-x) * 1px), calc(var(--look-y) * 1px));
+  transition: transform 0.35s var(--ease);
+}
+
+/* blinking: the whole eye squashes for a moment every few seconds */
+.ai-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ai-blink 5.5s infinite;
+}
+.ai-eye:nth-of-type(2) { animation-delay: 0.02s; }
+@keyframes ai-blink {
+  0%, 93%, 100% { transform: scaleY(1); }
+  96%           { transform: scaleY(0.08); }
+}
+
+.ai-brows { transition: transform 0.3s var(--ease); }
+
+/* mouths: only the one matching the mood is visible */
+.mouth { display: none; }
+.ai-character[data-mood="idle"] .mouth--smile,
+.ai-character[data-mood="listening"] .mouth--smile { display: block; }
+.ai-character[data-mood="thinking"] .mouth--o { display: block; }
+.ai-character[data-mood="happy"] .mouth--happy { display: block; }
+
+/* attentive: eyebrows lift while the tourist types */
+.ai-character[data-mood="listening"] .ai-brows { transform: translateY(-3px); }
+.ai-character[data-mood="thinking"]  .ai-brows { transform: translateY(-4px) rotate(-2deg); transform-origin: center; }
+
+/* little wave when MASAR answers */
+.ai-arm { transform-origin: 172px 186px; }
+.ai-character[data-mood="happy"] .ai-arm { animation: ai-wave 0.9s ease-in-out 1; }
+@keyframes ai-wave {
+  0%, 100% { transform: rotate(0); }
+  25%      { transform: rotate(-24deg); }
+  55%      { transform: rotate(8deg); }
+  80%      { transform: rotate(-14deg); }
+}
+
+/* ------------------------- 3. Conversation ------------------------- */
+.ai-log {
+  position: relative;               /* lets JS measure offsetTop of messages */
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  min-height: 150px;
+  max-height: clamp(200px, 30vh, 340px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* top space so cloud puffs aren't clipped; side/bottom space so the shadow isn't cut into a box */
+  padding: 2.25rem 1.5rem 1.5rem;
+  margin-inline: -1.5rem;
+  scroll-behavior: smooth;
+  /* soft fade at the bottom edge hints that there is more to scroll */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
+}
+
+/* tourist's message: clean dark bubble on the right */
+.bubble-user {
+  align-self: flex-end;
+  max-width: 85%;
+  background: var(--c-primary);
+  color: #fff;
+  padding: 0.8rem 1.15rem;
+  border-radius: 20px 20px 6px 20px;
+  font-size: 0.97rem;
+  overflow-wrap: anywhere;
+  animation: bubble-in 0.35s var(--ease) both;
+}
+@keyframes bubble-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ------------------------- 4. Speech clouds ------------------------- */
+/* .cloud-wrap plays the pop animation; .cloud inside it bobs. */
+.cloud-wrap {
+  align-self: center;
+  max-width: 100%;
+  transform-origin: 50% 0;          /* grows out of the top, near the character */
+}
+.cloud-wrap--pop { animation: cloud-pop 0.65s cubic-bezier(0.34, 1.45, 0.64, 1) both; }
+
+@keyframes cloud-pop {
+  0%   { opacity: 0; transform: translateY(26px) scale(0.55); }
+  55%  { opacity: 1; transform: translateY(-8px) scale(1.04); }
+  78%  { transform: translateY(3px) scale(0.99); }
+  100% { opacity: 1; transform: none; }
+}
+
+.cloud {
+  position: relative;
+  background: #fff;
+  color: var(--c-text);
+  padding: 1.15rem 1.5rem;
+  border-radius: 30px;
+  line-height: 1.6;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+  filter: drop-shadow(0 6px 14px rgba(23, 23, 23, 0.11));
+}
+/* two round "puffs" on top make the edge feel like a cloud */
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  z-index: -1;
+}
+.cloud::before { width: 48px; height: 48px; top: -15px; left: 16%; }
+.cloud::after  { width: 38px; height: 38px; top: -12px; right: 15%; }
+
+/* thought-bubble tail: two small circles leading up to the character */
+.cloud__tail { position: absolute; left: 50%; top: -30px; width: 0; height: 0; }
+.cloud__tail i { position: absolute; background: #fff; border-radius: 50%; }
+.cloud__tail i:nth-child(1) { width: 16px; height: 16px; left: -8px; top: 12px; }
+.cloud__tail i:nth-child(2) { width: 9px;  height: 9px;  left: -14px; top: 0; }
+
+.cloud p + p { margin-top: 0.6rem; }
+.cloud__hello { font-family: var(--font-display); font-size: 1.4rem; line-height: 1.2; }
+.cloud--greeting { text-align: center; }
+
+/* only the newest cloud floats gently */
+.cloud-wrap.is-latest .cloud { animation: cloud-bob 3.6s ease-in-out 0.9s infinite; }
+@keyframes cloud-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+/* words fade in one by one (space is reserved, so the cloud never jumps) */
+.word { opacity: 0; animation: word-in 0.35s ease forwards; }
+@keyframes word-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+
+.cloud__link { margin-top: 0.9rem; }
+
+/* thinking state: three bouncing dots + label */
+.cloud.is-thinking { display: flex; align-items: center; gap: 0.7rem; padding: 0.9rem 1.4rem; color: var(--c-muted); font-size: 0.92rem; }
+.dots { display: inline-flex; gap: 5px; }
+.dots span {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--c-warning);
+  animation: dot-bounce 1s infinite ease-in-out;
+}
+.dots span:nth-child(2) { animation-delay: 0.15s; }
+.dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes dot-bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40%           { transform: translateY(-6px); opacity: 1; }
+}
+
+/* ------------------------- 5. Suggestion chips ------------------------- */
+.ai-chips { justify-content: center; margin-top: 0.25rem; gap: 0.5rem; }
+.ai-chips .chip { padding: 0.55rem 1rem; font-size: 0.88rem; }
+.ai-chips .chip:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ------------------------- 6. Input ------------------------- */
+.ai-form {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+  background: var(--c-surface);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius-pill);
+  padding: 0.4rem 0.4rem 0.4rem 1.4rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.ai-form:focus-within {
+  border-color: var(--c-accent);
+  outline: 2px solid var(--c-accent);   /* visible focus ring for keyboard users */
+  outline-offset: 3px;
+}
+.ai-form__input {
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  border: 0;
+  background: transparent;
+  font-size: 1rem;                      /* 16px+ stops iOS from zooming in */
+  outline: none;
+}
+.ai-form__input:focus-visible { outline: none; }
+.ai-form__input::placeholder { color: var(--c-muted); }
+
+.ai-form__send {
+  flex-shrink: 0;
+  width: 48px; height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--c-accent);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s ease, transform 0.2s var(--ease);
+}
+.ai-form__send svg { width: 20px; height: 20px; }
+.ai-form__send:hover { background: var(--c-accent-dark); }
+.ai-form__send:active { transform: scale(0.94); }
+.ai-form__send:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* shake when someone sends an empty message */
+.ai-form.is-nudging { animation: form-nudge 0.4s ease; }
+@keyframes form-nudge {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.ai-note { margin-top: 0.75rem; text-align: center; font-size: 0.8rem; color: var(--c-muted); }
+
+/* ------------------------- 7. Responsive ------------------------- */
+@media (max-width: 600px) {
+  .ai-character { width: 132px; }
+  .ai-stage { padding-top: 1rem; }
+  .ai-stage::before { width: 164px; height: 164px; }
+  .ai-stage::after  { width: 190px; height: 190px; }
+  .ai-log { max-height: clamp(190px, 30vh, 320px); padding-inline: 0.9rem; margin-inline: -0.9rem; gap: 1.6rem; }
+  .ai-intro .lead { font-size: 1rem; }
+  .cloud { padding: 1rem 1.15rem; font-size: 0.97rem; border-radius: 26px; }
+  .cloud__hello { font-size: 1.25rem; }
+  .bubble-user { max-width: 90%; }
+  .ai-chips .chip { font-size: 0.85rem; padding: 0.6rem 0.95rem; }
+}
+
+@media (max-width: 380px) {
+  .ai-form { padding-left: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-character, .ai-eye, .cloud-wrap.is-latest .cloud { animation: none !important; }
+  .ai-log { scroll-behavior: auto; }
+}

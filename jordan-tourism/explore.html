@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Your Experience — MASAR</title>
+<meta name="description" content="Answer five quick questions and get a personalized shortlist of things to do in Jordan, matched to your location, time, interests, walking level and budget.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header is-solid">
+  <div class="container">
+    <a href="index.html" class="brand">MASAR</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="index.html#destinations">Destinations</a>
+      <a class="nav-link" href="index.html#petra">Petra</a>
+      <a class="nav-link" href="index.html#amman">Amman</a>
+      <a class="nav-link" href="ai.html">AI Guide</a>
+      <a class="nav-link is-active" href="explore.html">Plan Your Trip</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#finder-app" class="btn btn-primary">Find Your Experience
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav id="mobile-menu" class="mobile-menu" aria-label="Mobile">
+  <a href="index.html">Home</a>
+  <a href="index.html#destinations">Destinations</a>
+  <a href="index.html#petra">Petra</a>
+  <a href="index.html#amman">Amman</a>
+  <a href="ai.html">AI Guide</a>
+  <a href="explore.html">Plan Your Trip</a>
+  <a href="#finder-app" class="btn btn-primary btn-block">Find Your Experience</a>
+</nav>
+
+<main id="main">
+  <div class="container" style="padding-top: calc(var(--nav-h) + clamp(2rem, 5vw, 3.5rem));">
+
+    <div class="finder-page-head reveal">
+      <p class="eyebrow">Five quick choices</p>
+      <h1 style="font-size:var(--step-h1);">A local journey shaped around you.</h1>
+      <p class="lead" style="margin-inline:auto;">No account, no research. Answer five short questions and we'll match you with things to do right now.</p>
+    </div>
+
+    <div id="finder-app" class="finder reveal">
+      <div class="finder__media">
+        <img data-finder-media src="https://commons.wikimedia.org/wiki/Special:FilePath/AmmanDowntown.jpg" alt="" loading="lazy">
+        <div>
+          <h2>Tell us what you feel like experiencing.</h2>
+        </div>
+        <p>Five quick choices. A local journey shaped around you.</p>
+      </div>
+
+      <div class="finder__panel">
+        <div class="finder__progress" data-finder-progress></div>
+
+        <div class="finder__body" data-finder-body>
+          <div data-finder-question-block>
+            <p class="finder__step-label" data-finder-step-label>STEP 1 OF 5</p>
+            <div class="finder__question">
+              <h3 data-finder-question-title>Where are you?</h3>
+              <p class="lead" data-finder-question-hint>Choose your current location.</p>
+              <div class="finder__options" data-finder-options role="group" aria-label="Answer options"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="finder__foot">
+          <button type="button" class="finder__back" data-finder-back hidden>Back</button>
+          <span class="finder__selected-count" data-finder-selected-count></span>
+          <button type="button" class="btn btn-primary" data-finder-next disabled>Next
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <section id="finder-results" class="results section-tight">
+      <div class="results__head">
+        <div>
+          <p class="eyebrow">Something you might enjoy</p>
+          <h2>Your Jordan Experiences</h2>
+          <p class="lead" data-no-match hidden style="color:var(--c-warning); font-size:0.9rem; margin-top:0.5rem;">We couldn't find an exact match — here are the closest experiences based on what you chose.</p>
+        </div>
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline btn-sm" data-finder-reset>Change Answers</button>
+          <a href="index.html#destinations" class="btn btn-outline btn-sm">Explore Another Destination</a>
+        </div>
+      </div>
+
+      <div class="results__grid" data-results-grid></div>
+
+      <div class="results__empty" data-results-empty hidden>
+        <p class="lead" style="margin-inline:auto;">No exact match — here is the closest experience based on what you selected.</p>
+        <button type="button" class="btn btn-dark" data-finder-reset style="margin-top:1rem;">Adapt My Experience</button>
+      </div>
+    </section>
+
+  </div>
+
+  <section class="section bg-sand" style="margin-top:2rem;">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">How it works</p>
+        <h2>Clear feedback at every step.</h2>
+      </div>
+      <div class="editorial-grid reveal" style="grid-template-columns:repeat(4,1fr);">
+        <div class="compare-panel compare-panel--old">
+          <p class="label">Step 1–5</p>
+          <p class="path" style="font-size:1.1rem;">Five short questions, one at a time.</p>
+        </div>
+        <div class="compare-panel compare-panel--old">
+          <p class="label">Matching</p>
+          <p class="path" style="font-size:1.1rem;">We score every experience against your answers.</p>
+        </div>
+        <div class="compare-panel compare-panel--old">
+          <p class="label">Results</p>
+          <p class="path" style="font-size:1.1rem;">Your top three, ranked by match.</p>
+        </div>
+        <div class="compare-panel compare-panel--new">
+          <p class="label" style="color:#e9d8b4">Something changed?</p>
+          <p class="path" style="font-size:1.1rem;">Adapt the experience without starting over.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="experience-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Experience details">
+  <div class="modal">
+    <div data-modal-body></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <p class="footer-brand">MASAR</p>
+        <p class="footer-tag">Go beyond the landmark.</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html#destinations">Destinations</a>
+        <a href="explore.html">Experiences</a>
+        <a href="ai.html">AI Guide</a>
+        <a href="index.html#petra">Petra</a>
+        <a href="index.html#amman">Amman</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>Made with care for the people of Jordan.</p>
+      <p>&copy; 2026 MASAR</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

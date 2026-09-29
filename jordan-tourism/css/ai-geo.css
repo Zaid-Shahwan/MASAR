@@ -1,0 +1,194 @@
+/* ==========================================================================
+   MASAR — Places, location & map (ai-geo.css)
+   Loads AFTER style.css and ai.css; reuses their tokens (--c-*, --font-*, --radius-*).
+   Sections: 1 Location bar · 2 Map panel · 3 Map pins · 4 Rich speech clouds ·
+             5 Place cards · 6 Emergency box · 7 Responsive
+   ========================================================================== */
+
+/* ------------------------- 1. Location bar ------------------------- */
+.geo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 0.9rem;
+  margin-top: 1rem;
+  font-size: 0.88rem;
+}
+.geo-bar__status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-pill);
+  background: var(--c-surface);
+  color: var(--c-muted);
+}
+.geo-bar.is-confirmed .geo-bar__status { color: var(--c-success); border-color: rgba(55, 107, 80, 0.4); }
+.geo-bar__clear {
+  background: none;
+  border: 0;
+  padding: 0.25rem 0.4rem;
+  color: var(--c-muted);
+  text-decoration: underline;
+  font-size: 0.82rem;
+}
+.geo-bar__clear:hover { color: var(--c-accent); }
+
+/* ------------------------- 2. Map panel ------------------------- */
+.geo-panel {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+}
+.geo-panel[hidden] { display: none; }
+.geo-panel__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
+.geo-panel__head h2 { font-size: 1.25rem; }
+.geo-panel__close {
+  width: 34px; height: 34px;
+  border: 1px solid var(--c-border);
+  border-radius: 50%;
+  background: transparent;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+.geo-panel__close:hover { background: var(--c-bg); }
+
+.geo-map {
+  height: 340px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--c-border);
+  background: var(--c-secondary);
+  z-index: 0;                      /* keep Leaflet panes below the sticky header */
+}
+.geo-panel__controls { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.75rem; align-items: center; }
+.geo-panel__controls .btn-primary { margin-left: auto; }
+.geo-select {
+  padding: 0.55rem 0.9rem;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius-pill);
+  background: var(--c-surface);
+  font-size: 0.85rem;
+  max-width: 100%;
+}
+.geo-help { margin-top: 0.6rem; min-height: 1.3em; font-size: 0.85rem; color: var(--c-muted); }
+
+/* ------------------------- 3. Map pins ------------------------- */
+.geo-pin { background: none; border: 0; }
+.geo-pin span {
+  display: grid;
+  place-items: center;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  color: #fff;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(23, 23, 23, 0.35);
+  font: 700 0.8rem/1 var(--font-body);
+}
+.geo-pin--user span, .geo-pin--anchor span { background: var(--c-primary); font-size: 0.95rem; }
+.geo-pin--candidate span { background: var(--c-warning); font-size: 0.95rem; }
+
+.geo-popup { display: grid; gap: 0.2rem; font-family: var(--font-body); font-size: 0.85rem; }
+.geo-popup a { color: var(--c-accent); font-weight: 600; text-decoration: underline; }
+
+/* ------------------------- 4. Rich speech clouds ------------------------- */
+.ai-log.has-rich { max-height: clamp(340px, 62vh, 620px); }
+.cloud-wrap--rich { width: 100%; }
+.cloud-wrap--rich .cloud { border-radius: 26px; }
+.cloud-wrap.is-latest.cloud-wrap--rich .cloud { animation: none; }   /* no bobbing while people tap buttons */
+
+.cloud__extras { display: grid; gap: 0.7rem; margin-top: 0.9rem; animation: extras-in 0.45s var(--ease) 0.5s both; }
+@keyframes extras-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.place-group__title { margin-top: 0.3rem; font-family: var(--font-display); font-size: 1.1rem; }
+.place-note { font-size: 0.8rem; color: var(--c-muted); line-height: 1.45; }
+.cloud__chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.cloud__chips .chip { padding: 0.45rem 0.9rem; font-size: 0.85rem; }
+
+.geo-prompt { display: grid; gap: 0.5rem; justify-items: start; }
+.geo-prompt__hint { font-size: 0.82rem; color: var(--c-muted); }
+
+/* ------------------------- 5. Place cards ------------------------- */
+.place-card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem;
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-align: left;
+}
+.place-card__head { display: flex; align-items: flex-start; gap: 0.6rem; }
+.place-card__n {
+  flex: none;
+  display: grid; place-items: center;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.place-card__name { font-family: var(--font-display); font-size: 1.1rem; line-height: 1.2; }
+.place-card__alt { font-size: 0.8rem; color: var(--c-muted); }
+.place-card__row { display: flex; gap: 0.5rem; color: var(--c-text); }
+.place-card__icon { flex: none; width: 1.3em; text-align: center; }
+.place-card__row.is-open { color: var(--c-success); }
+.place-card__row.is-closed { color: var(--c-error); }
+.place-card__actions { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.4rem; }
+.place-card__actions .btn { padding: 0.5rem 0.9rem; font-size: 0.8rem; }
+
+/* ------------------------- 6. Emergency box ------------------------- */
+.emergency-box {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.9rem 1rem;
+  background: #fbeeea;
+  border: 1.5px solid var(--c-error);
+  border-radius: var(--radius-md);
+  text-align: left;
+}
+.emergency-box__title { font-weight: 700; color: var(--c-error); }
+.emergency-box__main {
+  display: block;
+  padding: 0.85rem 1rem;
+  background: var(--c-error);
+  color: #fff;
+  border-radius: var(--radius-pill);
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.emergency-box__main:hover { background: #8a2f27; }
+.emergency-box__sub { font-size: 0.8rem; color: var(--c-muted); text-align: center; }
+.emergency-box__lines { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.emergency-box__line {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--c-error);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  font-size: 0.82rem;
+}
+.emergency-box__line.is-key { background: var(--c-error); color: #fff; }
+
+.ai-note a { text-decoration: underline; font-weight: 600; }
+
+/* ------------------------- 7. Responsive ------------------------- */
+@media (max-width: 600px) {
+  .geo-map { height: 280px; }
+  .geo-panel { padding: 0.8rem; }
+  .geo-panel__controls .btn-primary { margin-left: 0; width: 100%; justify-content: center; }
+  .geo-select { width: 100%; }
+  .ai-log.has-rich { max-height: clamp(320px, 60vh, 560px); }
+  .place-card__actions .btn { flex: 1 1 auto; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloud__extras { animation: none; }
+}

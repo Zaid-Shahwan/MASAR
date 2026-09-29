@@ -1,0 +1,8 @@
+# Local configuration — contains the real CARTO Basemaps API key.
+# Copy jordan-tourism/js/config.example.js to jordan-tourism/js/config.js and
+# fill in your own key; config.js itself must never be committed.
+jordan-tourism/js/config.js
+
+# Common editor/OS noise
+.DS_Store
+Thumbs.db

@@ -1,250 +1,397 @@
-/* =========================
-   MASAR AUTH PAGE
-========================= */
+/* ==================================================
+   MASAR - SIGN IN / SIGN UP
+   JoTrip Inspired Auth Page
+================================================== */
+
+
+/* ==================================================
+   PAGE
+================================================== */
 
 .auth-page {
+    width: 100%;
+    min-height: 100vh;
+    background: #f4f0e8;
+}
+
+
+/* ==================================================
+   MAIN CONTAINER
+================================================== */
+
+.auth-container {
+    width: 100%;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 55% 45%;
+    background: #f4f0e8;
+}
+
+
+/* ==================================================
+   LEFT SIDE
+================================================== */
+
+.auth-visual {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 45px 55px;
+    color: white;
+}
+
+
+/* ==================================================
+   PETRA IMAGE
+================================================== */
+
+.auth-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+
+/* ==================================================
+   IMAGE DARK OVERLAY
+================================================== */
+
+.auth-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient( to bottom, rgba(20, 18, 15, 0.25), rgba(20, 18, 15, 0.65) );
+    z-index: 1;
+}
+
+
+/* ==================================================
+   BRAND
+================================================== */
+
+.auth-brand {
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    width: fit-content;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 27px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+
+/* ==================================================
+   LEFT CONTENT
+================================================== */
+
+.auth-quote {
+    position: relative;
+    z-index: 2;
+    max-width: 520px;
+    margin-bottom: 20px;
+}
+
+
+/* Small label */
+
+.auth-label {
+    display: block;
+    margin-bottom: 18px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+
+/* Main heading */
+
+.auth-quote h1 {
+    margin: 0 0 20px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(48px, 5vw, 76px);
+    font-weight: 400;
+    line-height: 0.98;
+    color: #ffffff;
+}
+
+
+/* Description */
+
+.auth-quote p {
+    max-width: 430px;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+
+/* ==================================================
+   RIGHT SIDE
+================================================== */
+
+.auth-form-side {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 20px;
-    background: var(--c-bg, #f7f5f0);
-}
-
-.auth-container {
-    width: min(1100px, 100%);
-    min-height: 650px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    background: var(--c-surface, #ffffff);
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-}
-
-
-/* LEFT SIDE */
-
-.auth-info {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 50px;
-    background: linear-gradient( rgba(20, 35, 30, 0.88), rgba(20, 35, 30, 0.88) ), url("../assets/images/MASAR_AI.jpg") center / cover;
-    color: white;
-}
-
-.auth-brand {
-    color: white;
-    text-decoration: none;
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: 3px;
-}
-
-.auth-info-content {
-    max-width: 430px;
-}
-
-.auth-label {
-    display: inline-block;
-    margin-bottom: 18px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    opacity: 0.8;
-}
-
-.auth-info h1 {
-    margin-bottom: 20px;
-    font-size: clamp(42px, 5vw, 64px);
-    line-height: 1.05;
-}
-
-.auth-info p {
-    max-width: 380px;
-    line-height: 1.7;
-    font-size: 16px;
-    opacity: 0.85;
-}
-
-
-/* RIGHT SIDE */
-
-.auth-card {
     padding: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    background: #f4f0e8;
 }
+
+
+/* ==================================================
+   FORM BOX
+================================================== */
+
+.auth-box {
+    width: 100%;
+    max-width: 470px;
+}
+
+
+/* ==================================================
+   TABS
+================================================== */
 
 .auth-tabs {
     display: flex;
-    gap: 30px;
-    margin-bottom: 40px;
-    border-bottom: 1px solid var(--c-border, #ddd);
+    gap: 32px;
+    margin-bottom: 45px;
+    border-bottom: 1px solid #d8d0c3;
 }
+
 
 .auth-tab {
+    position: relative;
     border: none;
+    outline: none;
     background: transparent;
     padding: 0 0 15px;
-    font-size: 16px;
-    font-weight: 700;
-    color: #777;
-    position: relative;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: #8a8277;
 }
 
+
     .auth-tab.is-active {
-        color: var(--c-primary, #1f4d3a);
+        color: #2d2924;
     }
+
 
         .auth-tab.is-active::after {
             content: "";
             position: absolute;
             left: 0;
+            right: 0;
             bottom: -1px;
-            width: 100%;
             height: 2px;
-            background: var(--c-primary, #1f4d3a);
+            background: #8b5e3c;
         }
 
 
-/* HEADINGS */
-
-.auth-heading {
-    margin-bottom: 28px;
-}
-
-    .auth-heading h2 {
-        margin-bottom: 8px;
-        font-size: 34px;
-    }
-
-    .auth-heading p {
-        color: #777;
-    }
-
-
-/* PANELS */
+/* ==================================================
+   PANELS
+================================================== */
 
 .auth-panel {
     display: none;
 }
+
 
     .auth-panel.is-active {
         display: block;
     }
 
 
-/* FORM */
+/* ==================================================
+   HEADING
+================================================== */
+
+.auth-heading {
+    margin-bottom: 35px;
+}
+
+
+    .auth-heading h2 {
+        margin: 0 0 10px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 42px;
+        line-height: 1.1;
+        font-weight: 400;
+        color: #2d2924;
+    }
+
+
+    .auth-heading p {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.6;
+        color: #7d756b;
+    }
+
+
+/* ==================================================
+   FORM FIELD
+================================================== */
 
 .auth-field {
-    margin-bottom: 20px;
+    margin-bottom: 23px;
 }
+
 
     .auth-field label {
         display: block;
-        margin-bottom: 8px;
-        font-size: 14px;
+        margin-bottom: 9px;
+        font-size: 13px;
         font-weight: 600;
+        color: #4c463f;
     }
+
 
     .auth-field input {
+        display: block;
         width: 100%;
         box-sizing: border-box;
-        padding: 14px 15px;
-        border: 1px solid var(--c-border, #ddd);
-        border-radius: 10px;
-        background: white;
+        padding: 14px 0;
+        border: none;
+        border-bottom: 1px solid #cbc2b5;
         outline: none;
-        transition: border-color 0.2s, box-shadow 0.2s;
+        background: transparent;
+        font-family: inherit;
+        font-size: 15px;
+        color: #2d2924;
+        transition: border-color 0.2s ease;
     }
 
+
         .auth-field input:focus {
-            border-color: var(--c-primary, #1f4d3a);
-            box-shadow: 0 0 0 3px rgba(31, 77, 58, 0.1);
+            border-bottom-color: #8b5e3c;
         }
 
 
-/* BUTTON */
+        .auth-field input::placeholder {
+            color: #aaa197;
+        }
+
+
+/* ==================================================
+   BUTTON
+================================================== */
 
 .auth-button {
+    display: block;
     width: 100%;
+    margin-top: 10px;
+    padding: 16px 20px;
     border: none;
-    border-radius: 10px;
-    padding: 15px 20px;
-    margin-top: 8px;
-    background: var(--c-primary, #1f4d3a);
-    color: white;
-    font-size: 15px;
+    border-radius: 0;
+    outline: none;
+    background: #8b5e3c;
+    color: #ffffff;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
     font-weight: 700;
-    transition: transform 0.2s, opacity 0.2s;
+    letter-spacing: 0.5px;
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
+
     .auth-button:hover {
+        background: #70482d;
         transform: translateY(-1px);
-        opacity: 0.9;
     }
 
 
-/* ERROR */
+/* ==================================================
+   ERROR MESSAGE
+================================================== */
 
 .form-error {
     display: none;
-    margin-bottom: 18px;
-    padding: 12px 14px;
-    border-radius: 8px;
-    background: #fff0f0;
-    color: #b42318;
-    font-size: 14px;
+    margin-bottom: 15px;
+    padding: 10px 0;
+    color: #a23b2d;
+    font-size: 13px;
 }
 
-    .form-error.is-visible {
-        display: block;
-    }
+
+/* ==================================================
+   NOTE
+================================================== */
+
+.auth-note {
+    margin-top: 20px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #999086;
+}
 
 
-/* MOBILE */
+/* ==================================================
+   MOBILE
+================================================== */
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
 
     .auth-container {
         grid-template-columns: 1fr;
     }
 
-    .auth-info {
-        min-height: 300px;
+
+    .auth-visual {
+        min-height: 500px;
         padding: 35px;
     }
 
-        .auth-info h1 {
-            font-size: 42px;
-        }
 
-    .auth-card {
-        padding: 40px 30px;
+    .auth-form-side {
+        min-height: auto;
+        padding: 55px 30px;
+    }
+
+
+    .auth-quote h1 {
+        font-size: 52px;
     }
 }
 
+
 @media (max-width: 500px) {
 
-    .auth-page {
-        padding: 0;
+    .auth-visual {
+        min-height: 420px;
+        padding: 28px;
     }
 
-    .auth-container {
-        min-height: 100vh;
-        border-radius: 0;
+
+    .auth-quote h1 {
+        font-size: 43px;
     }
 
-    .auth-info {
-        min-height: 260px;
-        padding: 30px;
+
+    .auth-form-side {
+        padding: 45px 25px;
     }
 
-    .auth-card {
-        padding: 35px 25px;
+
+    .auth-heading h2 {
+        font-size: 35px;
     }
 }

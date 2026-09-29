@@ -1,213 +1,251 @@
-/* =========================
-   MASAR AUTH
-========================= */
+/* ==================================================
+   MASAR AUTHENTICATION
+================================================== */
 
-document.addEventListener("DOMContentLoaded", function () {
 
-    const signInTab = document.getElementById("signInTab");
-    const signUpTab = document.getElementById("signUpTab");
+/* ==================================================
+   ELEMENTS
+================================================== */
 
-    const signInPanel = document.getElementById("signInPanel");
-    const signUpPanel = document.getElementById("signUpPanel");
+const signInTab = document.getElementById("signInTab");
+const signUpTab = document.getElementById("signUpTab");
 
-    const signInForm = document.getElementById("signInForm");
-    const signUpForm = document.getElementById("signUpForm");
+const signInPanel = document.getElementById("signInPanel");
+const signUpPanel = document.getElementById("signUpPanel");
 
-    const signInError = document.getElementById("signInError");
-    const signUpError = document.getElementById("signUpError");
+const signInForm = document.getElementById("signInForm");
+const signUpForm = document.getElementById("signUpForm");
 
+const signInError = document.getElementById("signInError");
+const signUpError = document.getElementById("signUpError");
 
-    /* =========================
-       SWITCH BETWEEN TABS
-    ========================= */
 
-    signInTab.addEventListener("click", function () {
+/* ==================================================
+   SWITCH TO SIGN IN
+================================================== */
 
-        signInTab.classList.add("is-active");
-        signUpTab.classList.remove("is-active");
+signInTab.addEventListener("click", function () {
 
-        signInPanel.classList.add("is-active");
-        signUpPanel.classList.remove("is-active");
+    signInTab.classList.add("is-active");
+    signUpTab.classList.remove("is-active");
 
-        clearErrors();
-    });
+    signInPanel.classList.add("is-active");
+    signUpPanel.classList.remove("is-active");
 
+    signInError.style.display = "none";
+    signUpError.style.display = "none";
+});
 
-    signUpTab.addEventListener("click", function () {
 
-        signUpTab.classList.add("is-active");
-        signInTab.classList.remove("is-active");
+/* ==================================================
+   SWITCH TO SIGN UP
+================================================== */
 
-        signUpPanel.classList.add("is-active");
-        signInPanel.classList.remove("is-active");
+signUpTab.addEventListener("click", function () {
 
-        clearErrors();
-    });
+    signUpTab.classList.add("is-active");
+    signInTab.classList.remove("is-active");
 
+    signUpPanel.classList.add("is-active");
+    signInPanel.classList.remove("is-active");
 
-    /* =========================
-       SIGN UP
-    ========================= */
+    signInError.style.display = "none";
+    signUpError.style.display = "none";
+});
 
-    signUpForm.addEventListener("submit", function (event) {
 
-        event.preventDefault();
+/* ==================================================
+   SIGN UP
+================================================== */
 
-        clearErrors();
+signUpForm.addEventListener("submit", function (event) {
 
-        const name = document.getElementById("signUpName").value.trim();
-        const email = document.getElementById("signUpEmail").value.trim();
-        const password = document.getElementById("signUpPassword").value;
-        const confirmPassword =
-            document.getElementById("signUpConfirmPassword").value;
+    event.preventDefault();
 
+    signUpError.style.display = "none";
 
-        if (!name || !email || !password || !confirmPassword) {
-            showError(signUpError, "Please fill in all fields.");
-            return;
-        }
+    const name = document
+        .getElementById("signUpName")
+        .value
+        .trim();
 
+    const email = document
+        .getElementById("signUpEmail")
+        .value
+        .trim()
+        .toLowerCase();
 
-        if (!email.includes("@")) {
-            showError(signUpError, "Please enter a valid email.");
-            return;
-        }
+    const password = document
+        .getElementById("signUpPassword")
+        .value;
 
+    const confirmPassword = document
+        .getElementById("signUpConfirmPassword")
+        .value;
 
-        if (password.length < 6) {
-            showError(
-                signUpError,
-                "Password must be at least 6 characters."
-            );
-            return;
-        }
 
+    /* Check password */
 
-        if (password !== confirmPassword) {
-            showError(signUpError, "Passwords do not match.");
-            return;
-        }
+    if (password !== confirmPassword) {
 
+        signUpError.textContent =
+            "Passwords do not match.";
 
-        const user = {
-            name: name,
-            email: email,
-            password: password
-        };
+        signUpError.style.display = "block";
 
-
-        localStorage.setItem(
-            "masar_user",
-            JSON.stringify(user)
-        );
-
-
-        alert("Account created successfully!");
-
-
-        signUpForm.reset();
-
-        signInTab.click();
-
-        document.getElementById("signInEmail").value = email;
-
-    });
-
-
-    /* =========================
-       SIGN IN
-    ========================= */
-
-    signInForm.addEventListener("submit", function (event) {
-
-        event.preventDefault();
-
-        clearErrors();
-
-        const email =
-            document.getElementById("signInEmail").value.trim();
-
-        const password =
-            document.getElementById("signInPassword").value;
-
-
-        if (!email || !password) {
-            showError(
-                signInError,
-                "Please enter your email and password."
-            );
-            return;
-        }
-
-
-        if (!email.includes("@")) {
-            showError(
-                signInError,
-                "Please enter a valid email."
-            );
-            return;
-        }
-
-
-        const savedUser =
-            JSON.parse(localStorage.getItem("masar_user"));
-
-
-        if (!savedUser) {
-            showError(
-                signInError,
-                "No account found. Please create an account first."
-            );
-            return;
-        }
-
-
-        if (
-            savedUser.email !== email ||
-            savedUser.password !== password
-        ) {
-            showError(
-                signInError,
-                "Email or password is incorrect."
-            );
-            return;
-        }
-
-
-        localStorage.setItem(
-            "masar_logged_in",
-            "true"
-        );
-
-
-        alert("Signed in successfully!");
-
-
-        window.location.href = "index.html";
-
-    });
-
-
-    /* =========================
-       ERROR FUNCTIONS
-    ========================= */
-
-    function showError(element, message) {
-
-        element.textContent = message;
-        element.classList.add("is-visible");
-
+        return;
     }
 
 
-    function clearErrors() {
+    /* Check password length */
 
-        signInError.textContent = "";
-        signUpError.textContent = "";
+    if (password.length < 6) {
 
-        signInError.classList.remove("is-visible");
-        signUpError.classList.remove("is-visible");
+        signUpError.textContent =
+            "Password must be at least 6 characters.";
 
+        signUpError.style.display = "block";
+
+        return;
     }
+
+
+    /* Create user object */
+
+    const user = {
+        name: name,
+        email: email,
+        password: password
+    };
+
+
+    /* Save user */
+
+    localStorage.setItem(
+        "masar_user",
+        JSON.stringify(user)
+    );
+
+
+    /* Show Sign In */
+
+    signUpTab.classList.remove("is-active");
+    signInTab.classList.add("is-active");
+
+    signUpPanel.classList.remove("is-active");
+    signInPanel.classList.add("is-active");
+
+
+    /* Put email in Sign In */
+
+    document.getElementById("signInEmail").value = email;
+
+    document.getElementById("signInPassword").value = "";
+
+
+    /* Show message */
+
+    signInError.textContent =
+        "Account created successfully. You can sign in now.";
+
+    signInError.style.color = "#6d7651";
+    signInError.style.display = "block";
+
+});
+
+
+/* ==================================================
+   SIGN IN
+================================================== */
+
+signInForm.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    signInError.style.display = "none";
+
+
+    const email = document
+        .getElementById("signInEmail")
+        .value
+        .trim()
+        .toLowerCase();
+
+    const password = document
+        .getElementById("signInPassword")
+        .value;
+
+
+    /* Get saved user */
+
+    const savedUser =
+        localStorage.getItem("masar_user");
+
+
+    /* No account */
+
+    if (!savedUser) {
+
+        signInError.textContent =
+            "No account found. Please create an account first.";
+
+        signInError.style.color = "#a23a2b";
+        signInError.style.display = "block";
+
+        return;
+    }
+
+
+    const user = JSON.parse(savedUser);
+
+
+    /* Check email */
+
+    if (email !== user.email) {
+
+        signInError.textContent =
+            "Incorrect email or password.";
+
+        signInError.style.color = "#a23a2b";
+        signInError.style.display = "block";
+
+        return;
+    }
+
+
+    /* Check password */
+
+    if (password !== user.password) {
+
+        signInError.textContent =
+            "Incorrect email or password.";
+
+        signInError.style.color = "#a23a2b";
+        signInError.style.display = "block";
+
+        return;
+    }
+
+
+    /* Save logged-in user */
+
+    localStorage.setItem(
+        "masar_logged_in",
+        "true"
+    );
+
+
+    localStorage.setItem(
+        "masar_current_user",
+        JSON.stringify({
+            name: user.name,
+            email: user.email
+        })
+    );
+
+
+    /* Go back to Home */
+
+    window.location.href = "index.html";
 
 });

@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 dotenv.config();
 
 const app = express();
+
 const PORT = process.env.PORT || 3000;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -18,77 +19,147 @@ const client = new OpenAI({
 
 app.use(express.json());
 
-// Serve the MASAR website
+
+// ==================================================
+// SERVE MASAR WEBSITE
+// ==================================================
+
 app.use(express.static(path.join(__dirname, "jordan-tourism")));
 
 
-// AI endpoint
+// ==================================================
+// MASAR AI ENDPOINT
+// ==================================================
+
 app.post("/api/masar-chat", async (req, res) => {
 
     try {
 
         const { messages, location } = req.body;
 
+
+        // Validate messages
+
         if (!Array.isArray(messages)) {
+
             return res.status(400).json({
                 error: "Invalid messages"
             });
+
         }
+
+
+        // Visitor location
 
         const locationText = location
             ? `The visitor's confirmed location is ${location.city || "unknown city"}.`
             : "The visitor has not confirmed a location.";
 
+
+        // Ask OpenAI
+
         const response = await client.responses.create({
+
             model: "gpt-5-mini",
 
             instructions: `
-You are MASAR, a friendly AI tourism guide for Jordan.
 
-Your job is to help visitors discover Jordan.
+You are MASAR, an intelligent and knowledgeable AI assistant specialized in Jordan.
 
-Focus on:
-- Jordanian destinations
-- Things to do
-- Local food
-- Culture
-- History
-- Trip planning
-- Transportation
-- General tourism advice
-- Nearby attractions when location is provided
+Your scope is EVERYTHING related to the country of Jordan.
 
-Keep answers friendly, useful, confident, and reasonably concise.
+You can answer questions about:
 
-You are already knowledgeable about Jordan tourism.
-Never say that you are "still learning", "learning", "a beginner",
-"not trained yet", or that you need to learn more before answering.
+- Jordanian tourism and destinations
+- Cities, towns, villages, and regions
+- History and archaeology
+- Geography and nature
+- Jordanian culture and traditions
+- Jordanian food and cuisine
+- Transportation and travel between places
+- Hotels, attractions, and activities
+- Jordanian lifestyle and daily life
+- Jordanian society and customs
+- Languages, dialects, and common expressions in Jordan
+- Education and universities in Jordan
+- Economy and major industries in Jordan
+- Agriculture and natural resources
+- Climate and seasons in Jordan
+- Wildlife and nature
+- Famous Jordanian people
+- Historical figures and events related to Jordan
+- Religious and cultural sites in Jordan
+- Laws, customs, and practical information for visitors
+- Questions about visiting, living in, studying in, or understanding Jordan
+- Any other question whose subject is Jordan
 
-If you are unsure about a specific fact, say that you are not certain
-and provide the most useful general guidance you can.
 
-If the user asks something unrelated to Jordan tourism,
-politely explain that you specialize in Jordan travel.
+IMPORTANT:
 
-Always try to answer tourism questions directly instead of giving
-generic statements about being an AI.
+Answer the user's actual question directly and naturally.
 
-Never pretend to know real-time opening hours, prices,
-availability, traffic or events unless that information is
-actually provided to you.
+Do not limit yourself to tourism itineraries.
+
+If the question is about Jordan, try to answer it even if it is not specifically about tourism.
+
+You may explain historical, cultural, geographical, social, educational, economic, or practical topics as long as they are related to Jordan.
+
+
+ACCURACY:
+
+- Never invent facts.
+- Never make up names, dates, places, statistics, prices, opening hours, transportation schedules, laws, or other information.
+- If you are not confident that a specific fact is correct, clearly say that you are not certain.
+- When you do not know the answer, be honest and helpful.
+- If possible, provide the general information you do know instead of inventing an answer.
+- Do not pretend to have real-time information unless it is provided to you.
+
+
+LOCATION:
 
 ${locationText}
+
+Use the visitor's confirmed location when it is relevant to the question, but do not assume their location if it has not been confirmed.
+
+
+SCOPE:
+
+You must stay within the subject of Jordan.
+
+If the user asks about something completely unrelated to Jordan, politely say that you specialize in Jordan and ask how you can help them with Jordan instead.
+
+However, if a question mentions another country only as part of a comparison with Jordan, you may discuss the comparison when it helps answer the Jordan-related question.
+
+
+PERSONALITY:
+
+- Friendly
+- Helpful
+- Natural
+- Confident when the information is well known
+- Honest when uncertain
+- Clear and easy to understand
+- Do not repeatedly mention that you are an AI
+- Never say that you are "still learning", "a beginner", "not trained yet", or that you need to learn before answering
+
+Give enough detail to properly answer the question, but avoid unnecessary long responses.
+
 `,
 
             input: messages
 
         });
 
+
+        // Get AI answer
+
         const reply = response.output_text;
+
 
         res.json({
             reply
         });
+
 
     } catch (error) {
 
@@ -103,16 +174,24 @@ ${locationText}
 });
 
 
-// Simple test route
+// ==================================================
+// HEALTH CHECK
+// ==================================================
+
 app.get("/api/health", (req, res) => {
+
     res.json({
         status: "ok",
         service: "MASAR AI"
     });
+
 });
 
 
-// Start server
+// ==================================================
+// START SERVER
+// ==================================================
+
 app.listen(PORT, () => {
 
     console.log("");
@@ -123,3 +202,4 @@ app.listen(PORT, () => {
     console.log("");
 
 });
+

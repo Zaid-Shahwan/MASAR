@@ -1,0 +1,615 @@
+/* ==================================================
+   MASAR PROFILE PAGE
+================================================== */
+
+.profile-page {
+    min-height: calc(100vh - 90px);
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 70px 24px;
+}
+
+
+/* ==================================================
+   PROFILE CARD
+================================================== */
+
+.profile-card {
+    width: 100%;
+    max-width: 900px;
+
+    background: #fffaf2;
+
+    border: 1px solid rgba(35, 35, 35, 0.08);
+
+    border-radius: 30px;
+
+    padding: 48px;
+
+    box-shadow:
+        0 25px 70px rgba(35, 35, 35, 0.08);
+}
+
+
+/* ==================================================
+   HEADER
+================================================== */
+
+.profile-header {
+    display: flex;
+    align-items: center;
+
+    gap: 24px;
+
+    padding-bottom: 38px;
+
+    border-bottom:
+        1px solid rgba(35, 35, 35, 0.10);
+}
+
+
+.profile-avatar {
+    width: 95px;
+    height: 95px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #b85c43;
+
+    color: #fffaf2;
+
+    font-family: "Fraunces", serif;
+
+    font-size: 40px;
+}
+
+
+.profile-label {
+    margin: 0 0 8px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+
+    color: #8a6b5c;
+}
+
+
+.profile-intro h1 {
+    margin: 0;
+
+    font-family: "Fraunces", serif;
+
+    font-size: clamp(34px, 5vw, 52px);
+
+    font-weight: 500;
+
+    color: #2d2925;
+}
+
+
+.profile-intro p:last-child {
+    margin: 8px 0 0;
+
+    color: #77706a;
+
+    font-size: 15px;
+}
+
+
+/* ==================================================
+   SECTIONS
+================================================== */
+
+.profile-section {
+    padding: 34px 0;
+
+    border-bottom:
+        1px solid rgba(35, 35, 35, 0.10);
+}
+
+
+.profile-section:last-child {
+    border-bottom: none;
+
+    padding-bottom: 0;
+}
+
+
+.profile-section h2 {
+    margin: 0 0 20px;
+
+    font-family: "Fraunces", serif;
+
+    font-size: 26px;
+
+    font-weight: 500;
+
+    color: #2d2925;
+}
+
+
+.section-description {
+    margin: -10px 0 22px;
+
+    color: #77706a;
+
+    font-size: 14px;
+}
+
+
+/* ==================================================
+   ACCOUNT INFORMATION
+================================================== */
+
+.info-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+
+.info-item {
+    padding: 20px;
+
+    background: #f4eee4;
+
+    border-radius: 17px;
+}
+
+
+.info-label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.08em;
+
+    color: #8a6b5c;
+}
+
+
+.info-item strong {
+    display: block;
+
+    word-break: break-word;
+
+    font-size: 15px;
+
+    font-weight: 500;
+
+    color: #2d2925;
+}
+
+
+/* ==================================================
+   SECURITY
+================================================== */
+
+.security-box {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 24px;
+
+    padding: 22px;
+
+    background: #f4eee4;
+
+    border-radius: 18px;
+}
+
+
+.password-display {
+    font-size: 20px;
+
+    letter-spacing: 4px;
+
+    color: #2d2925;
+}
+
+
+.security-note {
+    margin: 8px 0 0;
+
+    font-size: 12px;
+
+    color: #77706a;
+
+    max-width: 500px;
+}
+
+
+/* ==================================================
+   BUTTONS
+================================================== */
+
+.profile-button {
+    border: none;
+
+    border-radius: 999px;
+
+    padding: 13px 23px;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+.profile-button:hover {
+    transform: translateY(-2px);
+}
+
+
+.profile-button:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+.secondary-button {
+    background: #2d2925;
+
+    color: white;
+
+    white-space: nowrap;
+}
+
+
+.logout-button {
+    background: #a23a2b;
+
+    color: white;
+}
+
+
+/* ==================================================
+   SAVED DESTINATIONS
+================================================== */
+
+.saved-destinations {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+.saved-card {
+    position: relative;
+
+    overflow: hidden;
+
+    min-height: 190px;
+
+    border-radius: 20px;
+
+    background: #f4eee4;
+}
+
+
+.saved-card img {
+    width: 100%;
+    height: 190px;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+
+.saved-card-overlay {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    padding: 40px 18px 18px;
+
+    background:
+        linear-gradient(
+            transparent,
+            rgba(20, 18, 16, 0.85)
+        );
+
+    color: white;
+}
+
+
+.saved-card-overlay h3 {
+    margin: 0;
+
+    font-family: "Fraunces", serif;
+
+    font-size: 24px;
+
+    font-weight: 500;
+}
+
+
+.saved-card-overlay p {
+    margin: 4px 0 0;
+
+    font-size: 12px;
+
+    opacity: 0.85;
+}
+
+
+.remove-saved {
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    z-index: 2;
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.92);
+
+    color: #a23a2b;
+
+    font-size: 19px;
+
+    cursor: pointer;
+}
+
+
+/* ==================================================
+   EMPTY STATE
+================================================== */
+
+.empty-saved {
+    text-align: center;
+
+    padding: 45px 25px;
+
+    border-radius: 20px;
+
+    background: #f4eee4;
+}
+
+
+.empty-icon {
+    font-size: 38px;
+
+    color: #b85c43;
+
+    margin-bottom: 10px;
+}
+
+
+.empty-saved h3 {
+    margin: 0;
+
+    font-family: "Fraunces", serif;
+
+    font-size: 25px;
+
+    font-weight: 500;
+
+    color: #2d2925;
+}
+
+
+.empty-saved p {
+    margin: 8px 0 20px;
+
+    color: #77706a;
+
+    font-size: 14px;
+}
+
+
+/* ==================================================
+   MESSAGES
+================================================== */
+
+.profile-message {
+    margin-top: 15px;
+
+    font-size: 14px;
+
+    color: #a23a2b;
+}
+
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 700px) {
+
+    .profile-page {
+        padding: 35px 16px;
+    }
+
+
+    .profile-card {
+        padding: 28px 20px;
+
+        border-radius: 22px;
+    }
+
+
+    .profile-header {
+        align-items: flex-start;
+
+        gap: 16px;
+    }
+
+
+    .profile-avatar {
+        width: 70px;
+        height: 70px;
+
+        font-size: 30px;
+    }
+
+
+    .profile-intro h1 {
+        font-size: 32px;
+    }
+
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .security-box {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .saved-destinations {
+        grid-template-columns: 1fr;
+    }
+
+
+    .secondary-button {
+        width: 100%;
+    }
+
+    /* ==================================================
+   MODERN SECURITY SECTION
+================================================== */
+
+.security-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.security-password-content {
+    flex: 1;
+}
+
+.password-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.password-display {
+    font-family: monospace;
+    font-size: 20px;
+    letter-spacing: 4px;
+    line-height: 1;
+}
+
+.password-toggle {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid rgba(80, 60, 40, 0.15);
+    border-radius: 50%;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.password-toggle:hover {
+    background: rgba(160, 100, 70, 0.08);
+    border-color: rgba(160, 100, 70, 0.25);
+    transform: scale(1.05);
+}
+
+.password-toggle.active {
+    background: rgba(160, 100, 70, 0.12);
+    border-color: rgba(160, 100, 70, 0.3);
+    transform: scale(1.08);
+}
+
+.security-note {
+    max-width: 520px;
+    margin-top: 10px;
+    margin-bottom: 0;
+
+    color: #777;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 700px) {
+
+    .security-box {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .security-box .profile-button {
+        width: 100%;
+    }
+
+}
+
+}

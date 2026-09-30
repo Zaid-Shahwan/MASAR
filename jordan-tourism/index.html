@@ -23,7 +23,7 @@
         <a class="nav-link" href="index.html#amman">Amman</a>
         <a class="nav-link" href="ai.html">AI Guide</a>
         <a class="nav-link" href="explore.html">Plan Your Trip</a>
-        <a class="nav-link" href="signin.html">Sign In</a>
+        <a class="nav-link" id="authNavLink" href="signin.html">Sign In</a>
     </nav>
     <div class="nav-cta">
       <a href="explore.html" class="btn btn-primary">Find Your Experience
@@ -414,7 +414,107 @@
   </div>
 </footer>
 
-<script src="js/main.js"></script>
-<script src="config.js"></script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+  const firebaseConfig = {
+  apiKey: "AIzaSyBLi9GZ9I-yARpthtf2zVrcugBxLlUwXSU",
+  authDomain: "masar-bb6bb.firebaseapp.com",
+  databaseURL: "https://masar-bb6bb-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "masar-bb6bb",
+  storageBucket: "masar-bb6bb.firebasestorage.app",
+  messagingSenderId: "525831043288",
+  appId: "1:525831043288:web:531ac5150c0cea9c5a7fad",
+  measurementId: "G-1YV5H3LZ7C"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const authNavLink = document.getElementById("authNavLink");
+
+  // Add mobile Profile/Sign In link if it exists
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  let mobileAuthLink = document.getElementById("mobileAuthLink");
+
+  if (mobileMenu && !mobileAuthLink) {
+    mobileAuthLink = document.createElement("a");
+    mobileAuthLink.id = "mobileAuthLink";
+    mobileAuthLink.href = "signin.html";
+    mobileAuthLink.textContent = "Sign In";
+
+    const experienceButton = mobileMenu.querySelector(".btn");
+
+    if (experienceButton) {
+      mobileMenu.insertBefore(mobileAuthLink, experienceButton);
+    } else {
+      mobileMenu.appendChild(mobileAuthLink);
+    }
+  }
+
+  function showProfile() {
+    if (authNavLink) {
+      authNavLink.textContent = "Profile";
+      authNavLink.href = "profile.html";
+    }
+
+    if (mobileAuthLink) {
+      mobileAuthLink.textContent = "Profile";
+      mobileAuthLink.href = "profile.html";
+    }
+  }
+
+  function showSignIn() {
+    if (authNavLink) {
+      authNavLink.textContent = "Sign In";
+      authNavLink.href = "signin.html";
+    }
+
+    if (mobileAuthLink) {
+      mobileAuthLink.textContent = "Sign In";
+      mobileAuthLink.href = "signin.html";
+    }
+  }
+
+  // Immediately check the saved login state
+  const loggedIn = localStorage.getItem("masar_logged_in");
+
+  if (loggedIn === "true") {
+    showProfile();
+  } else {
+    showSignIn();
+  }
+
+  // Firebase confirms the real authentication state
+  onAuthStateChanged(auth, (user) => {
+
+  console.log("FIREBASE USER:", user);
+
+  if (user) {
+    console.log("USER IS SIGNED IN:", user.email);
+
+    if (authNavLink) {
+      authNavLink.textContent = "Profile";
+      authNavLink.href = "profile.html";
+    }
+
+  } else {
+    console.log("NO USER IS SIGNED IN");
+
+    if (authNavLink) {
+      authNavLink.textContent = "Sign In";
+      authNavLink.href = "signin.html";
+    }
+  }
+
+});
+</script>
+
 </body>
 </html>

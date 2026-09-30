@@ -1,35 +1,55 @@
 import express from "express";
-import OpenAI from "openai";
+import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
 dotenv.config();
 
-const app = express();
+/* ==================================================
+   SERVER
+================================================== */
 
+const app = express();
 const PORT = process.env.PORT || 3000;
+
+
+/* ==================================================
+   PATH
+================================================== */
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+
+/* ==================================================
+   GEMINI
+================================================== */
+
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+if (!GEMINI_API_KEY) {
+    console.error("ERROR: GEMINI_API_KEY is missing.");
+}
+
+const ai = new GoogleGenAI({
+    apiKey: GEMINI_API_KEY
 });
+
+
+/* ==================================================
+   MIDDLEWARE
+================================================== */
 
 app.use(express.json());
 
-
-// ==================================================
-// SERVE MASAR WEBSITE
-// ==================================================
-
+/* Serve MASAR website */
 app.use(express.static(path.join(__dirname, "jordan-tourism")));
 
 
-// ==================================================
-// MASAR AI ENDPOINT
-// ==================================================
+/* ==================================================
+   MASAR AI
+================================================== */
 
 app.post("/api/masar-chat", async (req, res) => {
 
@@ -38,135 +58,323 @@ app.post("/api/masar-chat", async (req, res) => {
         const { messages, location } = req.body;
 
 
-        // Validate messages
+        /* ==================================================
+           VALIDATE REQUEST
+        ================================================== */
 
-        if (!Array.isArray(messages)) {
+        if (!Array.isArray(messages) || messages.length === 0) {
 
             return res.status(400).json({
-                error: "Invalid messages"
+                error: "Invalid messages."
             });
 
         }
 
 
-        // Visitor location
+        if (!GEMINI_API_KEY) {
+
+            return res.status(500).json({
+                error: "Gemini API key is not configured."
+            });
+
+        }
+
+
+        /* ==================================================
+           LOCATION
+        ================================================== */
 
         const locationText = location
-            ? `The visitor's confirmed location is ${location.city || "unknown city"}.`
+            ? `The visitor's confirmed location is ${
+                location.city || "unknown city"
+              }.`
             : "The visitor has not confirmed a location.";
 
 
-        // Ask OpenAI
+        /* ==================================================
+           MASAR SYSTEM INSTRUCTIONS
+        ================================================== */
 
-        const response = await client.responses.create({
+        const systemInstruction = `
+You are MASAR, the AI guide for Jordan.
 
-            model: "gpt-5-mini",
+Your job is to answer questions about EVERYTHING related to Jordan.
 
-            instructions: `
-
-You are MASAR, an intelligent and knowledgeable AI assistant specialized in Jordan.
-
-Your scope is EVERYTHING related to the country of Jordan.
+You are not limited to tourism.
 
 You can answer questions about:
 
-- Jordanian tourism and destinations
-- Cities, towns, villages, and regions
-- History and archaeology
-- Geography and nature
-- Jordanian culture and traditions
-- Jordanian food and cuisine
-- Transportation and travel between places
-- Hotels, attractions, and activities
-- Jordanian lifestyle and daily life
-- Jordanian society and customs
-- Languages, dialects, and common expressions in Jordan
-- Education and universities in Jordan
-- Economy and major industries in Jordan
-- Agriculture and natural resources
-- Climate and seasons in Jordan
-- Wildlife and nature
+- Tourism and destinations
+- Cities, towns and villages
+- Petra
+- Amman
+- Aqaba
+- Wadi Rum
+- Jerash
+- Madaba
+- Salt
+- Karak
+- Ajloun
+- History
+- Archaeology
+- Geography
+- Nature
+- Wildlife
+- Jordanian culture
+- Jordanian traditions
+- Jordanian food
+- Mansaf
+- Restaurants and local food
+- Transportation
+- Travel between cities
+- Hotels
+- Attractions
+- Activities
+- Jordanian lifestyle
+- Jordanian society
+- Jordanian customs
+- Arabic dialects in Jordan
+- Jordanian expressions
+- Universities in Jordan
+- Education
+- Economy
+- Agriculture
+- Natural resources
+- Climate
 - Famous Jordanian people
-- Historical figures and events related to Jordan
-- Religious and cultural sites in Jordan
-- Laws, customs, and practical information for visitors
-- Questions about visiting, living in, studying in, or understanding Jordan
-- Any other question whose subject is Jordan
+- Historical figures
+- Historical events
+- Religious sites
+- Cultural sites
+- Laws and customs relevant to visitors
+- Studying in Jordan
+- Living in Jordan
+- Visiting Jordan
+- Any other subject specifically related to Jordan.
 
 
 IMPORTANT:
 
-Answer the user's actual question directly and naturally.
+Answer the visitor's actual question directly.
 
-Do not limit yourself to tourism itineraries.
+Do not automatically turn every question into a travel itinerary.
 
-If the question is about Jordan, try to answer it even if it is not specifically about tourism.
+If someone asks about universities, answer about universities.
 
-You may explain historical, cultural, geographical, social, educational, economic, or practical topics as long as they are related to Jordan.
+If someone asks about food, answer about food.
+
+If someone asks about history, answer about history.
+
+If someone asks about culture, answer about culture.
+
+If someone asks about Jordanian society, answer about Jordanian society.
 
 
 ACCURACY:
 
-- Never invent facts.
-- Never make up names, dates, places, statistics, prices, opening hours, transportation schedules, laws, or other information.
-- If you are not confident that a specific fact is correct, clearly say that you are not certain.
-- When you do not know the answer, be honest and helpful.
-- If possible, provide the general information you do know instead of inventing an answer.
-- Do not pretend to have real-time information unless it is provided to you.
+Never invent facts.
+
+Never invent:
+
+- Names
+- Dates
+- Statistics
+- Prices
+- Opening hours
+- Transportation schedules
+- Laws
+- Addresses
+- Events
+- People
+- Universities
+- Historical information
+
+If you are uncertain about a specific fact, say that you are not certain.
+
+If you do not know something, say so honestly.
+
+Never make up information simply to provide an answer.
+
+Do not claim to have real-time information unless it is explicitly provided.
+
+
+SCOPE:
+
+Your main subject is Jordan.
+
+If the user asks about something completely unrelated to Jordan,
+politely explain that MASAR specializes in Jordan and redirect them
+toward something related to Jordan.
+
+If another country is mentioned as part of a comparison involving Jordan,
+you may discuss the comparison when it helps answer the question.
+
+
+PERSONALITY:
+
+Be:
+
+- Friendly
+- Helpful
+- Natural
+- Clear
+- Direct
+- Informative
+- Easy to understand
+
+Do not repeatedly say that you are an AI.
+
+Never say:
+
+"I'm still learning."
+
+"I'm a beginner."
+
+"I need to learn this."
+
+"I'm not trained yet."
+
+"I don't know much about this."
+
+Do not use generic fallback responses when you can answer the question.
+
+
+LANGUAGE:
+
+Answer in the same language as the visitor whenever possible.
+
+If the visitor asks in Arabic, answer in Arabic.
+
+If the visitor asks in English, answer in English.
+
+If the visitor mixes Arabic and English, naturally mix both.
 
 
 LOCATION:
 
 ${locationText}
 
-Use the visitor's confirmed location when it is relevant to the question, but do not assume their location if it has not been confirmed.
+Use the visitor's confirmed location only when it is relevant.
+
+Never assume a location that has not been confirmed.
 
 
-SCOPE:
+RESPONSE STYLE:
 
-You must stay within the subject of Jordan.
+Answer directly.
 
-If the user asks about something completely unrelated to Jordan, politely say that you specialize in Jordan and ask how you can help them with Jordan instead.
+Use short paragraphs and bullet points when useful.
 
-However, if a question mentions another country only as part of a comparison with Jordan, you may discuss the comparison when it helps answer the Jordan-related question.
+Do not unnecessarily repeat the question.
+
+Do not add a generic introduction before every answer.
+
+Give enough information to properly answer the question.
+`;
 
 
-PERSONALITY:
+        /* ==================================================
+           CONVERT CHAT HISTORY
+        ================================================== */
 
-- Friendly
-- Helpful
-- Natural
-- Confident when the information is well known
-- Honest when uncertain
-- Clear and easy to understand
-- Do not repeatedly mention that you are an AI
-- Never say that you are "still learning", "a beginner", "not trained yet", or that you need to learn before answering
+        const conversation = messages
+            .slice(-10)
+            .map((message) => {
 
-Give enough detail to properly answer the question, but avoid unnecessary long responses.
+                const role =
+                    message.role === "assistant"
+                        ? "MASAR"
+                        : "Visitor";
 
-`,
+                return `${role}: ${message.content}`;
 
-            input: messages
+            })
+            .join("\n\n");
+
+
+        /* ==================================================
+           GEMINI REQUEST
+        ================================================== */
+
+        const response = await ai.models.generateContent({
+
+            model: "gemini-2.5-flash-lite",
+
+            config: {
+                systemInstruction: systemInstruction,
+                temperature: 0.4
+            },
+
+            contents: conversation
 
         });
 
 
-        // Get AI answer
+        /* ==================================================
+           GET RESPONSE
+        ================================================== */
 
-        const reply = response.output_text;
+        const reply = response.text;
 
+
+        if (!reply || !reply.trim()) {
+
+            return res.status(500).json({
+                error: "Gemini returned an empty response."
+            });
+
+        }
+
+
+        /* ==================================================
+           SEND RESPONSE
+        ================================================== */
 
         res.json({
-            reply
+            reply: reply.trim()
         });
 
 
     } catch (error) {
 
-        console.error("MASAR AI ERROR:", error);
+        console.error("================================");
+        console.error("MASAR GEMINI ERROR");
+        console.error("================================");
+
+        console.error(error);
+
+
+        /* ==================================================
+           FRIENDLY ERROR RESPONSES
+        ================================================== */
+
+        if (
+            error?.status === 429 ||
+            error?.code === 429 ||
+            error?.message?.includes("RESOURCE_EXHAUSTED")
+        ) {
+
+            return res.status(429).json({
+                error: "MASAR AI is temporarily busy. Please try again in a moment."
+            });
+
+        }
+
+
+        if (
+            error?.message?.includes("API key") ||
+            error?.message?.includes("API_KEY")
+        ) {
+
+            return res.status(500).json({
+                error: "MASAR AI configuration error."
+            });
+
+        }
+
 
         res.status(500).json({
-            error: "Unable to get an AI response."
+            error: "Unable to get an AI response right now."
         });
 
     }
@@ -174,23 +382,25 @@ Give enough detail to properly answer the question, but avoid unnecessary long r
 });
 
 
-// ==================================================
-// HEALTH CHECK
-// ==================================================
+/* ==================================================
+   HEALTH CHECK
+================================================== */
 
 app.get("/api/health", (req, res) => {
 
     res.json({
         status: "ok",
-        service: "MASAR AI"
+        service: "MASAR AI",
+        provider: "Google Gemini",
+        model: "gemini-2.5-flash-lite"
     });
 
 });
 
 
-// ==================================================
-// START SERVER
-// ==================================================
+/* ==================================================
+   START SERVER
+================================================== */
 
 app.listen(PORT, () => {
 
@@ -199,7 +409,8 @@ app.listen(PORT, () => {
     console.log("      MASAR SERVER RUNNING");
     console.log("================================");
     console.log(`http://localhost:${PORT}`);
+    console.log("AI Provider: Google Gemini");
+    console.log("AI Model: gemini-2.5-flash-lite");
     console.log("");
 
 });
-

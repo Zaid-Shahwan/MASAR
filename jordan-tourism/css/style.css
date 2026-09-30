@@ -473,7 +473,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 .compare-panel--new .label,
 .compare-panel--new .path {
-  color: #fff;
+  color: #f9b86d;
 }
 
 .compare-panel--new .label {

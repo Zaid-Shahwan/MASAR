@@ -17,7 +17,7 @@
     // true  = use the sample answers in section 6 (no server needed)
     // false = call your own backend at `apiUrl` (see getAIReply below)
     useMockReplies: false,
-    apiUrl: "/api/masar-chat",
+    apiUrl: "https://masar-rud6.onrender.com/api/masar-chat",
 
     thinkingMinMs: 900,     // "Thinking..." always shows at least this long
     thinkingMaxMs: 1600,    // ...and mock replies never take longer than this

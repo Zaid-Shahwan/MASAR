@@ -1,0 +1,27 @@
+{
+  "name": "jordan-tourism",
+  "version": "1.0.0",
+  "description": "An interactive tourism website designed to help visitors discover and explore Jordan through personalized travel experiences and an AI-powered tourism guide.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zaid-Shahwan/MASAR.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Zaid-Shahwan/MASAR/issues"
+  },
+  "homepage": "https://github.com/Zaid-Shahwan/MASAR#readme",
+  "dependencies": {
+    "dotenv": "^18.0.5",
+    "express": "^5.2.1",
+    "openai": "^7.25.0"
+  }
+}

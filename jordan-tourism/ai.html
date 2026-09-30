@@ -4,13 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ask MASAR — Your AI Guide to Jordan</title>
-<link rel="icon" type="image/png" href="assets/images/logo.png">
 <meta name="description" content="Chat with MASAR, a friendly AI travel guide. Ask about places to visit, local food, things to do and trip plans in Jordan.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/ai.css">
+<!-- Map for the places assistant (Leaflet + CARTO basemap tiles, built on OpenStreetMap data: free, no API key) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="css/ai-geo.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -18,7 +20,7 @@
 <!-- ============================= HEADER (same as other pages) ============================= -->
 <header class="site-header is-solid">
   <div class="container">
-    <a href="index.html" class="brand"><img src="assets/images/MASAR_AI.png" alt="MASAR_AI" height="80"></a>
+    <a href="index.html" class="brand">MASAR</a>
     <nav class="nav-links" aria-label="Primary">
       <a class="nav-link" href="index.html">Home</a>
       <a class="nav-link" href="index.html#destinations">Destinations</a>
@@ -145,6 +147,8 @@
         <button type="button" class="chip" data-question="Can you help me plan a trip around Jordan?"><span aria-hidden="true">🗺️</span> Plan my trip</button>
         <button type="button" class="chip" data-question="What can I do near me?"><span aria-hidden="true">📍</span> Near me</button>
         <button type="button" class="chip" data-question="What can I do today?"><span aria-hidden="true">🌅</span> Things to do today</button>
+        <button type="button" class="chip" data-question="Where is the nearest pharmacy?"><span aria-hidden="true">💊</span> Nearest pharmacy</button>
+        <button type="button" class="chip" data-question="I need help"><span aria-hidden="true">🚨</span> Emergency help</button>
       </div>
 
       <!-- ===================== INPUT ===================== -->
@@ -157,7 +161,29 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
       </form>
-      <p class="ai-note">MASAR shares general travel ideas. Please check opening hours and prices before you go.</p>
+      <p class="ai-note">MASAR shares general travel ideas. Please check opening hours and prices before you go. Nearby places come from OpenStreetMap and may be incomplete. In an emergency, call <a href="tel:911">911</a>.</p>
+
+      <!-- ===================== LOCATION + MAP (used by js/ai-geo.js) ===================== -->
+      <div class="geo-bar" id="geo-bar">
+        <span class="geo-bar__status" id="geo-status" aria-live="polite">📍 Location not confirmed</span>
+        <button type="button" class="btn btn-outline btn-sm" id="geo-open">Confirm location</button>
+        <button type="button" class="geo-bar__clear" id="geo-clear" hidden>Forget</button>
+      </div>
+
+      <section class="geo-panel" id="geo-panel" aria-label="Map and location" hidden>
+        <div class="geo-panel__head">
+          <h2>Where are you?</h2>
+          <button type="button" class="geo-panel__close" id="geo-close" aria-label="Close map">&times;</button>
+        </div>
+        <div class="geo-map" id="geo-map" role="application" aria-label="Map of Jordan"></div>
+        <div class="geo-panel__controls">
+          <button type="button" class="btn btn-outline btn-sm" id="geo-locate">Use my current location</button>
+          <label class="visually-hidden" for="geo-city">Or choose a city</label>
+          <select id="geo-city" class="geo-select"><option value="">Or choose a city…</option></select>
+          <button type="button" class="btn btn-primary btn-sm" id="geo-confirm" disabled>Confirm this location</button>
+        </div>
+        <p class="geo-help" id="geo-help" aria-live="polite"></p>
+      </section>
     </section>
 
   </div>
@@ -187,6 +213,11 @@
 </footer>
 
 <script src="js/main.js"></script>
-<script src="js/ai.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
+<!-- Local config (CARTO Basemaps API key). Not committed -- see js/config.example.js. -->
+<script src="js/config.js" defer></script>
+<script src="js/ai-geo.js" defer></script>
+<script src="js/jordan-intelligence.js" defer></script>
+<script src="js/ai.js" defer></script>
 </body>
 </html>

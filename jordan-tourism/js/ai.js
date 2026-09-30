@@ -254,6 +254,11 @@
       cloud.appendChild(a);
     }
 
+    // Place cards, emergency numbers, location prompt, quick-reply chips (from ai-geo.js).
+    if (reply.extras && window.MASAR_GEO) {
+      window.MASAR_GEO.renderExtras(cloud, reply, { ask: sendMessage });
+    }
+
     // Restart the pop animation for the real answer.
     wrap.classList.remove("cloud-wrap--pop");
     void wrap.offsetWidth;              // forces the browser to notice the change
@@ -268,8 +273,22 @@
   // The one function the rest of the page calls to get an answer.
   // Must return (a Promise of) { text: "...", link?: { href, label } }.
   async function getAIReply() {
+    const lastUserMessage = state.history[state.history.length - 1].content;
+    const jordanAnalysis = window.MASAR_JORDAN_AI
+  ? window.MASAR_JORDAN_AI.analyze(lastUserMessage)
+  : null;
+  const jordanPrompt = window.MASAR_JORDAN_AI
+  ? window.MASAR_JORDAN_AI.buildPrompt(lastUserMessage, jordanAnalysis)
+  : "";
+
+    // Places / location / emergency questions are answered by js/ai-geo.js from real map data.
+    // It returns null for everything else, so the tourism answers below work exactly as before.
+    if (window.MASAR_GEO) {
+      const placesReply = await window.MASAR_GEO.handle(lastUserMessage, { knowledge: getMockReply });
+      if (placesReply) return placesReply;
+    }
+
     if (CONFIG.useMockReplies) {
-      const lastUserMessage = state.history[state.history.length - 1].content;
       return getMockReply(lastUserMessage);
     }
 
@@ -281,7 +300,16 @@
     const response = await fetch(CONFIG.apiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: state.history.slice(-CONFIG.maxHistory) })
+      body: JSON.stringify({
+  messages: [
+    {
+      role: "system",
+      content: jordanPrompt
+    }
+  ].concat(state.history.slice(-CONFIG.maxHistory)),
+  // optional: only present after the visitor confirmed a location
+  location: window.MASAR_GEO ? window.MASAR_GEO.getLocation() : null
+})
     });
     if (!response.ok) throw new Error("Server error " + response.status);
     const data = await response.json();
@@ -291,6 +319,49 @@
   // ---- Sample answers (demo only) ------------------------------------------
   // Each rule = a pattern to look for + the answer. The first match wins, so
   // more specific rules come first. Add or edit rules freely.
+  const ARABIC_MOCK_RULES = [
+  {
+    test: /عمان|عمّان|عمان/,
+    keywords: /سياح|اماكن|أماكن|زيارة|ازور|أزور|فعال|وين|شو في|شو ممكن|تنزه|طلعة/,
+    text: "بعمان عندك خيارات كثير حلوة 👌\n\nإذا بتحب الأماكن التاريخية، ابدأ بقلعة عمّان والمسرح الروماني، وبعدها انزل على وسط البلد. وإذا بتحب الأجواء والمقاهي، Rainbow Street وجبل اللويبدة خيارات معروفة.\n\nإذا بتحكيلي شو بتحب أكثر — تاريخ، أكل، طبيعة، تسوق أو طلعات — بقدر أرتبلك اقتراحات أنسب."
+  },
+  {
+    test: /بترا|البتراء|petra/,
+    keywords: /سياح|اماكن|أماكن|زيارة|ازور|أزور|شو|وين|ممكن/,
+    text: "البتراء من أشهر الأماكن السياحية بالأردن. ممكن تبدأ بالممر السيق، وبعدها الخزنة، وإذا عندك وقت كمل للمقابر الملكية والدير.\n\nإذا بدك، بقدر أرتبلك برنامج زيارة للبتراء حسب عدد الساعات اللي معك."
+  },
+  {
+    test: /وادي رم|وادي رَم|wadi rum/,
+    keywords: /سياح|اماكن|أماكن|زيارة|ازور|أزور|شو|وين|ممكن/,
+    text: "وادي رم ممتاز إذا بتحب الطبيعة والمغامرة 🏜️\n\nمن أشهر الأشياء هناك جولات الجيب، مشاهدة الغروب، والمبيت بالمخيمات وتجربة أجواء الصحراء.\n\nإذا بتحب، احكيلي إذا بدك زيارة يوم واحد أو مبيت وبساعدك ترتبها."
+  },
+  {
+    test: /العقبة|عقبة|aqaba/,
+    keywords: /سياح|اماكن|أماكن|زيارة|ازور|أزور|شو|وين|ممكن|بحر/,
+    text: "بالعقبة عندك البحر الأحمر، الشواطئ، والأنشطة البحرية مثل السنوركلينغ والغوص، بالإضافة للمطاعم والتمشية على الواجهة البحرية.\n\nإذا بدك، بقدر أعطيك برنامج يوم كامل بالعقبة."
+  },
+  {
+    test: /جرش|jerash/,
+    keywords: /سياح|اماكن|أماكن|زيارة|ازور|أزور|شو|وين|ممكن/,
+    text: "جرش خيار ممتاز إذا بتحب التاريخ والآثار. أهم شيء تشوف الشارع المعمد، الساحة البيضاوية، والمسرح الجنوبي وقوس هادريان.\n\nوممكن تعملها كرحلة يوم من عمّان."
+  },
+  {
+    test: /البحر الميت|بحر الميت|dead sea/,
+    keywords: /سياح|اماكن|أماكن|زيارة|ازور|أزور|شو|وين|ممكن|سباحة|استرخاء/,
+    text: "البحر الميت مناسب إذا بدك استرخاء وتجربة مختلفة، خصوصًا الطفو بالمياه المالحة والاستمتاع بالمناظر.\n\nإذا بدك، بقدر أرتبلك طلعة للبحر الميت من عمّان."
+  },
+  {
+    test: /مادبا|مادبا|madaba/,
+    keywords: /سياح|اماكن|أماكن|زيارة|ازور|أزور|شو|وين|ممكن/,
+    text: "مادبا حلوة للي بحب التاريخ والثقافة. من أشهر الأماكن فيها خريطة مادبا الفسيفسائية، وممكن تجمعها مع جبل نيبو بنفس اليوم."
+  },
+  {
+    test: /وين|أين|شو في|شو ممكن|اقترح|اقتراح|احسن|أحسن|افضل|أفضل/,
+    keywords: /سياح|اماكن|أماكن|طلعات|زيارة|ازور|أزور|اشي|شي/,
+    text: "أكيد 👌 بالأردن عندك خيارات كثيرة: عمّان للتاريخ والأكل والجو المدني، جرش للآثار، مادبا وجبل نيبو للتاريخ، البحر الميت للاسترخاء، البتراء ووادي رم للمغامرة، والعقبة للبحر.\n\nإذا بتحكيلي بأي مدينة أنت وكم معك وقت، بقدر أضيّقلك الخيارات."
+  }
+];
+
   const MOCK_RULES = [
     {
       test: /madaba|mosaic map|mount nebo/,
@@ -404,11 +475,32 @@
   };
 
   function getMockReply(message) {
-    const text = message.toLowerCase();
-    const rule = MOCK_RULES.find(function (r) { return r.test.test(text); });
-    const reply = rule || MOCK_FALLBACK;
-    return { text: reply.text, link: reply.link };
+  const text = message.toLowerCase();
+
+  // Arabic / Jordanian questions
+  const arabicRule = ARABIC_MOCK_RULES.find(function (r) {
+    return r.test.test(text) && r.keywords.test(text);
+  });
+
+  if (arabicRule) {
+    return {
+      text: arabicRule.text,
+      link: arabicRule.link || null
+    };
   }
+
+  // Existing English rules
+  const rule = MOCK_RULES.find(function (r) {
+    return r.test.test(text);
+  });
+
+  const reply = rule || MOCK_FALLBACK;
+
+  return {
+    text: reply.text,
+    link: reply.link || null
+  };
+}
 
   /* ------------------------------------------------------------------
      7. SENDING A MESSAGE — the main flow
@@ -464,6 +556,29 @@
     if (document.activeElement !== input && window.innerWidth > 700) input.focus({ preventScroll: true });
   }
 
+  // The visitor confirmed a location on the map: continue the search they were waiting for.
+  async function respondToConfirmedLocation() {
+    if (!window.MASAR_GEO) return;
+    while (state.busy) await wait(200);
+    setBusy(true);
+    const cloud = addThinkingCloud();
+    startThinkingLook();
+    const minimumThinking = wait(randomBetween(CONFIG.thinkingMinMs, CONFIG.thinkingMaxMs));
+    let reply;
+    try {
+      const results = await Promise.all([window.MASAR_GEO.onLocationConfirmed(), minimumThinking]);
+      reply = results[0];
+    } catch (error) {
+      console.error("MASAR AI error:", error);
+      reply = { text: "Oops, I got a little lost there. Could you try asking again?" };
+    }
+    stopThinkingLook();
+    fillCloud(cloud, reply);
+    state.history.push({ role: "assistant", content: reply.text });
+    setBusy(false);
+    lookAtAnswer();
+  }
+
   /* ------------------------------------------------------------------
      8. EVENTS & START-UP
   ------------------------------------------------------------------ */
@@ -489,6 +604,8 @@
         sendMessage(chip.getAttribute("data-question"));
       });
     });
+
+    document.addEventListener("masar:location-confirmed", respondToConfirmedLocation);
 
     lookAtTourist();
   }

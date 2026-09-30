@@ -272,7 +272,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 .hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 
-.hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 1; }
 
 .hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
@@ -286,7 +286,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   flex-direction: column;
   gap: 0.25rem;
   transform: translateY(-8px);
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
   transition: opacity 0.28s var(--ease), transform 0.28s var(--ease);
 }
@@ -808,7 +808,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   background: rgba(10,8,6,0.6);
   display: flex; align-items: center; justify-content: center;
   padding: 1.5rem;
-  opacity: 0; pointer-events: none;
+  opacity: 1; pointer-events: none;
   transition: opacity 0.25s ease;
 }
 .modal-overlay.is-open { opacity: 1; pointer-events: auto; }
@@ -855,7 +855,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   font-size: 0.88rem;
   display: flex; align-items: center; gap: 0.5rem;
   z-index: 300;
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
   transition: opacity 0.3s ease, transform 0.3s var(--ease);
 }
@@ -866,7 +866,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .finder-page-head .eyebrow { display: block; }
 
 .reveal {
-  opacity: 0;
+  opacity: 1;
   transform: translateY(18px);
   transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
 }

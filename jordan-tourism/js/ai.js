@@ -16,7 +16,7 @@
   const CONFIG = {
     // true  = use the sample answers in section 6 (no server needed)
     // false = call your own backend at `apiUrl` (see getAIReply below)
-    useMockReplies: true,
+    useMockReplies: false,
     apiUrl: "/api/masar-chat",
 
     thinkingMinMs: 900,     // "Thinking..." always shows at least this long

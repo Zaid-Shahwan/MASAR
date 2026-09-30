@@ -298,7 +298,7 @@ Give enough information to properly answer the question.
 
         const response = await ai.models.generateContent({
 
-            model: "gemini-2.5-flash-lite",
+            model: "gemini-3.5-flash-lite",
 
             config: {
                 systemInstruction: systemInstruction,
@@ -392,7 +392,7 @@ app.get("/api/health", (req, res) => {
         status: "ok",
         service: "MASAR AI",
         provider: "Google Gemini",
-        model: "gemini-2.5-flash-lite"
+        model: "gemini-3.5-flash-lite"
     });
 
 });

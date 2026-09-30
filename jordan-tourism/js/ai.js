@@ -470,9 +470,9 @@
   ];
 
   const MOCK_FALLBACK = {
-    text: "Good question! I'm still learning, but I'd love to help. Try asking me about a place (like Petra, Madaba or Aqaba), local food, things to do today, or a simple trip plan.",
+    text: "I'm not certain about that specific detail, so I don't want to give you incorrect information. Try asking me about another topic related to Jordan.",
     link: { href: "explore.html", label: "Try the Experience Finder" }
-  };
+};
 
   function getMockReply(message) {
   const text = message.toLowerCase();

@@ -1,6 +1,39 @@
+
 /* ==================================================
-   MASAR AUTHENTICATION
+   MASAR AUTHENTICATION — FIREBASE
 ================================================== */
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+/* ==================================================
+   FIREBASE CONFIG
+================================================== */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBLi9GZ9I-yARpthtf2zVrcugBxLlUwXSU",
+  authDomain: "masar-bb6bb.firebaseapp.com",
+  databaseURL: "https://masar-bb6bb-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "masar-bb6bb",
+  storageBucket: "masar-bb6bb.firebasestorage.app",
+  messagingSenderId: "525831043288",
+  appId: "1:525831043288:web:531ac5150c0cea9c5a7fad",
+  measurementId: "G-1YV5H3LZ7C"
+};
+
+
+/* ==================================================
+   INITIALIZE FIREBASE
+================================================== */
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 
 /* ==================================================
@@ -55,10 +88,49 @@ signUpTab.addEventListener("click", function () {
 
 
 /* ==================================================
+   FIREBASE ERROR MESSAGES
+================================================== */
+
+function getFirebaseErrorMessage(error) {
+
+    switch (error.code) {
+
+        case "auth/email-already-in-use":
+            return "This email is already registered.";
+
+        case "auth/invalid-email":
+            return "Please enter a valid email address.";
+
+        case "auth/weak-password":
+            return "Password must be at least 6 characters.";
+
+        case "auth/user-not-found":
+            return "No account found with this email.";
+
+        case "auth/wrong-password":
+            return "Incorrect email or password.";
+
+        case "auth/invalid-credential":
+    return "The email or password is incorrect. Please check your details and try again.";
+
+        case "auth/too-many-requests":
+            return "Too many attempts. Please try again later.";
+
+        case "auth/network-request-failed":
+            return "Network error. Please check your internet connection.";
+
+        default:
+            console.error("Firebase error:", error);
+            return "Something went wrong. Please try again.";
+    }
+}
+
+
+/* ==================================================
    SIGN UP
 ================================================== */
 
-signUpForm.addEventListener("submit", function (event) {
+signUpForm.addEventListener("submit", async function (event) {
 
     event.preventDefault();
 
@@ -91,6 +163,7 @@ signUpForm.addEventListener("submit", function (event) {
         signUpError.textContent =
             "Passwords do not match.";
 
+        signUpError.style.color = "#a23a2b";
         signUpError.style.display = "block";
 
         return;
@@ -104,52 +177,108 @@ signUpForm.addEventListener("submit", function (event) {
         signUpError.textContent =
             "Password must be at least 6 characters.";
 
+        signUpError.style.color = "#a23a2b";
         signUpError.style.display = "block";
 
         return;
     }
 
 
-    /* Create user object */
+    /* Check name */
 
-    const user = {
-        name: name,
-        email: email,
-        password: password
-    };
+    if (!name) {
 
+        signUpError.textContent =
+            "Please enter your name.";
 
-    /* Save user */
+        signUpError.style.color = "#a23a2b";
+        signUpError.style.display = "block";
 
-    localStorage.setItem(
-        "masar_user",
-        JSON.stringify(user)
-    );
+        return;
+    }
 
 
-    /* Show Sign In */
+    /* Disable button while creating account */
 
-    signUpTab.classList.remove("is-active");
-    signInTab.classList.add("is-active");
+    const signUpButton =
+        signUpForm.querySelector('button[type="submit"]');
 
-    signUpPanel.classList.remove("is-active");
-    signInPanel.classList.add("is-active");
-
-
-    /* Put email in Sign In */
-
-    document.getElementById("signInEmail").value = email;
-
-    document.getElementById("signInPassword").value = "";
+    signUpButton.disabled = true;
+    signUpButton.textContent = "Creating Account...";
 
 
-    /* Show message */
+    try {
 
-    signInError.textContent =
-        "Account created successfully. You can sign in now.";
+        /* Create Firebase account */
 
-    signInError.style.color = "#6d7651";
-    signInError.style.display = "block";
+        const userCredential =
+            await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+
+        const user = userCredential.user;
+
+
+        /*
+         * Firebase Authentication stores:
+         * - Email
+         * - Password securely
+         * - UID
+         *
+         * The name is not stored automatically.
+         *
+         * We store the display name locally for the UI.
+         */
+
+        localStorage.setItem(
+            "masar_current_user",
+            JSON.stringify({
+                name: name,
+                email: user.email,
+                uid: user.uid
+            })
+        );
+
+
+        /* Account created successfully */
+
+        signUpError.textContent =
+            "Account created successfully. You can sign in now.";
+
+        signUpError.style.color = "#6d7651";
+        signUpError.style.display = "block";
+
+
+        /* Switch to Sign In */
+
+        signUpTab.classList.remove("is-active");
+        signInTab.classList.add("is-active");
+
+        signUpPanel.classList.remove("is-active");
+        signInPanel.classList.add("is-active");
+
+
+        /* Put email into Sign In */
+
+        document.getElementById("signInEmail").value = email;
+
+        document.getElementById("signInPassword").value = "";
+
+
+    } catch (error) {
+
+    console.error("Firebase signup error:", error);
+
+    signUpError.textContent =
+        error.message;
+
+    signUpError.style.color = "#a23a2b";
+    signUpError.style.display = "block";
+
+}
 
 });
 
@@ -158,12 +287,11 @@ signUpForm.addEventListener("submit", function (event) {
    SIGN IN
 ================================================== */
 
-signInForm.addEventListener("submit", function (event) {
+signInForm.addEventListener("submit", async function (event) {
 
     event.preventDefault();
 
     signInError.style.display = "none";
-
 
     const email = document
         .getElementById("signInEmail")
@@ -176,76 +304,72 @@ signInForm.addEventListener("submit", function (event) {
         .value;
 
 
-    /* Get saved user */
+    /* Disable button while signing in */
 
-    const savedUser =
-        localStorage.getItem("masar_user");
+    const signInButton =
+        signInForm.querySelector('button[type="submit"]');
 
-
-    /* No account */
-
-    if (!savedUser) {
-
-        signInError.textContent =
-            "No account found. Please create an account first.";
-
-        signInError.style.color = "#a23a2b";
-        signInError.style.display = "block";
-
-        return;
-    }
+    signInButton.disabled = true;
+    signInButton.textContent = "Signing In...";
 
 
-    const user = JSON.parse(savedUser);
+    try {
+
+        /* Sign in with Firebase */
+
+        const userCredential =
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
 
 
-    /* Check email */
-
-    if (email !== user.email) {
-
-        signInError.textContent =
-            "Incorrect email or password.";
-
-        signInError.style.color = "#a23a2b";
-        signInError.style.display = "block";
-
-        return;
-    }
+        const user = userCredential.user;
 
 
-    /* Check password */
+        /*
+         * Firebase keeps the authentication session.
+         *
+         * We only store basic display information locally.
+         * The password is NEVER stored in localStorage.
+         */
 
-    if (password !== user.password) {
+        localStorage.setItem(
+            "masar_logged_in",
+            "true"
+        );
 
-        signInError.textContent =
-            "Incorrect email or password.";
-
-        signInError.style.color = "#a23a2b";
-        signInError.style.display = "block";
-
-        return;
-    }
-
-
-    /* Save logged-in user */
-
-    localStorage.setItem(
-        "masar_logged_in",
-        "true"
-    );
-
-
-    localStorage.setItem(
-        "masar_current_user",
-        JSON.stringify({
-            name: user.name,
-            email: user.email
-        })
-    );
+        localStorage.setItem(
+            "masar_current_user",
+            JSON.stringify({
+                name: user.displayName || "",
+                email: user.email,
+                uid: user.uid
+            })
+        );
 
 
-    /* Go back to Home */
+        /* Go back to Home */
 
-    window.location.href = "index.html";
+        window.location.href = "index.html";
+
+
+    } catch (error) {
+
+    console.error("Firebase signin error:", error);
+
+    signInError.textContent =
+        error.message;
+
+    signInError.style.color = "#a23a2b";
+    signInError.style.display = "block";
+
+} finally {
+
+    signInButton.disabled = false;
+    signInButton.textContent = "Sign In";
+
+}
 
 });

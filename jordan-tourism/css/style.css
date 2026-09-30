@@ -467,7 +467,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 .compare-panel--old { background: var(--c-surface); border: 1px solid var(--c-border); }
 
-.compare-panel--new { background: var(--c-primary); color: #ffffff; }
+.compare-panel--new { background: var(--c-primary); color: #fff; }
 
 .compare-panel .label { font-size: var(--step-label); font-weight: 600; letter-spacing: 0.02em; opacity: 0.65; margin-bottom: 0.6rem; }
 
@@ -866,15 +866,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .finder-page-head .eyebrow { display: block; }
 
 .reveal {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 0;
+  transform: translateY(18px);
   transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
 }
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
 
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;

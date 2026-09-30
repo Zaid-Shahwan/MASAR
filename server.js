@@ -410,7 +410,7 @@ app.listen(PORT, () => {
     console.log("================================");
     console.log(`http://localhost:${PORT}`);
     console.log("AI Provider: Google Gemini");
-    console.log("AI Model: gemini-2.5-flash-lite");
+    console.log("AI Model: gemini-3.5-flash-lite");
     console.log("");
 
 });

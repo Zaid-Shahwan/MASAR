@@ -1,3 +1,4 @@
+فوت هاض الرابط احسن لضمان عمل الذكاء الاصطناعي
 https://masar-rud6.onrender.com/index.html
 # MASAR — Jordan Tourism 🇯🇴
 

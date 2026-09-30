@@ -467,13 +467,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 .compare-panel--old { background: var(--c-surface); border: 1px solid var(--c-border); }
 
-.compare-panel--new { background: var(--c-primary); color: #fff; }
+.compare-panel--new { background: var(--c-primary); color: #ffffff; }
 
 .compare-panel .label { font-size: var(--step-label); font-weight: 600; letter-spacing: 0.02em; opacity: 0.65; margin-bottom: 0.6rem; }
 
 .compare-panel--new .label,
 .compare-panel--new .path {
-  color: #f9b86d;
+  color: #fff;
 }
 
 .compare-panel--new .label {

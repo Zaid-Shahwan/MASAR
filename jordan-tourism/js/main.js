@@ -1,4 +1,3 @@
-
 (function () {
   "use strict";
 
@@ -39,9 +38,9 @@
       isOpen ? closeMenu() : openMenu();
     });
 
-    mobileMenu.querySelectorAll("a").forEach((a) =>
-      a.addEventListener("click", closeMenu)
-    );
+    mobileMenu
+      .querySelectorAll("a")
+      .forEach((a) => a.addEventListener("click", closeMenu));
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeMenu();
@@ -59,23 +58,30 @@
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
     );
     revealTargets.forEach((el) => io.observe(el));
   } else {
     revealTargets.forEach((el) => el.classList.add("is-visible"));
   }
 
-  
   const IMG = {
-    petra: "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury),_Petra,_Jordan.jpg",
-    petra2: "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury)_2,_Petra,_Jordan.jpg",
-    wadirum: "https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_27.JPG",
-    wadirum2: "https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_16.JPG",
-    amman: "https://commons.wikimedia.org/wiki/Special:FilePath/Amman_Citadel.jpg",
-    ammanDowntown: "https://commons.wikimedia.org/wiki/Special:FilePath/AmmanDowntown.jpg",
-    deadsea: "https://commons.wikimedia.org/wiki/Special:FilePath/Dead_Sea_by_David_Shankbone.jpg",
-    jerash: "https://commons.wikimedia.org/wiki/Special:FilePath/Jerash_City.jpg",
+    petra:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury),_Petra,_Jordan.jpg",
+    petra2:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury)_2,_Petra,_Jordan.jpg",
+    wadirum:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_27.JPG",
+    wadirum2:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_16.JPG",
+    amman:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Amman_Citadel.jpg",
+    ammanDowntown:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/AmmanDowntown.jpg",
+    deadsea:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Dead_Sea_by_David_Shankbone.jpg",
+    jerash:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Jerash_City.jpg",
     aqaba: "https://commons.wikimedia.org/wiki/Special:FilePath/Aqaba_BW_2.JPG",
   };
 
@@ -362,7 +368,13 @@
     },
   ];
 
-  const TIME_ORDER = ["few-hours", "half-day", "1-day", "2-3-days", "week-plus"];
+  const TIME_ORDER = [
+    "few-hours",
+    "half-day",
+    "1-day",
+    "2-3-days",
+    "week-plus",
+  ];
   const WALK_ORDER = ["minimal", "some", "active", "very-active"];
   const BUDGET_ORDER = ["budget", "moderate", "premium", "luxury"];
 
@@ -381,14 +393,19 @@
 
     max += 35;
     if (answers.location) {
-      if (answers.location === "anywhere" || exp.location === answers.location) {
+      if (
+        answers.location === "anywhere" ||
+        exp.location === answers.location
+      ) {
         score += 35;
       }
     }
 
     max += 30;
     if (answers.interests && answers.interests.length) {
-      const overlap = exp.interests.filter((i) => answers.interests.includes(i)).length;
+      const overlap = exp.interests.filter((i) =>
+        answers.interests.includes(i),
+      ).length;
       score += Math.min(30, overlap * 12);
     }
 
@@ -405,7 +422,10 @@
   }
 
   function getRecommendations(answers, count) {
-    return EXPERIENCES.map((exp) => ({ exp, score: scoreExperience(exp, answers) }))
+    return EXPERIENCES.map((exp) => ({
+      exp,
+      score: scoreExperience(exp, answers),
+    }))
       .sort((a, b) => b.score - a.score)
       .slice(0, count || 3);
   }
@@ -526,21 +546,33 @@
 
     const state = {
       step: 0,
-      answers: { location: null, time: null, interests: [], walking: null, budget: null },
+      answers: {
+        location: null,
+        time: null,
+        interests: [],
+        walking: null,
+        budget: null,
+      },
       status: "question", // question | loading | results
     };
 
     const mediaImg = finderApp.querySelector("[data-finder-media]");
     const progressWrap = finderApp.querySelector("[data-finder-progress]");
     const stepLabel = finderApp.querySelector("[data-finder-step-label]");
-    const questionTitle = finderApp.querySelector("[data-finder-question-title]");
+    const questionTitle = finderApp.querySelector(
+      "[data-finder-question-title]",
+    );
     const questionHint = finderApp.querySelector("[data-finder-question-hint]");
     const optionsWrap = finderApp.querySelector("[data-finder-options]");
     const backBtn = finderApp.querySelector("[data-finder-back]");
     const nextBtn = finderApp.querySelector("[data-finder-next]");
-    const selectedCount = finderApp.querySelector("[data-finder-selected-count]");
+    const selectedCount = finderApp.querySelector(
+      "[data-finder-selected-count]",
+    );
     const finderBody = finderApp.querySelector("[data-finder-body]");
-    const finderQuestionBlock = finderApp.querySelector("[data-finder-question-block]");
+    const finderQuestionBlock = finderApp.querySelector(
+      "[data-finder-question-block]",
+    );
     const resultsSection = document.getElementById("finder-results");
 
     function buildProgress() {
@@ -557,9 +589,11 @@
     function renderQuestion() {
       state.status = "question";
       const q = QUESTIONS[state.step];
-      if (mediaImg) mediaImg.src = FINDER_IMAGES[state.step % FINDER_IMAGES.length];
+      if (mediaImg)
+        mediaImg.src = FINDER_IMAGES[state.step % FINDER_IMAGES.length];
       buildProgress();
-      stepLabel.textContent = "STEP " + (state.step + 1) + " OF " + QUESTIONS.length;
+      stepLabel.textContent =
+        "STEP " + (state.step + 1) + " OF " + QUESTIONS.length;
       questionTitle.textContent = q.label;
       questionHint.textContent = q.hint;
 
@@ -592,7 +626,9 @@
       });
 
       backBtn.hidden = state.step === 0;
-      const answered = q.multi ? state.answers[q.key].length > 0 : !!state.answers[q.key];
+      const answered = q.multi
+        ? state.answers[q.key].length > 0
+        : !!state.answers[q.key];
       nextBtn.disabled = !answered;
       nextBtn.innerHTML =
         state.step === QUESTIONS.length - 1
@@ -612,7 +648,7 @@
       finderQuestionBlock.innerHTML =
         '<div class="finder__loading">' +
         '<p class="finder__step-label">RESULTS</p>' +
-        '<h3>Finding something you might enjoy…</h3>' +
+        "<h3>Finding something you might enjoy…</h3>" +
         '<div class="dot-loader"><span></span><span></span><span></span></div>' +
         "</div>";
       finderApp.querySelector(".finder__foot").hidden = true;
@@ -653,11 +689,11 @@
         exp.image +
         '" alt="' +
         exp.name +
-        ' — ' +
+        " — " +
         prettyLocation(exp.location) +
         '" loading="lazy"><span class="result-card__match">' +
         score +
-        '% match</span></div>' +
+        "% match</span></div>" +
         '<div class="result-card__body">' +
         '<div class="result-card__meta"><span>' +
         prettyLocation(exp.location) +
@@ -673,7 +709,9 @@
         exp.description +
         "</p>" +
         '<div class="result-card__tags">' +
-        exp.tags.map((t) => '<span class="tag-pill">' + t + "</span>").join("") +
+        exp.tags
+          .map((t) => '<span class="tag-pill">' + t + "</span>")
+          .join("") +
         "</div>" +
         '<div class="result-card__actions">' +
         '<button class="btn btn-dark btn-sm" data-view="' +
@@ -686,14 +724,35 @@
 
     function prettyLocation(v) {
       return (
-        { amman: "Amman", petra: "Petra", "wadi-rum": "Wadi Rum", aqaba: "Aqaba", "dead-sea": "Dead Sea", jerash: "Jerash" }[v] || v
+        {
+          amman: "Amman",
+          petra: "Petra",
+          "wadi-rum": "Wadi Rum",
+          aqaba: "Aqaba",
+          "dead-sea": "Dead Sea",
+          jerash: "Jerash",
+        }[v] || v
       );
     }
     function prettyWalking(v) {
-      return { minimal: "Minimal", some: "Light", active: "Active", "very-active": "Very active" }[v] || v;
+      return (
+        {
+          minimal: "Minimal",
+          some: "Light",
+          active: "Active",
+          "very-active": "Very active",
+        }[v] || v
+      );
     }
     function prettyBudget(v) {
-      return { budget: "Budget", moderate: "Moderate", premium: "Premium", luxury: "Luxury" }[v] || v;
+      return (
+        {
+          budget: "Budget",
+          moderate: "Moderate",
+          premium: "Premium",
+          luxury: "Luxury",
+        }[v] || v
+      );
     }
 
     nextBtn.addEventListener("click", () => {
@@ -717,13 +776,19 @@
     resetBtns.forEach((btn) =>
       btn.addEventListener("click", () => {
         state.step = 0;
-        state.answers = { location: null, time: null, interests: [], walking: null, budget: null };
+        state.answers = {
+          location: null,
+          time: null,
+          interests: [],
+          walking: null,
+          budget: null,
+        };
         finderApp.querySelector(".finder__foot").hidden = false;
         finderApp.hidden = false;
         if (resultsSection) resultsSection.classList.remove("is-active");
         renderQuestion();
         finderApp.scrollIntoView({ behavior: "smooth", block: "start" });
-      })
+      }),
     );
 
     // Modal for "View Experience"
@@ -739,15 +804,36 @@
           '"><button class="modal__close" data-modal-close aria-label="Close">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>' +
           '<div class="modal__body">' +
-          '<p class="eyebrow">' + prettyLocation(exp.location) + "</p>" +
-          "<h3>" + exp.name + "</h3>" +
-          '<div class="modal__meta"><span><strong>Duration</strong> ' + exp.duration + "</span>" +
-          '<span><strong>Walking</strong> ' + prettyWalking(exp.walking) + "</span>" +
-          '<span><strong>Budget</strong> ' + prettyBudget(exp.budget) + " (" + exp.budgetLabel + ")</span></div>" +
-          "<p>" + exp.description + "</p>" +
+          '<p class="eyebrow">' +
+          prettyLocation(exp.location) +
+          "</p>" +
+          "<h3>" +
+          exp.name +
+          "</h3>" +
+          '<div class="modal__meta"><span><strong>Duration</strong> ' +
+          exp.duration +
+          "</span>" +
+          "<span><strong>Walking</strong> " +
+          prettyWalking(exp.walking) +
+          "</span>" +
+          "<span><strong>Budget</strong> " +
+          prettyBudget(exp.budget) +
+          " (" +
+          exp.budgetLabel +
+          ")</span></div>" +
+          "<p>" +
+          exp.description +
+          "</p>" +
           '<ul class="modal__highlights">' +
           exp.highlights
-            .map((h, i) => '<li><span class="idx">0' + (i + 1) + "</span><span>" + h + "</span></li>")
+            .map(
+              (h, i) =>
+                '<li><span class="idx">0' +
+                (i + 1) +
+                "</span><span>" +
+                h +
+                "</span></li>",
+            )
             .join("") +
           "</ul>" +
           '<div class="result-card__actions"><button class="btn btn-primary" data-save>Save Experience</button></div>' +
@@ -762,10 +848,15 @@
       document.addEventListener("click", (e) => {
         const viewBtn = e.target.closest("[data-view]");
         if (viewBtn) {
-          const exp = EXPERIENCES.find((x) => x.id === viewBtn.getAttribute("data-view"));
+          const exp = EXPERIENCES.find(
+            (x) => x.id === viewBtn.getAttribute("data-view"),
+          );
           if (exp) openModal(exp);
         }
-        if (e.target.closest("[data-modal-close]") || e.target === modalOverlay) {
+        if (
+          e.target.closest("[data-modal-close]") ||
+          e.target === modalOverlay
+        ) {
           closeModal();
         }
       });

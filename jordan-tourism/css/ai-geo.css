@@ -1,0 +1,95 @@
+/* ==========================================================================
+   MASAR — AI Guide location bar + map (ai-geo.css)
+   Loads after style.css / ai.css and reuses their tokens.
+   ========================================================================== */
+
+.geo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 0.9rem;
+  margin-top: 1rem;
+}
+.geo-bar__status { font-size: 0.9rem; color: var(--c-muted); }
+.geo-bar__clear {
+  border: 0;
+  background: transparent;
+  color: var(--c-accent);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.geo-bar__clear[hidden] { display: none; }
+
+.geo-panel {
+  margin-top: 1rem;
+  background: var(--c-surface);
+  border: 1.5px solid var(--c-border);
+  border-radius: 24px;
+  padding: 1rem 1rem 1.1rem;
+}
+.geo-panel[hidden] { display: none; }
+
+.geo-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.geo-panel__head h2 { font-size: 1.25rem; margin: 0; }
+.geo-panel__close {
+  width: 36px; height: 36px;
+  border: 0; border-radius: 50%;
+  background: var(--c-secondary);
+  font-size: 1.4rem; line-height: 1;
+  cursor: pointer;
+}
+
+.geo-map {
+  width: 100%;
+  height: clamp(260px, 42vh, 380px);
+  border-radius: 18px;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.geo-panel__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+.geo-select {
+  flex: 1 1 180px;
+  min-height: 40px;
+  padding: 0 0.9rem;
+  border: 1.5px solid var(--c-border);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.9rem;
+}
+.geo-panel__controls .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.geo-help { margin-top: 0.6rem; min-height: 1.2em; font-size: 0.85rem; color: var(--c-muted); }
+
+/* map pin (drawn with CSS so no image files are needed) */
+.geo-pin span {
+  display: block;
+  width: 28px; height: 28px;
+  background: var(--c-accent, #b85c43);
+  border: 3px solid #fff;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 600px) {
+  .geo-panel { padding: 0.8rem; border-radius: 20px; }
+  .geo-panel__controls .btn,
+  .geo-select { flex: 1 1 100%; }
+}
+
+/* buttons MASAR adds under a cloud (location prompt, quick replies) */
+.geo-extras { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 0.9rem; }

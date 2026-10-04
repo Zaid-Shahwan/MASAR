@@ -1,358 +1,199 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>My Profile — MASAR</title>
 
-    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link rel="icon" type="image/png" href="assets/images/logo.png" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/profile.css" />
+  </head>
 
-</head>
-
-
-<body>
-
-
-<!-- ==================================================
+  <body>
+    <!-- ==================================================
      NAVBAR
 ================================================== -->
 
-<header class="site-header">
-
-    <div class="container">
-
+    <header class="site-header">
+      <div class="container">
         <a href="index.html" class="brand">
-
-            <img
-                src="assets/images/MASAR_AI.png"
-                alt="MASAR"
-                height="80"
-            >
-
+          <img src="assets/images/MASAR_AI.png" alt="MASAR" height="80" />
         </a>
 
-
         <nav class="nav-links">
+          <a class="nav-link" href="index.html"> Home </a>
 
-            <a class="nav-link" href="index.html">
-                Home
-            </a>
+          <a class="nav-link" href="index.html#destinations"> Destinations </a>
 
-            <a class="nav-link" href="index.html#destinations">
-                Destinations
-            </a>
+          <a class="nav-link" href="ai.html"> AI Guide </a>
 
-            <a class="nav-link" href="ai.html">
-                AI Guide
-            </a>
+          <a class="nav-link" href="explore.html"> Plan Your Trip </a>
 
-            <a class="nav-link" href="explore.html">
-                Plan Your Trip
-            </a>
-
-            <a
-                class="nav-link is-active"
-                href="profile.html"
-            >
-                Profile
-            </a>
-
+          <a class="nav-link is-active" href="profile.html"> Profile </a>
         </nav>
 
-
         <div class="nav-cta">
-
-            <a
-                href="explore.html"
-                class="btn btn-primary"
-            >
-                Find Your Experience
-            </a>
-
+          <a href="explore.html" class="btn btn-primary">
+            Find Your Experience
+          </a>
         </div>
+      </div>
+    </header>
 
-    </div>
-
-</header>
-
-
-
-<!-- ==================================================
+    <!-- ==================================================
      PROFILE PAGE
 ================================================== -->
 
-<main class="profile-page">
-
-    <section class="profile-card">
-
-
+    <main class="profile-page">
+      <section class="profile-card">
         <!-- PROFILE HEADER -->
 
         <div class="profile-header">
+          <div class="profile-avatar" id="profileAvatar">?</div>
 
-            <div
-                class="profile-avatar"
-                id="profileAvatar"
-            >
-                ?
-            </div>
+          <div class="profile-intro">
+            <p class="profile-label">YOUR MASAR PROFILE</p>
 
+            <h1 id="profileName">Loading...</h1>
 
-            <div class="profile-intro">
-
-                <p class="profile-label">
-                    YOUR MASAR PROFILE
-                </p>
-
-                <h1 id="profileName">
-                    Loading...
-                </h1>
-
-                <p id="profileEmail">
-                    Loading...
-                </p>
-
-            </div>
-
+            <p id="profileEmail">Loading...</p>
+          </div>
         </div>
-
-
 
         <!-- ACCOUNT INFORMATION -->
 
         <section class="profile-section">
+          <h2>Account Information</h2>
 
-            <h2>
-                Account Information
-            </h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label"> Full Name </span>
 
-
-            <div class="info-grid">
-
-
-                <div class="info-item">
-
-                    <span class="info-label">
-                        Full Name
-                    </span>
-
-                    <strong id="infoName">
-                        Loading...
-                    </strong>
-
-                </div>
-
-
-
-                <div class="info-item">
-
-                    <span class="info-label">
-                        Email
-                    </span>
-
-                    <strong id="infoEmail">
-                        Loading...
-                    </strong>
-
-                </div>
-
-
+              <strong id="infoName"> Loading... </strong>
             </div>
 
+            <div class="info-item">
+              <span class="info-label"> Email </span>
+
+              <strong id="infoEmail"> Loading... </strong>
+            </div>
+          </div>
         </section>
-
-
 
         <!-- PASSWORD -->
 
-<section class="profile-section">
+        <section class="profile-section">
+          <h2>Security</h2>
 
-    <h2>
-        Security
-    </h2>
+          <div class="security-box">
+            <div class="security-password-content">
+              <span class="info-label"> Password </span>
 
-
-    <div class="security-box">
-
-        <div class="security-password-content">
-
-            <span class="info-label">
-                Password
-            </span>
-
-
-            <div class="password-row">
-
-                <div
-                    class="password-display"
-                    id="passwordDisplay"
-                >
-                    ••••••••••
+              <div class="password-row">
+                <div class="password-display" id="passwordDisplay">
+                  ••••••••••
                 </div>
 
-
                 <button
-                    type="button"
-                    class="password-toggle"
-                    id="showPasswordButton"
-                    aria-label="Show password"
-                    title="Show password"
+                  type="button"
+                  class="password-toggle"
+                  id="showPasswordButton"
+                  aria-label="Show password"
+                  title="Show password"
                 >
-                    👁
+                  👁
                 </button>
+              </div>
 
+              <p class="security-note" id="passwordNote">
+                Your password is securely managed by Firebase and cannot be
+                displayed.
+              </p>
             </div>
 
-
-            <p
-                class="security-note"
-                id="passwordNote"
+            <button
+              type="button"
+              class="profile-button secondary-button"
+              id="changePasswordButton"
             >
-                Your password is securely managed by Firebase
-                and cannot be displayed.
-            </p>
+              Change Password
+            </button>
+          </div>
 
-        </div>
-
-
-        <button
-            type="button"
-            class="profile-button secondary-button"
-            id="changePasswordButton"
-        >
-            Change Password
-        </button>
-
-    </div>
-
-
-    <p
-        id="passwordMessage"
-        class="profile-message"
-        style="display:none;"
-    ></p>
-
-</section>
-
-
+          <p
+            id="passwordMessage"
+            class="profile-message"
+            style="display: none"
+          ></p>
+        </section>
 
         <!-- SAVED DESTINATIONS -->
 
         <section class="profile-section">
+          <div class="saved-header">
+            <div>
+              <h2>Saved Destinations</h2>
 
-            <div class="saved-header">
-
-                <div>
-
-                    <h2>
-                        Saved Destinations
-                    </h2>
-
-                    <p class="section-description">
-                        Places you want to explore in Jordan.
-                    </p>
-
-                </div>
-
+              <p class="section-description">
+                Places you want to explore in Jordan.
+              </p>
             </div>
+          </div>
 
+          <div class="saved-destinations" id="savedDestinations">
+            <!-- JavaScript loads saved destinations here -->
+          </div>
 
-            <div
-                class="saved-destinations"
-                id="savedDestinations"
-            >
+          <div class="empty-saved" id="emptySaved" style="display: none">
+            <div class="empty-icon">♡</div>
 
-                <!-- JavaScript loads saved destinations here -->
+            <h3>No saved destinations yet</h3>
 
-            </div>
+            <p>Explore Jordan and save the places you want to visit.</p>
 
-
-            <div
-                class="empty-saved"
-                id="emptySaved"
-                style="display:none;"
-            >
-
-                <div class="empty-icon">
-                    ♡
-                </div>
-
-                <h3>
-                    No saved destinations yet
-                </h3>
-
-                <p>
-                    Explore Jordan and save the places you want
-                    to visit.
-                </p>
-
-                <a
-                    href="index.html#destinations"
-                    class="btn btn-primary"
-                >
-                    Explore Destinations
-                </a>
-
-            </div>
-
+            <a href="index.html#destinations" class="btn btn-primary">
+              Explore Destinations
+            </a>
+          </div>
         </section>
-
-
 
         <!-- ACCOUNT ACTIONS -->
 
         <section class="profile-section account-actions-section">
+          <h2>Account</h2>
 
-            <h2>
-                Account
-            </h2>
+          <button
+            type="button"
+            id="signOutButton"
+            class="profile-button logout-button"
+          >
+            Sign Out
+          </button>
 
-
-            <button
-                type="button"
-                id="signOutButton"
-                class="profile-button logout-button"
-            >
-                Sign Out
-            </button>
-
-
-            <p
-                id="profileMessage"
-                class="profile-message"
-                style="display:none;"
-            ></p>
-
+          <p
+            id="profileMessage"
+            class="profile-message"
+            style="display: none"
+          ></p>
         </section>
+      </section>
+    </main>
 
-
-    </section>
-
-</main>
-
-
-
-<!-- ==================================================
+    <!-- ==================================================
      FIREBASE PROFILE SCRIPT
 ================================================== -->
 
-<script type="module" src="js/profile.js"></script>
-
-
-</body>
-
+    <script type="module" src="js/profile.js"></script>
+  </body>
 </html>

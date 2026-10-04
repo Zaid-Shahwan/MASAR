@@ -2,19 +2,14 @@
    MASAR PROFILE — FIREBASE
 ================================================== */
 
-import {
-    initializeApp
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
 import {
-    getAuth,
-    onAuthStateChanged,
-    signOut,
-    sendPasswordResetEmail
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  sendPasswordResetEmail,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-
-
 
 /* ==================================================
    FIREBASE CONFIG
@@ -23,15 +18,14 @@ import {
 const firebaseConfig = {
   apiKey: "AIzaSyBLi9GZ9I-yARpthtf2zVrcugBxLlUwXSU",
   authDomain: "masar-bb6bb.firebaseapp.com",
-  databaseURL: "https://masar-bb6bb-default-rtdb.europe-west1.firebasedatabase.app",
+  databaseURL:
+    "https://masar-bb6bb-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "masar-bb6bb",
   storageBucket: "masar-bb6bb.firebasestorage.app",
   messagingSenderId: "525831043288",
   appId: "1:525831043288:web:531ac5150c0cea9c5a7fad",
-  measurementId: "G-1YV5H3LZ7C"
+  measurementId: "G-1YV5H3LZ7C",
 };
-
-
 
 /* ==================================================
    INITIALIZE FIREBASE
@@ -41,199 +35,152 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-
-
 /* ==================================================
    ELEMENTS
 ================================================== */
 
-const profileAvatar =
-    document.getElementById("profileAvatar");
+const profileAvatar = document.getElementById("profileAvatar");
 
-const profileName =
-    document.getElementById("profileName");
+const profileName = document.getElementById("profileName");
 
-const profileEmail =
-    document.getElementById("profileEmail");
+const profileEmail = document.getElementById("profileEmail");
 
-const infoName =
-    document.getElementById("infoName");
+const infoName = document.getElementById("infoName");
 
-const infoEmail =
-    document.getElementById("infoEmail");
+const infoEmail = document.getElementById("infoEmail");
 
-const signOutButton =
-    document.getElementById("signOutButton");
+const signOutButton = document.getElementById("signOutButton");
 
-const changePasswordButton =
-    document.getElementById("changePasswordButton");
+const changePasswordButton = document.getElementById("changePasswordButton");
 
-const passwordMessage =
-    document.getElementById("passwordMessage");
+const passwordMessage = document.getElementById("passwordMessage");
 
-const passwordDisplay =
-    document.getElementById("passwordDisplay");
+const passwordDisplay = document.getElementById("passwordDisplay");
 
-const showPasswordButton =
-    document.getElementById("showPasswordButton");
+const showPasswordButton = document.getElementById("showPasswordButton");
 
-const passwordNote =
-    document.getElementById("passwordNote");
+const passwordNote = document.getElementById("passwordNote");
 
-const profileMessage =
-    document.getElementById("profileMessage");
+const profileMessage = document.getElementById("profileMessage");
 
-const savedDestinations =
-    document.getElementById("savedDestinations");
+const savedDestinations = document.getElementById("savedDestinations");
 
-const emptySaved =
-    document.getElementById("emptySaved");
-
-
+const emptySaved = document.getElementById("emptySaved");
 
 /* ==================================================
    SAVED DESTINATIONS
 ================================================== */
 
 const defaultDestinations = [
+  {
+    id: "petra",
+    name: "Petra",
+    description: "The Rose City",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury),_Petra,_Jordan.jpg",
+  },
 
-    {
-        id: "petra",
-        name: "Petra",
-        description: "The Rose City",
-        image: "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury),_Petra,_Jordan.jpg"
-    },
+  {
+    id: "wadi-rum",
+    name: "Wadi Rum",
+    description: "The Valley of the Moon",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_27.JPG",
+  },
 
-    {
-        id: "wadi-rum",
-        name: "Wadi Rum",
-        description: "The Valley of the Moon",
-        image: "https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_27.JPG"
-    },
+  {
+    id: "amman",
+    name: "Amman",
+    description: "The heart of Jordan",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Amman_Citadel.jpg",
+  },
 
-    {
-        id: "amman",
-        name: "Amman",
-        description: "The heart of Jordan",
-        image: "https://commons.wikimedia.org/wiki/Special:FilePath/Amman_Citadel.jpg"
-    },
+  {
+    id: "dead-sea",
+    name: "Dead Sea",
+    description: "Float in the lowest point on Earth",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Dead_Sea_by_David_Shankbone.jpg",
+  },
 
-    {
-        id: "dead-sea",
-        name: "Dead Sea",
-        description: "Float in the lowest point on Earth",
-        image: "https://commons.wikimedia.org/wiki/Special:FilePath/Dead_Sea_by_David_Shankbone.jpg"
-    },
+  {
+    id: "aqaba",
+    name: "Aqaba",
+    description: "Jordan's Red Sea coast",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Aqaba_BW_2.JPG",
+  },
 
-    {
-        id: "aqaba",
-        name: "Aqaba",
-        description: "Jordan's Red Sea coast",
-        image: "https://commons.wikimedia.org/wiki/Special:FilePath/Aqaba_BW_2.JPG"
-    },
-
-    {
-        id: "jerash",
-        name: "Jerash",
-        description: "The ancient Roman city",
-        image: "https://commons.wikimedia.org/wiki/Special:FilePath/Jerash_City.jpg"
-    }
-
+  {
+    id: "jerash",
+    name: "Jerash",
+    description: "The ancient Roman city",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Jerash_City.jpg",
+  },
 ];
-
-
 
 /* ==================================================
    GET SAVED DESTINATIONS
 ================================================== */
 
 function getSavedDestinations() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("masar_saved_destinations"));
 
-    try {
-
-        const saved =
-            JSON.parse(
-                localStorage.getItem("masar_saved_destinations")
-            );
-
-        if (Array.isArray(saved)) {
-            return saved;
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Unable to read saved destinations:",
-            error
-        );
-
+    if (Array.isArray(saved)) {
+      return saved;
     }
+  } catch (error) {
+    console.error("Unable to read saved destinations:", error);
+  }
 
-    /*
-     * Temporary starting destinations.
-     * The user can remove them.
-     */
+  /*
+   * Temporary starting destinations.
+   * The user can remove them.
+   */
 
-    return defaultDestinations;
-
+  return defaultDestinations;
 }
-
-
 
 /* ==================================================
    SAVE DESTINATIONS
 ================================================== */
 
 function saveDestinations(destinations) {
-
-    localStorage.setItem(
-        "masar_saved_destinations",
-        JSON.stringify(destinations)
-    );
-
+  localStorage.setItem(
+    "masar_saved_destinations",
+    JSON.stringify(destinations),
+  );
 }
-
-
 
 /* ==================================================
    RENDER SAVED DESTINATIONS
 ================================================== */
 
 function renderSavedDestinations() {
+  const destinations = getSavedDestinations();
 
-    const destinations =
-        getSavedDestinations();
+  savedDestinations.innerHTML = "";
 
+  if (destinations.length === 0) {
+    savedDestinations.style.display = "none";
 
-    savedDestinations.innerHTML = "";
+    emptySaved.style.display = "block";
 
+    return;
+  }
 
-    if (destinations.length === 0) {
+  savedDestinations.style.display = "grid";
 
-        savedDestinations.style.display = "none";
+  emptySaved.style.display = "none";
 
-        emptySaved.style.display = "block";
+  destinations.forEach((destination) => {
+    const card = document.createElement("article");
 
-        return;
+    card.className = "saved-card";
 
-    }
-
-
-    savedDestinations.style.display = "grid";
-
-    emptySaved.style.display = "none";
-
-
-    destinations.forEach((destination) => {
-
-        const card =
-            document.createElement("article");
-
-        card.className =
-            "saved-card";
-
-
-        card.innerHTML = `
+    card.innerHTML = `
 
             <button
                 type="button"
@@ -264,146 +211,105 @@ function renderSavedDestinations() {
 
         `;
 
-
-        savedDestinations.appendChild(card);
-
-    });
-
+    savedDestinations.appendChild(card);
+  });
 }
-
-
 
 /* ==================================================
    REMOVE SAVED DESTINATION
 ================================================== */
 
 if (savedDestinations) {
-    savedDestinations.addEventListener(
-        "click",
-        (event) => {
+  savedDestinations.addEventListener("click", (event) => {
+    const button = event.target.closest(".remove-saved");
 
-            const button =
-                event.target.closest(".remove-saved");
+    if (!button) {
+      return;
+    }
 
-            if (!button) {
-                return;
-            }
+    const destinationId = button.dataset.id;
 
-            const destinationId =
-                button.dataset.id;
-
-            const destinations =
-                getSavedDestinations()
-                    .filter(
-                        destination =>
-                            destination.id !== destinationId
-                    );
-
-            saveDestinations(destinations);
-
-            renderSavedDestinations();
-        }
+    const destinations = getSavedDestinations().filter(
+      (destination) => destination.id !== destinationId,
     );
+
+    saveDestinations(destinations);
+
+    renderSavedDestinations();
+  });
 }
-
-
 
 /* ==================================================
    FIREBASE AUTH STATE
 ================================================== */
 
 onAuthStateChanged(auth, (user) => {
+  console.log("PROFILE FIREBASE USER:", user);
 
-    console.log("PROFILE FIREBASE USER:", user);
-
-
-    /* ==================================================
+  /* ==================================================
        CHECK AUTHENTICATION
     ================================================== */
 
-    if (!user) {
+  if (!user) {
+    console.log("PROFILE: NO USER FOUND");
 
-        console.log("PROFILE: NO USER FOUND");
+    window.location.href = "signin.html";
 
-        window.location.href = "signin.html";
+    return;
+  }
 
-        return;
-    }
-
-
-    /* ==================================================
+  /* ==================================================
        USER IS SIGNED IN
     ================================================== */
 
-    console.log("PROFILE USER EMAIL:", user.email);
-    console.log("PROFILE USER UID:", user.uid);
+  console.log("PROFILE USER EMAIL:", user.email);
+  console.log("PROFILE USER UID:", user.uid);
 
-
-    /* ==================================================
+  /* ==================================================
        GET SAVED LOCAL USER
     ================================================== */
 
-    let savedUser = {};
+  let savedUser = {};
 
-    try {
+  try {
+    savedUser = JSON.parse(localStorage.getItem("masar_current_user")) || {};
+  } catch (error) {
+    console.error("Unable to read saved user:", error);
 
-        savedUser =
-            JSON.parse(
-                localStorage.getItem("masar_current_user")
-            ) || {};
+    savedUser = {};
+  }
 
-    } catch (error) {
-
-        console.error(
-            "Unable to read saved user:",
-            error
-        );
-
-        savedUser = {};
-    }
-
-
-    /* ==================================================
+  /* ==================================================
        USER NAME
     ================================================== */
 
-    const name =
-        user.displayName ||
-        savedUser.name ||
-        "MASAR Traveler";
+  const name = user.displayName || savedUser.name || "MASAR Traveler";
 
+  const email = user.email || "";
 
-    const email =
-        user.email || "";
-
-
-    /* ==================================================
+  /* ==================================================
        UPDATE PROFILE
     ================================================== */
 
-    profileName.textContent = name;
+  profileName.textContent = name;
 
-    profileEmail.textContent = email;
+  profileEmail.textContent = email;
 
-    infoName.textContent = name;
+  infoName.textContent = name;
 
-    infoEmail.textContent = email;
+  infoEmail.textContent = email;
 
-
-    /* ==================================================
+  /* ==================================================
        AVATAR
     ================================================== */
 
-    profileAvatar.textContent =
-        name.charAt(0).toUpperCase();
+  profileAvatar.textContent = name.charAt(0).toUpperCase();
 
-
-    /* ==================================================
+  /* ==================================================
        LOAD SAVED DESTINATIONS
     ================================================== */
 
-    renderSavedDestinations();
-
+  renderSavedDestinations();
 });
 
 /* ==================================================
@@ -411,194 +317,102 @@ onAuthStateChanged(auth, (user) => {
 ================================================== */
 
 if (showPasswordButton) {
+  showPasswordButton.addEventListener("click", () => {
+    passwordMessage.textContent =
+      "For your security, Firebase does not allow your original password to be viewed or recovered. You can change it using the button below.";
 
-    showPasswordButton.addEventListener(
-        "click",
-        () => {
+    passwordMessage.style.color = "#777";
 
-            passwordMessage.textContent =
-                "For your security, Firebase does not allow your original password to be viewed or recovered. You can change it using the button below.";
+    passwordMessage.style.display = "block";
 
-            passwordMessage.style.color =
-                "#777";
+    showPasswordButton.classList.add("active");
 
-            passwordMessage.style.display =
-                "block";
-
-            showPasswordButton.classList.add(
-                "active"
-            );
-
-            showPasswordButton.setAttribute(
-                "aria-label",
-                "Password cannot be displayed"
-            );
-
-            showPasswordButton.setAttribute(
-                "title",
-                "Password cannot be displayed"
-            );
-
-            setTimeout(() => {
-
-                showPasswordButton.classList.remove(
-                    "active"
-                );
-
-                showPasswordButton.setAttribute(
-                    "aria-label",
-                    "Show password"
-                );
-
-                showPasswordButton.setAttribute(
-                    "title",
-                    "Show password"
-                );
-
-            }, 1000);
-
-        }
+    showPasswordButton.setAttribute(
+      "aria-label",
+      "Password cannot be displayed",
     );
 
+    showPasswordButton.setAttribute("title", "Password cannot be displayed");
+
+    setTimeout(() => {
+      showPasswordButton.classList.remove("active");
+
+      showPasswordButton.setAttribute("aria-label", "Show password");
+
+      showPasswordButton.setAttribute("title", "Show password");
+    }, 1000);
+  });
 }
 
 /* ==================================================
    CHANGE PASSWORD
 ================================================== */
 
-changePasswordButton.addEventListener(
-    "click",
-    async () => {
+changePasswordButton.addEventListener("click", async () => {
+  const user = auth.currentUser;
 
-        const user =
-            auth.currentUser;
+  if (!user || !user.email) {
+    passwordMessage.textContent = "Please sign in again.";
 
+    passwordMessage.style.display = "block";
 
-        if (!user || !user.email) {
+    return;
+  }
 
-            passwordMessage.textContent =
-                "Please sign in again.";
+  changePasswordButton.disabled = true;
 
-            passwordMessage.style.display =
-                "block";
+  changePasswordButton.textContent = "Sending...";
 
-            return;
+  try {
+    await sendPasswordResetEmail(auth, user.email);
 
-        }
+    passwordMessage.textContent = `A password reset link has been sent to ${user.email}. Check your email.`;
 
+    passwordMessage.style.color = "#6d7651";
 
-        changePasswordButton.disabled =
-            true;
+    passwordMessage.style.display = "block";
+  } catch (error) {
+    console.error("Password reset error:", error);
 
-        changePasswordButton.textContent =
-            "Sending...";
+    passwordMessage.textContent =
+      "Unable to send the password reset email. Please try again.";
 
+    passwordMessage.style.color = "#a23a2b";
 
-        try {
+    passwordMessage.style.display = "block";
+  } finally {
+    changePasswordButton.disabled = false;
 
-            await sendPasswordResetEmail(
-                auth,
-                user.email
-            );
-
-
-            passwordMessage.textContent =
-                `A password reset link has been sent to ${user.email}. Check your email.`;
-
-            passwordMessage.style.color =
-                "#6d7651";
-
-            passwordMessage.style.display =
-                "block";
-
-
-        } catch (error) {
-
-            console.error(
-                "Password reset error:",
-                error
-            );
-
-
-            passwordMessage.textContent =
-                "Unable to send the password reset email. Please try again.";
-
-            passwordMessage.style.color =
-                "#a23a2b";
-
-            passwordMessage.style.display =
-                "block";
-
-        } finally {
-
-            changePasswordButton.disabled =
-                false;
-
-            changePasswordButton.textContent =
-                "Change Password";
-
-        }
-
-    }
-);
-
-
+    changePasswordButton.textContent = "Change Password";
+  }
+});
 
 /* ==================================================
    SIGN OUT
 ================================================== */
 
-signOutButton.addEventListener(
-    "click",
-    async () => {
+signOutButton.addEventListener("click", async () => {
+  signOutButton.disabled = true;
 
-        signOutButton.disabled =
-            true;
+  signOutButton.textContent = "Signing Out...";
 
-        signOutButton.textContent =
-            "Signing Out...";
+  try {
+    await signOut(auth);
 
+    localStorage.removeItem("masar_logged_in");
 
-        try {
+    localStorage.removeItem("masar_current_user");
 
-            await signOut(auth);
+    window.location.href = "signin.html";
+  } catch (error) {
+    console.error("Sign out error:", error);
 
+    profileMessage.textContent = "Unable to sign out. Please try again.";
 
-            localStorage.removeItem(
-                "masar_logged_in"
-            );
+    profileMessage.style.display = "block";
 
-            localStorage.removeItem(
-                "masar_current_user"
-            );
+    signOutButton.disabled = false;
 
-
-            window.location.href =
-                "signin.html";
-
-
-        } catch (error) {
-
-            console.error(
-                "Sign out error:",
-                error
-            );
-
-
-            profileMessage.textContent =
-                "Unable to sign out. Please try again.";
-
-            profileMessage.style.display =
-                "block";
-
-
-            signOutButton.disabled =
-                false;
-
-            signOutButton.textContent =
-                "Sign Out";
-
-        }
-
-    }
-);
+    signOutButton.textContent = "Sign Out";
+  }
+});

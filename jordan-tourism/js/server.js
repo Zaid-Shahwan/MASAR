@@ -13,14 +13,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-
 /* ==================================================
    PATH
 ================================================== */
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 
 /* ==================================================
    GEMINI
@@ -29,13 +27,12 @@ const __dirname = path.dirname(__filename);
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 if (!GEMINI_API_KEY) {
-    console.error("ERROR: GEMINI_API_KEY is missing.");
+  console.error("ERROR: GEMINI_API_KEY is missing.");
 }
 
 const ai = new GoogleGenAI({
-    apiKey: GEMINI_API_KEY
+  apiKey: GEMINI_API_KEY,
 });
-
 
 /* ==================================================
    MIDDLEWARE
@@ -51,76 +48,58 @@ app.use(express.json());
 ================================================== */
 
 app.get("/js/config.js", (req, res) => {
+  const cartoKey = process.env.CARTO_API_KEY || process.env.CARTO_KEY || "";
 
-    const cartoKey =
-        process.env.CARTO_API_KEY ||
-        process.env.CARTO_KEY ||
-        "";
+  res.type("application/javascript");
+  res.set("Cache-Control", "no-store");
 
-    res.type("application/javascript");
-    res.set("Cache-Control", "no-store");
-
-    res.send(
-        "window.MASAR_ENV = " +
-        JSON.stringify({ CARTO_API_KEY: cartoKey }) +
-        ";"
-    );
-
+  res.send(
+    "window.MASAR_ENV = " + JSON.stringify({ CARTO_API_KEY: cartoKey }) + ";",
+  );
 });
 
 /* Serve MASAR website */
 app.use(express.static(path.join(__dirname, "jordan-tourism")));
-
 
 /* ==================================================
    MASAR AI
 ================================================== */
 
 app.post("/api/masar-chat", async (req, res) => {
+  try {
+    const { messages, location } = req.body;
 
-    try {
-
-        const { messages, location } = req.body;
-
-
-        /* ==================================================
+    /* ==================================================
            VALIDATE REQUEST
         ================================================== */
 
-        if (!Array.isArray(messages) || messages.length === 0) {
+    if (!Array.isArray(messages) || messages.length === 0) {
+      return res.status(400).json({
+        error: "Invalid messages.",
+      });
+    }
 
-            return res.status(400).json({
-                error: "Invalid messages."
-            });
+    if (!GEMINI_API_KEY) {
+      return res.status(500).json({
+        error: "Gemini API key is not configured.",
+      });
+    }
 
-        }
-
-
-        if (!GEMINI_API_KEY) {
-
-            return res.status(500).json({
-                error: "Gemini API key is not configured."
-            });
-
-        }
-
-
-        /* ==================================================
+    /* ==================================================
            LOCATION
         ================================================== */
 
-        const locationText = location
-            ? `The visitor's confirmed location is ${
-                location.city || "unknown city"
-              }.`
-            : "The visitor has not confirmed a location.";
+    const locationText = location
+      ? `The visitor's confirmed location is ${
+          location.city || "unknown city"
+        }.`
+      : "The visitor has not confirmed a location.";
 
-
-        /* ==================================================
+    /* ==================================================
            MASAR SYSTEM INSTRUCTIONS
         ================================================== */
 
-        const systemInstruction = `
+    const systemInstruction = `
 You are MASAR, the AI guide for Jordan.
 
 Your job is to answer questions about EVERYTHING related to Jordan.
@@ -297,145 +276,113 @@ Do not add a generic introduction before every answer.
 Give enough information to properly answer the question.
 `;
 
-
-        /* ==================================================
+    /* ==================================================
            CONVERT CHAT HISTORY
         ================================================== */
 
-        const conversation = messages
-            .slice(-10)
-            .map((message) => {
+    const conversation = messages
+      .slice(-10)
+      .map((message) => {
+        const role = message.role === "assistant" ? "MASAR" : "Visitor";
 
-                const role =
-                    message.role === "assistant"
-                        ? "MASAR"
-                        : "Visitor";
+        return `${role}: ${message.content}`;
+      })
+      .join("\n\n");
 
-                return `${role}: ${message.content}`;
-
-            })
-            .join("\n\n");
-
-
-        /* ==================================================
+    /* ==================================================
            GEMINI REQUEST
         ================================================== */
 
-        const response = await ai.models.generateContent({
+    const response = await ai.models.generateContent({
+      model: "gemini-3.5-flash-lite",
 
-            model: "gemini-3.5-flash-lite",
+      config: {
+        systemInstruction: systemInstruction,
+        temperature: 0.4,
+      },
 
-            config: {
-                systemInstruction: systemInstruction,
-                temperature: 0.4
-            },
+      contents: conversation,
+    });
 
-            contents: conversation
-
-        });
-
-
-        /* ==================================================
+    /* ==================================================
            GET RESPONSE
         ================================================== */
 
-        const reply = response.text;
+    const reply = response.text;
 
+    if (!reply || !reply.trim()) {
+      return res.status(500).json({
+        error: "Gemini returned an empty response.",
+      });
+    }
 
-        if (!reply || !reply.trim()) {
-
-            return res.status(500).json({
-                error: "Gemini returned an empty response."
-            });
-
-        }
-
-
-        /* ==================================================
+    /* ==================================================
            SEND RESPONSE
         ================================================== */
 
-        res.json({
-            reply: reply.trim()
-        });
+    res.json({
+      reply: reply.trim(),
+    });
+  } catch (error) {
+    console.error("================================");
+    console.error("MASAR GEMINI ERROR");
+    console.error("================================");
 
+    console.error(error);
 
-    } catch (error) {
-
-        console.error("================================");
-        console.error("MASAR GEMINI ERROR");
-        console.error("================================");
-
-        console.error(error);
-
-
-        /* ==================================================
+    /* ==================================================
            FRIENDLY ERROR RESPONSES
         ================================================== */
 
-        if (
-            error?.status === 429 ||
-            error?.code === 429 ||
-            error?.message?.includes("RESOURCE_EXHAUSTED")
-        ) {
-
-            return res.status(429).json({
-                error: "MASAR AI is temporarily busy. Please try again in a moment."
-            });
-
-        }
-
-
-        if (
-            error?.message?.includes("API key") ||
-            error?.message?.includes("API_KEY")
-        ) {
-
-            return res.status(500).json({
-                error: "MASAR AI configuration error."
-            });
-
-        }
-
-
-        res.status(500).json({
-            error: "Unable to get an AI response right now."
-        });
-
+    if (
+      error?.status === 429 ||
+      error?.code === 429 ||
+      error?.message?.includes("RESOURCE_EXHAUSTED")
+    ) {
+      return res.status(429).json({
+        error: "MASAR AI is temporarily busy. Please try again in a moment.",
+      });
     }
 
-});
+    if (
+      error?.message?.includes("API key") ||
+      error?.message?.includes("API_KEY")
+    ) {
+      return res.status(500).json({
+        error: "MASAR AI configuration error.",
+      });
+    }
 
+    res.status(500).json({
+      error: "Unable to get an AI response right now.",
+    });
+  }
+});
 
 /* ==================================================
    HEALTH CHECK
 ================================================== */
 
 app.get("/api/health", (req, res) => {
-
-    res.json({
-        status: "ok",
-        service: "MASAR AI",
-        provider: "Google Gemini",
-        model: "gemini-3.5-flash-lite"
-    });
-
+  res.json({
+    status: "ok",
+    service: "MASAR AI",
+    provider: "Google Gemini",
+    model: "gemini-3.5-flash-lite",
+  });
 });
-
 
 /* ==================================================
    START SERVER
 ================================================== */
 
 app.listen(PORT, () => {
-
-    console.log("");
-    console.log("================================");
-    console.log("      MASAR SERVER RUNNING");
-    console.log("================================");
-    console.log(`http://localhost:${PORT}`);
-    console.log("AI Provider: Google Gemini");
-    console.log("AI Model: gemini-3.5-flash-lite");
-    console.log("");
-
+  console.log("");
+  console.log("================================");
+  console.log("      MASAR SERVER RUNNING");
+  console.log("================================");
+  console.log(`http://localhost:${PORT}`);
+  console.log("AI Provider: Google Gemini");
+  console.log("AI Model: gemini-3.5-flash-lite");
+  console.log("");
 });

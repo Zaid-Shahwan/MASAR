@@ -198,13 +198,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .site-header .container { display: flex; align-items: center; justify-content: space-between; width: 100%; }
 
 .site-header.is-transparent {
-  background: rgba(208, 140, 107, 0.92);   /* Petra rose-sandstone */
+  background: rgba(176, 124, 84, 0.95);   /* Petra sandstone (#B07C54) */
   backdrop-filter: blur(10px);
   border-bottom-color: rgba(140, 63, 50, 0.25);
 }
 
 .site-header.is-solid {
-  background: rgba(208, 140, 107, 0.92);   /* Petra rose-sandstone */
+  background: rgba(176, 124, 84, 0.95);   /* Petra sandstone (#B07C54) */
   backdrop-filter: blur(10px);
   border-bottom-color: rgba(140, 63, 50, 0.25);
 }

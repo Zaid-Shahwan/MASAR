@@ -198,15 +198,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .site-header .container { display: flex; align-items: center; justify-content: space-between; width: 100%; }
 
 .site-header.is-transparent {
-  background: rgba(248, 247, 243, 0.78);
+  background: rgba(208, 140, 107, 0.92);   /* Petra rose-sandstone */
   backdrop-filter: blur(10px);
-  border-bottom-color: rgba(217, 213, 201, 0.6);
+  border-bottom-color: rgba(140, 63, 50, 0.25);
 }
 
 .site-header.is-solid {
-  background: rgba(248, 247, 243, 0.92);
+  background: rgba(208, 140, 107, 0.92);   /* Petra rose-sandstone */
   backdrop-filter: blur(10px);
-  border-bottom-color: var(--c-border);
+  border-bottom-color: rgba(140, 63, 50, 0.25);
 }
 
 .site-header.is-solid .nav-link,

@@ -197,7 +197,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 .site-header .container { display: flex; align-items: center; justify-content: space-between; width: 100%; }
 
-.site-header.is-transparent { background: transparent; }
+.site-header.is-transparent {
+  background: rgba(248, 247, 243, 0.78);
+  backdrop-filter: blur(10px);
+  border-bottom-color: rgba(217, 213, 201, 0.6);
+}
 
 .site-header.is-solid {
   background: rgba(248, 247, 243, 0.92);
@@ -211,7 +215,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 .site-header.is-transparent .nav-link,
 .site-header.is-transparent .brand,
-.site-header.is-transparent .hamburger span { color: #fff; }
+.site-header.is-transparent .hamburger span { color: var(--c-primary); }
 
 .brand {
   font-family: var(--font-display);

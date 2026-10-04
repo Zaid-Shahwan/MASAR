@@ -197,16 +197,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 .site-header .container { display: flex; align-items: center; justify-content: space-between; width: 100%; }
 
-.site-header.is-transparent {
-  background: rgba(201, 155, 115, 0.95);   /* Petra sandstone (#C99B73) */
-  backdrop-filter: blur(10px);
-  border-bottom-color: rgba(140, 63, 50, 0.25);
-}
+.site-header.is-transparent { background: transparent; }
 
 .site-header.is-solid {
-  background: rgba(201, 155, 115, 0.95);   /* Petra sandstone (#C99B73) */
+  background: rgba(248, 247, 243, 0.92);
   backdrop-filter: blur(10px);
-  border-bottom-color: rgba(140, 63, 50, 0.25);
+  border-bottom-color: var(--c-border);
 }
 
 .site-header.is-solid .nav-link,
@@ -215,7 +211,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 .site-header.is-transparent .nav-link,
 .site-header.is-transparent .brand,
-.site-header.is-transparent .hamburger span { color: var(--c-primary); }
+.site-header.is-transparent .hamburger span { color: #fff; }
 
 .brand {
   font-family: var(--font-display);

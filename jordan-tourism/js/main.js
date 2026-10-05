@@ -639,10 +639,49 @@
   }
   window.MASAR.showToast = showToast;
 
+  const SAVED_EXPERIENCES_KEY = "masar_saved_destinations";
+
+  function getSavedExperiences() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(SAVED_EXPERIENCES_KEY));
+      return Array.isArray(saved) ? saved : [];
+    } catch (error) {
+      console.error("Unable to read saved experiences:", error);
+      return [];
+    }
+  }
+
+  function saveExperience(exp) {
+    const saved = getSavedExperiences();
+
+    if (saved.some((item) => item.id === exp.id)) {
+      showToast("Experience already saved");
+      return;
+    }
+
+    saved.push({
+      id: exp.id,
+      name: exp.name,
+      description: exp.description,
+      image: exp.image,
+      location: exp.location,
+      duration: exp.duration,
+      tags: exp.tags || [],
+    });
+
+    localStorage.setItem(SAVED_EXPERIENCES_KEY, JSON.stringify(saved));
+    showToast("Experience saved to favorites");
+  }
+
   document.addEventListener("click", (e) => {
     const saveBtn = e.target.closest("[data-save]");
-    if (saveBtn) {
-      showToast("Experience saved");
+    if (!saveBtn) return;
+
+    const experienceId = saveBtn.getAttribute("data-save");
+    const exp = EXPERIENCES.find((item) => item.id === experienceId);
+
+    if (exp) {
+      saveExperience(exp);
     }
   });
 
@@ -894,7 +933,7 @@
         '<button class="btn btn-dark btn-sm" data-view="' +
         exp.id +
         '">View Experience</button>' +
-        '<button class="btn btn-outline btn-sm" data-save>Save</button>' +
+        '<button class="btn btn-outline btn-sm" data-save="' + exp.id + '">Save</button>' +
         "</div></div>";
       resolveImage(exp, card.querySelector(".result-card__img img"));
       return card;
@@ -964,7 +1003,7 @@
             .map((h, i) => '<li><span class="idx">0' + (i + 1) + "</span><span>" + h + "</span></li>")
             .join("") +
           "</ul>" +
-          '<div class="result-card__actions"><button class="btn btn-primary" data-save>Save Experience</button></div>' +
+          '<div class="result-card__actions"><button class="btn btn-primary" data-save="' + exp.id + '">Save Experience</button></div>' +
           "</div>";
         resolveImage(exp, modalBody.querySelector(".modal__img img"));
         modalOverlay.classList.add("is-open");

@@ -71,54 +71,8 @@ const emptySaved = document.getElementById("emptySaved");
    SAVED DESTINATIONS
 ================================================== */
 
-const defaultDestinations = [
-  {
-    id: "petra",
-    name: "Petra",
-    description: "The Rose City",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury),_Petra,_Jordan.jpg",
-  },
-
-  {
-    id: "wadi-rum",
-    name: "Wadi Rum",
-    description: "The Valley of the Moon",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_27.JPG",
-  },
-
-  {
-    id: "amman",
-    name: "Amman",
-    description: "The heart of Jordan",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Amman_Citadel.jpg",
-  },
-
-  {
-    id: "dead-sea",
-    name: "Dead Sea",
-    description: "Float in the lowest point on Earth",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Dead_Sea_by_David_Shankbone.jpg",
-  },
-
-  {
-    id: "aqaba",
-    name: "Aqaba",
-    description: "Jordan's Red Sea coast",
-    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Aqaba_BW_2.JPG",
-  },
-
-  {
-    id: "jerash",
-    name: "Jerash",
-    description: "The ancient Roman city",
-    image:
-      "https://commons.wikimedia.org/wiki/Special:FilePath/Jerash_City.jpg",
-  },
-];
+/* Favorites start empty. Experiences are added from the Save buttons
+   on the Plan Your Trip page. */
 
 /* ==================================================
    GET SAVED DESTINATIONS
@@ -135,12 +89,7 @@ function getSavedDestinations() {
     console.error("Unable to read saved destinations:", error);
   }
 
-  /*
-   * Temporary starting destinations.
-   * The user can remove them.
-   */
-
-  return defaultDestinations;
+  return [];
 }
 
 /* ==================================================

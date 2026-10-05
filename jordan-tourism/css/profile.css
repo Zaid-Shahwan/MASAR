@@ -9,7 +9,8 @@
     justify-content: center;
     align-items: flex-start;
 
-    padding: 70px 24px;
+    padding: calc(var(--nav-h) + 42px) 24px 70px;
+    background: linear-gradient(180deg, #f8f7f3 0%, #f4f1ea 100%);
 }
 
 
@@ -21,7 +22,7 @@
     width: 100%;
     max-width: 900px;
 
-    background: #fffaf2;
+    background: #ffffff;
 
     border: 1px solid rgba(35, 35, 35, 0.08);
 
@@ -63,9 +64,9 @@
 
     border-radius: 50%;
 
-    background: #b85c43;
+    background: #8c3f32;
 
-    color: #fffaf2;
+    color: #ffffff;
 
     font-family: "Fraunces", serif;
 
@@ -82,7 +83,7 @@
 
     letter-spacing: 0.12em;
 
-    color: #8a6b5c;
+    color: #8c3f32;
 }
 
 
@@ -95,14 +96,14 @@
 
     font-weight: 500;
 
-    color: #2d2925;
+    color: #171717;
 }
 
 
 .profile-intro p:last-child {
     margin: 8px 0 0;
 
-    color: #77706a;
+    color: #6e6a63;
 
     font-size: 15px;
 }
@@ -136,14 +137,14 @@
 
     font-weight: 500;
 
-    color: #2d2925;
+    color: #171717;
 }
 
 
 .section-description {
     margin: -10px 0 22px;
 
-    color: #77706a;
+    color: #6e6a63;
 
     font-size: 14px;
 }
@@ -166,7 +167,7 @@
 .info-item {
     padding: 20px;
 
-    background: #f4eee4;
+    background: #f4f1ea;
 
     border-radius: 17px;
 }
@@ -185,7 +186,7 @@
 
     letter-spacing: 0.08em;
 
-    color: #8a6b5c;
+    color: #8c3f32;
 }
 
 
@@ -198,7 +199,7 @@
 
     font-weight: 500;
 
-    color: #2d2925;
+    color: #171717;
 }
 
 
@@ -217,7 +218,7 @@
 
     padding: 22px;
 
-    background: #f4eee4;
+    background: #f4f1ea;
 
     border-radius: 18px;
 }
@@ -228,7 +229,7 @@
 
     letter-spacing: 4px;
 
-    color: #2d2925;
+    color: #171717;
 }
 
 
@@ -237,7 +238,7 @@
 
     font-size: 12px;
 
-    color: #77706a;
+    color: #6e6a63;
 
     max-width: 500px;
 }
@@ -283,7 +284,7 @@
 
 
 .secondary-button {
-    background: #2d2925;
+    background: #171717;
 
     color: white;
 
@@ -292,7 +293,7 @@
 
 
 .logout-button {
-    background: #a23a2b;
+    background: #8c3f32;
 
     color: white;
 }
@@ -321,7 +322,7 @@
 
     border-radius: 20px;
 
-    background: #f4eee4;
+    background: #f4f1ea;
 }
 
 
@@ -391,7 +392,7 @@
 
     background: rgba(255, 255, 255, 0.92);
 
-    color: #a23a2b;
+    color: #8c3f32;
 
     font-size: 19px;
 
@@ -410,14 +411,14 @@
 
     border-radius: 20px;
 
-    background: #f4eee4;
+    background: #f4f1ea;
 }
 
 
 .empty-icon {
     font-size: 38px;
 
-    color: #b85c43;
+    color: #8c3f32;
 
     margin-bottom: 10px;
 }
@@ -432,14 +433,14 @@
 
     font-weight: 500;
 
-    color: #2d2925;
+    color: #171717;
 }
 
 
 .empty-saved p {
     margin: 8px 0 20px;
 
-    color: #77706a;
+    color: #6e6a63;
 
     font-size: 14px;
 }
@@ -454,7 +455,7 @@
 
     font-size: 14px;
 
-    color: #a23a2b;
+    color: #8c3f32;
 }
 
 
@@ -588,7 +589,7 @@
     margin-top: 10px;
     margin-bottom: 0;
 
-    color: #777;
+    color: #6e6a63;
 
     font-size: 13px;
     line-height: 1.6;
@@ -629,3 +630,17 @@
   .profile-section { padding-left: 0; padding-right: 0; }
   .profile-button { width: 100%; }
 }
+
+
+/* MASAR palette alignment — consistent with Home */
+.profile-card {
+    border-color: #d9d5c9;
+    box-shadow: 0 24px 64px rgba(23,23,23,.08);
+}
+.info-item, .security-box {
+    border: 1px solid rgba(140,63,50,.08);
+}
+.profile-button {
+    transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
+}
+.profile-button:hover { transform: translateY(-1px); }

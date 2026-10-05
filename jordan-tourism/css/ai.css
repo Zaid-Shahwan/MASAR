@@ -743,3 +743,21 @@
     height: 250px;
   }
 }
+
+
+/* MASAR palette alignment — consistent with Home */
+.ai-page {
+  background: linear-gradient(180deg, var(--c-bg) 0%, #f4f1ea 100%);
+}
+.ai-chat {
+  color: var(--c-text);
+}
+.ai-stage::before { background: var(--c-secondary); }
+.ai-stage::after { border-color: rgba(140,63,50,.30); }
+.cloud {
+  border: 1px solid rgba(140,63,50,.10);
+}
+.ai-chip:hover, .ai-chip:focus-visible {
+  border-color: var(--c-accent);
+  color: var(--c-accent-dark);
+}

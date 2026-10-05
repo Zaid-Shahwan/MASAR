@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
     <title>My Profile — MASAR</title>
 
@@ -47,9 +47,26 @@
           <a href="explore.html" class="btn btn-primary">
             Find Your Experience
           </a>
+          <button
+            class="hamburger"
+            aria-label="Open menu"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
         </div>
       </div>
     </header>
+
+    <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile">
+      <a href="index.html">Home</a>
+      <a href="index.html#destinations">Destinations</a>
+      <a href="ai.html">AI Guide</a>
+      <a href="explore.html">Plan Your Trip</a>
+      <a href="profile.html">Profile</a>
+      <a href="explore.html" class="btn btn-primary btn-block">Find Your Experience</a>
+    </nav>
 
     <!-- ==================================================
      PROFILE PAGE
@@ -194,6 +211,7 @@
      FIREBASE PROFILE SCRIPT
 ================================================== -->
 
+    <script src="js/main.js"></script>
     <script type="module" src="js/profile.js"></script>
   </body>
 </html>

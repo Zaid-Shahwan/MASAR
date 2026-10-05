@@ -370,3 +370,15 @@
         font-size: 35px;
     }
 }
+
+/* Very small phones */
+@media (max-width: 420px) {
+  .auth-visual { min-height: 350px; padding: 22px 18px; }
+  .auth-brand img { max-width: 130px; height: auto; }
+  .auth-visual-content h1 { font-size: clamp(2.15rem, 12vw, 2.7rem); }
+  .auth-form-side { padding: 36px 18px; }
+  .auth-box { width: 100%; }
+  .auth-heading h2 { font-size: clamp(1.9rem, 10vw, 2.3rem); }
+  .auth-tabs { overflow-x: auto; }
+  .auth-input { width: 100%; min-width: 0; }
+}

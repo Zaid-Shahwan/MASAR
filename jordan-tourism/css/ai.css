@@ -573,3 +573,173 @@
   .ai-stage::after { width: 170px; height: 170px; }
   .cloud { border-radius: 22px; }
 }
+
+/* ========================================================================== 
+   FIX — Location panel on AI Guide
+   Kept here in ai.css so the panel stays styled even if ai-geo.css is missed
+   by the deployment/cache.
+   ========================================================================== */
+.geo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .65rem .9rem;
+  margin: 1rem auto 0;
+}
+
+.geo-bar__status {
+  font-size: .92rem;
+  color: var(--c-muted, #6f665f);
+}
+
+.geo-bar__clear {
+  border: 0;
+  background: transparent;
+  color: var(--c-accent, #9b4334);
+  font: inherit;
+  font-size: .86rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.geo-bar__clear[hidden],
+.geo-panel[hidden] {
+  display: none !important;
+}
+
+.geo-panel {
+  width: min(760px, 100%);
+  margin: 1rem auto 0;
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid var(--c-border, #ded8cf);
+  border-radius: 22px;
+  box-shadow: 0 12px 32px rgba(23, 23, 23, .08);
+  overflow: hidden;
+}
+
+.geo-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: .8rem;
+}
+
+.geo-panel__head h2 {
+  margin: 0 !important;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem) !important;
+  line-height: 1.15;
+  font-weight: 500;
+}
+
+.geo-panel__close {
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--c-border, #ded8cf);
+  border-radius: 50%;
+  background: #f6f0e8;
+  color: #171717;
+  font-size: 1.45rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.geo-map {
+  width: 100%;
+  height: clamp(260px, 42vh, 380px);
+  min-height: 260px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #eee7da;
+  position: relative;
+  z-index: 0;
+}
+
+.geo-panel__controls {
+  display: grid;
+  grid-template-columns: auto minmax(180px, 1fr) auto;
+  align-items: center;
+  gap: .65rem;
+  margin-top: .85rem;
+}
+
+.geo-panel__controls .btn {
+  min-height: 44px;
+  white-space: nowrap;
+}
+
+.geo-select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 2.5rem 0 1rem;
+  border: 1px solid var(--c-border, #ded8cf);
+  border-radius: 999px;
+  background: #fff;
+  color: #171717;
+  font: inherit;
+  font-size: .92rem;
+}
+
+.geo-panel__controls .btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.geo-help {
+  margin: .65rem 0 0;
+  min-height: 1.2em;
+  color: var(--c-muted, #6f665f);
+  font-size: .85rem;
+}
+
+.geo-pin span {
+  display: block;
+  width: 28px;
+  height: 28px;
+  background: var(--c-accent, #9b4334);
+  border: 3px solid #fff;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .28);
+}
+
+@media (max-width: 700px) {
+  .geo-panel {
+    width: 100%;
+    padding: .8rem;
+    border-radius: 18px;
+  }
+
+  .geo-map {
+    height: 300px;
+    min-height: 240px;
+    border-radius: 14px;
+  }
+
+  .geo-panel__controls {
+    grid-template-columns: 1fr;
+  }
+
+  .geo-panel__controls .btn,
+  .geo-select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .geo-panel {
+    padding: .7rem;
+  }
+
+  .geo-map {
+    height: 250px;
+  }
+}

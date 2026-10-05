@@ -11,7 +11,7 @@
 .auth-page {
     width: 100%;
     min-height: 100vh;
-    background: #f8f7f3;
+    background: #f4f0e8;
 }
 
 
@@ -24,7 +24,7 @@
     min-height: 100vh;
     display: grid;
     grid-template-columns: 55% 45%;
-    background: #f8f7f3;
+    background: #f4f0e8;
 }
 
 
@@ -142,7 +142,7 @@
     align-items: center;
     justify-content: center;
     padding: 60px;
-    background: #f8f7f3;
+    background: #f4f0e8;
 }
 
 
@@ -164,7 +164,7 @@
     display: flex;
     gap: 32px;
     margin-bottom: 45px;
-    border-bottom: 1px solid #d9d5c9;
+    border-bottom: 1px solid #d8d0c3;
 }
 
 
@@ -178,12 +178,12 @@
     font-family: inherit;
     font-size: 14px;
     font-weight: 600;
-    color: #6e6a63;
+    color: #8a8277;
 }
 
 
     .auth-tab.is-active {
-        color: #171717;
+        color: #2d2924;
     }
 
 
@@ -194,7 +194,7 @@
             right: 0;
             bottom: -1px;
             height: 2px;
-            background: #8c3f32;
+            background: #8b5e3c;
         }
 
 
@@ -227,7 +227,7 @@
         font-size: 42px;
         line-height: 1.1;
         font-weight: 400;
-        color: #171717;
+        color: #2d2924;
     }
 
 
@@ -235,7 +235,7 @@
         margin: 0;
         font-size: 15px;
         line-height: 1.6;
-        color: #6e6a63;
+        color: #7d756b;
     }
 
 
@@ -253,7 +253,7 @@
         margin-bottom: 9px;
         font-size: 13px;
         font-weight: 600;
-        color: #171717;
+        color: #4c463f;
     }
 
 
@@ -263,23 +263,23 @@
         box-sizing: border-box;
         padding: 14px 0;
         border: none;
-        border-bottom: 1px solid #d9d5c9;
+        border-bottom: 1px solid #cbc2b5;
         outline: none;
         background: transparent;
         font-family: inherit;
         font-size: 15px;
-        color: #171717;
+        color: #2d2924;
         transition: border-color 0.2s ease;
     }
 
 
         .auth-field input:focus {
-            border-bottom-color: #8c3f32;
+            border-bottom-color: #8b5e3c;
         }
 
 
         .auth-field input::placeholder {
-            color: #948f83;
+            color: #aaa197;
         }
 
 
@@ -295,7 +295,7 @@
     border: none;
     border-radius: 0;
     outline: none;
-    background: #8c3f32;
+    background: #8b5e3c;
     color: #ffffff;
     cursor: pointer;
     font-family: inherit;
@@ -307,7 +307,7 @@
 
 
     .auth-button:hover {
-        background: #6f3128;
+        background: #70482d;
         transform: translateY(-1px);
     }
 
@@ -320,7 +320,7 @@
     display: none;
     margin-bottom: 15px;
     padding: 10px 0;
-    color: #8c3f32;
+    color: #a23b2d;
     font-size: 13px;
 }
 
@@ -382,16 +382,3 @@
   .auth-tabs { overflow-x: auto; }
   .auth-input { width: 100%; min-width: 0; }
 }
-
-
-/* MASAR palette alignment — consistent with Home */
-.auth-form-side {
-    background: linear-gradient(180deg, #f8f7f3 0%, #f4f1ea 100%);
-}
-.auth-tab.is-active::after { background: var(--c-accent); }
-.auth-field input:focus { border-color: var(--c-accent); }
-.auth-submit {
-    background: var(--c-accent);
-    color: #fff;
-}
-.auth-submit:hover { background: var(--c-accent-dark); }

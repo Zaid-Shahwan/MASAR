@@ -78,7 +78,7 @@
 .geo-pin span {
   display: block;
   width: 28px; height: 28px;
-  background: var(--c-accent, #8c3f32);
+  background: var(--c-accent, #b85c43);
   border: 3px solid #fff;
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
@@ -93,7 +93,3 @@
 
 /* buttons MASAR adds under a cloud (location prompt, quick replies) */
 .geo-extras { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 0.9rem; }
-
-
-/* MASAR palette alignment */
-.geo-modal, .location-modal, .geo-panel { color: #171717; }

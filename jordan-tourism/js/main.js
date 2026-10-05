@@ -21,32 +21,73 @@
   const hamburger = document.querySelector(".hamburger");
   const mobileMenu = document.querySelector(".mobile-menu");
   if (hamburger && mobileMenu) {
-    const closeMenu = () => {
-      hamburger.setAttribute("aria-expanded", "false");
-      mobileMenu.classList.remove("is-open");
-      document.body.style.overflow = "";
-    };
-
-    const openMenu = () => {
-      hamburger.setAttribute("aria-expanded", "true");
-      mobileMenu.classList.add("is-open");
-      document.body.style.overflow = "hidden";
-    };
-
-    hamburger.addEventListener("click", () => {
-      const isOpen = hamburger.getAttribute("aria-expanded") === "true";
-      isOpen ? closeMenu() : openMenu();
-    });
-
-    mobileMenu.querySelectorAll("a").forEach((a) =>
-      a.addEventListener("click", closeMenu)
+    const backdrop = document.createElement("div");
+    backdrop.className = "menu-backdrop";
+    document.body.appendChild(backdrop);
+    let savedOverflow = "";
+    function setMenu(open, focus = false) {
+      if (open) savedOverflow = document.body.style.overflow;
+      hamburger.setAttribute("aria-expanded", String(open));
+      hamburger.setAttribute(
+        "aria-label",
+        window.I18n.t(open ? "nav.close" : "text.040"),
+      );
+      mobileMenu.classList.toggle("is-open", open);
+      mobileMenu.inert = !open;
+      mobileMenu.setAttribute("aria-hidden", String(!open));
+      backdrop.classList.toggle("is-open", open);
+      document.body.style.overflow = open ? "hidden" : savedOverflow;
+      if (focus) hamburger.focus();
+    }
+    hamburger.addEventListener("click", () =>
+      setMenu(hamburger.getAttribute("aria-expanded") !== "true"),
     );
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeMenu();
+    mobileMenu.addEventListener("click", (e) => {
+      if (e.target.closest("a")) setMenu(false);
     });
+    backdrop.addEventListener("click", () => setMenu(false, true));
+    document.addEventListener("pointerdown", (e) => {
+      if (
+        hamburger.getAttribute("aria-expanded") === "true" &&
+        !mobileMenu.contains(e.target) &&
+        !hamburger.contains(e.target)
+      )
+        setMenu(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (hamburger.getAttribute("aria-expanded") !== "true") return;
+      if (e.key === "Escape") setMenu(false, true);
+      if (e.key === "Tab") {
+        const items = [
+            hamburger,
+            ...mobileMenu.querySelectorAll("a, button, select"),
+          ],
+          first = items[0],
+          last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    });
+    window.matchMedia("(min-width: 1101px)").addEventListener("change", (e) => {
+      if (e.matches && hamburger.getAttribute("aria-expanded") === "true")
+        setMenu(false);
+    });
+    document.addEventListener("masar:language-change", () =>
+      hamburger.setAttribute(
+        "aria-label",
+        window.I18n.t(
+          hamburger.getAttribute("aria-expanded") === "true"
+            ? "nav.close"
+            : "text.040",
+        ),
+      ),
+    );
   }
-
   const revealTargets = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window && revealTargets.length) {
     const io = new IntersectionObserver(
@@ -58,325 +99,393 @@
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
     );
     revealTargets.forEach((el) => io.observe(el));
   } else {
     revealTargets.forEach((el) => el.classList.add("is-visible"));
   }
 
-  
   const IMG = {
-    petra: "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury),_Petra,_Jordan.jpg",
-    petra2: "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury)_2,_Petra,_Jordan.jpg",
-    wadirum: "https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_27.JPG",
-    wadirum2: "https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_16.JPG",
-    amman: "https://commons.wikimedia.org/wiki/Special:FilePath/Amman_Citadel.jpg",
-    ammanDowntown: "https://commons.wikimedia.org/wiki/Special:FilePath/AmmanDowntown.jpg",
-    deadsea: "https://commons.wikimedia.org/wiki/Special:FilePath/Dead_Sea_by_David_Shankbone.jpg",
-    jerash: "https://commons.wikimedia.org/wiki/Special:FilePath/Jerash_City.jpg",
+    petra:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury),_Petra,_Jordan.jpg",
+    petra2:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury)_2,_Petra,_Jordan.jpg",
+    wadirum:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_27.JPG",
+    wadirum2:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_16.JPG",
+    amman:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Amman_Citadel.jpg",
+    ammanDowntown:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/AmmanDowntown.jpg",
+    deadsea:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Dead_Sea_by_David_Shankbone.jpg",
+    jerash:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Jerash_City.jpg",
     aqaba: "https://commons.wikimedia.org/wiki/Special:FilePath/Aqaba_BW_2.JPG",
   };
 
   const EXPERIENCES = [
     {
       id: "petra-explorer",
-      name: "Petra Explorer",
+      name: window.I18n.source("text.242"),
       location: "petra",
       interests: ["history", "culture", "photography"],
       time: "1-day",
       walking: "active",
       budget: "moderate",
       image: IMG.petra,
-      duration: "Full day",
-      budgetLabel: "25–40 JOD",
-      description:
-        "Walk the Siq at first light and watch the Treasury reveal itself, then wander past the Royal Tombs with a local guide who knows where the crowds aren't.",
-      tags: ["History", "Culture", "Photography"],
+      duration: window.I18n.source("text.243"),
+      budgetLabel: window.I18n.source("price.0"),
+      description: window.I18n.source("text.244"),
+      tags: [
+        window.I18n.source("text.245"),
+        window.I18n.source("text.134"),
+        window.I18n.source("text.246"),
+      ],
       highlights: [
-        "Enter through the Siq before the tour buses arrive",
-        "Meet a Bedouin family running tea stalls inside the site",
-        "Climb to a quiet viewpoint above the Treasury",
+        window.I18n.source("text.247"),
+        window.I18n.source("text.248"),
+        window.I18n.source("text.249"),
       ],
     },
     {
       id: "petra-by-night",
-      name: "Petra at Golden Hour",
+      name: window.I18n.source("text.250"),
       location: "petra",
       interests: ["photography", "history", "relaxation"],
       time: "few-hours",
       walking: "some",
       budget: "moderate",
       image: IMG.petra2,
-      duration: "3 hours",
-      budgetLabel: "15–25 JOD",
-      description:
-        "A shorter, slower visit timed for the light — the Siq glows rose-gold in late afternoon and the crowds thin out fast.",
-      tags: ["Photography", "History"],
+      duration: window.I18n.source("duration.3"),
+      budgetLabel: window.I18n.source("price.1"),
+      description: window.I18n.source("text.251"),
+      tags: [window.I18n.source("text.246"), window.I18n.source("text.245")],
       highlights: [
-        "Best light for photos, roughly 4pm onward",
-        "Easy pace, minimal climbing required",
-        "Finish with mint tea across from the Treasury",
+        window.I18n.source("text.252"),
+        window.I18n.source("text.253"),
+        window.I18n.source("text.254"),
       ],
     },
     {
       id: "little-petra",
-      name: "Little Petra & Bedouin Village",
+      name: window.I18n.source("text.255"),
       location: "petra",
       interests: ["history", "culture", "adventure"],
       time: "half-day",
       walking: "active",
       budget: "budget",
       image: IMG.petra,
-      duration: "4 hours",
-      budgetLabel: "10–18 JOD",
-      description:
-        "Skip the crowds at Siq al-Barid, Petra's quieter sibling, then share a meal with a Bedouin family in the surrounding hills.",
-      tags: ["History", "Culture", "Adventure"],
+      duration: window.I18n.source("duration.4"),
+      budgetLabel: window.I18n.source("price.2"),
+      description: window.I18n.source("text.256"),
+      tags: [
+        window.I18n.source("text.245"),
+        window.I18n.source("text.134"),
+        window.I18n.source("text.257"),
+      ],
       highlights: [
-        "Explore carved facades with almost nobody around",
-        "Learn how caravan traders once used this route",
-        "Share flatbread baked in a saj oven",
+        window.I18n.source("text.258"),
+        window.I18n.source("text.259"),
+        window.I18n.source("text.260"),
       ],
     },
     {
       id: "wadi-rum-adventure",
-      name: "Wadi Rum Desert Adventure",
+      name: window.I18n.source("text.261"),
       location: "wadi-rum",
       interests: ["adventure", "nature", "photography"],
       time: "1-day",
       walking: "very-active",
       budget: "premium",
       image: IMG.wadirum,
-      duration: "Full day",
-      budgetLabel: "45–70 JOD",
-      description:
-        "4x4 across the red dunes, a scramble up a rock bridge, and sandboarding before sunset paints the mountains copper.",
-      tags: ["Adventure", "Nature", "Photography"],
+      duration: window.I18n.source("text.243"),
+      budgetLabel: window.I18n.source("price.3"),
+      description: window.I18n.source("text.262"),
+      tags: [
+        window.I18n.source("text.257"),
+        window.I18n.source("text.135"),
+        window.I18n.source("text.246"),
+      ],
       highlights: [
-        "Jeep route through Khazali Canyon and the dunes",
-        "Climb Burdah Rock Bridge with a Bedouin guide",
-        "Watch sunset from the top of a sand dune",
+        window.I18n.source("text.263"),
+        window.I18n.source("text.264"),
+        window.I18n.source("text.265"),
       ],
     },
     {
       id: "wadi-rum-night",
-      name: "Wadi Rum Bedouin Night",
+      name: window.I18n.source("text.266"),
       location: "wadi-rum",
       interests: ["culture", "relaxation", "nature"],
       time: "2-3-days",
       walking: "minimal",
       budget: "moderate",
       image: IMG.wadirum2,
-      duration: "Overnight",
-      budgetLabel: "35–55 JOD",
-      description:
-        "Sleep under more stars than you knew existed, after a zarb dinner cooked in a pit beneath the sand.",
-      tags: ["Culture", "Relaxation", "Nature"],
+      duration: window.I18n.source("text.267"),
+      budgetLabel: window.I18n.source("price.4"),
+      description: window.I18n.source("text.268"),
+      tags: [
+        window.I18n.source("text.134"),
+        window.I18n.source("text.269"),
+        window.I18n.source("text.135"),
+      ],
       highlights: [
-        "Zarb dinner, slow-cooked underground",
-        "Storytelling and music around the fire",
-        "Sunrise tea outside your tent",
+        window.I18n.source("text.270"),
+        window.I18n.source("text.271"),
+        window.I18n.source("text.272"),
       ],
     },
     {
       id: "wadi-rum-sunrise",
-      name: "Wadi Rum Sunrise Hike",
+      name: window.I18n.source("text.273"),
       location: "wadi-rum",
       interests: ["adventure", "nature", "photography"],
       time: "few-hours",
       walking: "very-active",
       budget: "budget",
       image: IMG.wadirum,
-      duration: "3 hours",
-      budgetLabel: "12–20 JOD",
-      description:
-        "An early scramble up a sandstone ridge for a sunrise that turns the whole valley pink, then breakfast with a Bedouin family.",
-      tags: ["Adventure", "Nature", "Photography"],
+      duration: window.I18n.source("duration.3"),
+      budgetLabel: window.I18n.source("price.5"),
+      description: window.I18n.source("text.274"),
+      tags: [
+        window.I18n.source("text.257"),
+        window.I18n.source("text.135"),
+        window.I18n.source("text.246"),
+      ],
       highlights: [
-        "Meet your guide before dawn",
-        "Moderate scramble, no climbing experience needed",
-        "Bedouin breakfast overlooking the valley",
+        window.I18n.source("text.275"),
+        window.I18n.source("text.276"),
+        window.I18n.source("text.277"),
       ],
     },
     {
       id: "amman-food-culture",
-      name: "Amman Food & Culture Walk",
+      name: window.I18n.source("text.278"),
       location: "amman",
       interests: ["food", "culture", "history"],
       time: "half-day",
       walking: "some",
       budget: "budget",
       image: IMG.ammanDowntown,
-      duration: "3.5 hours",
-      budgetLabel: "8–15 JOD",
-      description:
-        "Downtown's gold souk, spice stalls and the best knafeh in the city, with stops at a Roman theatre along the way.",
-      tags: ["Food", "Culture", "History"],
+      duration: window.I18n.source("duration.35"),
+      budgetLabel: window.I18n.source("price.6"),
+      description: window.I18n.source("text.279"),
+      tags: [
+        window.I18n.source("text.131"),
+        window.I18n.source("text.134"),
+        window.I18n.source("text.245"),
+      ],
       highlights: [
-        "Taste knafeh at a decades-old sweet shop",
-        "Browse the gold and spice souks",
-        "Stand inside the 2nd-century Roman Theatre",
+        window.I18n.source("text.280"),
+        window.I18n.source("text.281"),
+        window.I18n.source("text.282"),
       ],
     },
     {
       id: "amman-different-side",
-      name: "A Different Side of Amman",
+      name: window.I18n.source("text.283"),
       location: "amman",
       interests: ["culture", "nightlife", "food"],
       time: "half-day",
       walking: "some",
       budget: "moderate",
       image: IMG.ammanDowntown,
-      duration: "4 hours",
-      budgetLabel: "15–25 JOD",
-      description:
-        "Rainbow Street cafés, independent art spaces and a rooftop dinner with a view over the seven hills.",
-      tags: ["Culture", "Nightlife", "Food"],
+      duration: window.I18n.source("duration.4"),
+      budgetLabel: window.I18n.source("price.1"),
+      description: window.I18n.source("text.284"),
+      tags: [
+        window.I18n.source("text.134"),
+        window.I18n.source("text.285"),
+        window.I18n.source("text.131"),
+      ],
       highlights: [
-        "Coffee at a family-run Rainbow Street café",
-        "Browse a local design and print studio",
-        "Rooftop dinner as the city lights come on",
+        window.I18n.source("text.286"),
+        window.I18n.source("text.287"),
+        window.I18n.source("text.288"),
       ],
     },
     {
       id: "amman-family-trail",
-      name: "Amman Family Discovery Trail",
+      name: window.I18n.source("text.289"),
       location: "amman",
       interests: ["family", "culture", "food"],
       time: "half-day",
       walking: "minimal",
       budget: "budget",
       image: IMG.amman,
-      duration: "3 hours",
-      budgetLabel: "10–18 JOD",
-      description:
-        "An easy citadel visit, a hands-on mosaic craft stop, and ice cream on the way back down — built for travelling with kids.",
-      tags: ["Family", "Culture", "Food"],
+      duration: window.I18n.source("duration.3"),
+      budgetLabel: window.I18n.source("price.2"),
+      description: window.I18n.source("text.290"),
+      tags: [
+        window.I18n.source("text.291"),
+        window.I18n.source("text.134"),
+        window.I18n.source("text.131"),
+      ],
       highlights: [
-        "Short, shaded walk around the Citadel ruins",
-        "Try a 20-minute mosaic workshop",
-        "Finish with Amman's best booza (ice cream)",
+        window.I18n.source("text.292"),
+        window.I18n.source("text.293"),
+        window.I18n.source("text.294"),
       ],
     },
     {
       id: "artisan-studio",
-      name: "Artisan Pottery & Mosaic Studio",
+      name: window.I18n.source("text.295"),
       location: "amman",
       interests: ["culture", "family", "food"],
       time: "few-hours",
       walking: "minimal",
       budget: "moderate",
       image: IMG.ammanDowntown,
-      duration: "2.5 hours",
-      budgetLabel: "18–28 JOD",
-      description:
-        "Sit at the wheel with a third-generation potter and take home something you shaped with your own hands.",
-      tags: ["Culture", "Family", "Food"],
+      duration: window.I18n.source("duration.25"),
+      budgetLabel: window.I18n.source("price.7"),
+      description: window.I18n.source("text.296"),
+      tags: [
+        window.I18n.source("text.134"),
+        window.I18n.source("text.291"),
+        window.I18n.source("text.131"),
+      ],
       highlights: [
-        "Hands-on pottery lesson with a local maker",
-        "Mint tea and sweets while pieces dry",
-        "Take your piece home, fired and packed",
+        window.I18n.source("text.297"),
+        window.I18n.source("text.298"),
+        window.I18n.source("text.299"),
       ],
     },
     {
       id: "dead-sea-float",
-      name: "Dead Sea Float & Spa",
+      name: window.I18n.source("text.300"),
       location: "dead-sea",
       interests: ["relaxation", "nature", "family"],
       time: "half-day",
       walking: "minimal",
       budget: "premium",
       image: IMG.deadsea,
-      duration: "4 hours",
-      budgetLabel: "30–60 JOD",
-      description:
-        "Float in the saltiest water on earth, cover yourself in mineral mud, then rinse off with a view over the lowest point on the planet.",
-      tags: ["Relaxation", "Nature", "Family"],
+      duration: window.I18n.source("duration.4"),
+      budgetLabel: window.I18n.source("price.8"),
+      description: window.I18n.source("text.301"),
+      tags: [
+        window.I18n.source("text.269"),
+        window.I18n.source("text.135"),
+        window.I18n.source("text.291"),
+      ],
       highlights: [
-        "Guided first float — trickier than it looks",
-        "Free access to mineral mud stations",
-        "Sunset views across to the West Bank hills",
+        window.I18n.source("text.302"),
+        window.I18n.source("text.303"),
+        window.I18n.source("text.304"),
       ],
     },
     {
       id: "aqaba-dive",
-      name: "Aqaba Red Sea Discovery",
+      name: window.I18n.source("text.305"),
       location: "aqaba",
       interests: ["adventure", "nature", "photography"],
       time: "1-day",
       walking: "some",
       budget: "premium",
       image: IMG.aqaba,
-      duration: "Full day",
-      budgetLabel: "40–65 JOD",
-      description:
-        "Snorkel or dive over coral reefs and a sunken tank, then eat fresh-grilled fish on the beach as the sun drops behind Eilat.",
-      tags: ["Adventure", "Nature", "Photography"],
+      duration: window.I18n.source("text.243"),
+      budgetLabel: window.I18n.source("price.9"),
+      description: window.I18n.source("text.306"),
+      tags: [
+        window.I18n.source("text.257"),
+        window.I18n.source("text.135"),
+        window.I18n.source("text.246"),
+      ],
       highlights: [
-        "Boat trip to two reef sites",
-        "Beginner-friendly, gear included",
-        "Grilled fish lunch on the shore",
+        window.I18n.source("text.307"),
+        window.I18n.source("text.308"),
+        window.I18n.source("text.309"),
       ],
     },
     {
       id: "aqaba-sunset-sail",
-      name: "Aqaba Sunset Sail",
+      name: window.I18n.source("text.310"),
       location: "aqaba",
       interests: ["relaxation", "nightlife", "nature"],
       time: "few-hours",
       walking: "minimal",
       budget: "moderate",
       image: IMG.aqaba,
-      duration: "2.5 hours",
-      budgetLabel: "20–35 JOD",
-      description:
-        "A slow boat out on the Gulf of Aqaba, four countries visible at once, and dinner back on the marina.",
-      tags: ["Relaxation", "Nightlife", "Nature"],
+      duration: window.I18n.source("duration.25"),
+      budgetLabel: window.I18n.source("price.10"),
+      description: window.I18n.source("text.311"),
+      tags: [
+        window.I18n.source("text.269"),
+        window.I18n.source("text.285"),
+        window.I18n.source("text.135"),
+      ],
       highlights: [
-        "See Jordan, Israel, Egypt and Saudi Arabia at once",
-        "Swim stop weather permitting",
-        "Marina dinner recommendation included",
+        window.I18n.source("text.312"),
+        window.I18n.source("text.313"),
+        window.I18n.source("text.314"),
       ],
     },
     {
       id: "jerash-roman-walk",
-      name: "Jerash Roman Time Walk",
+      name: window.I18n.source("text.315"),
       location: "jerash",
       interests: ["history", "culture", "photography"],
       time: "half-day",
       walking: "active",
       budget: "budget",
       image: IMG.jerash,
-      duration: "3.5 hours",
-      budgetLabel: "10–20 JOD",
-      description:
-        "One of the best-preserved Roman cities anywhere, from Hadrian's Arch to the columned Oval Plaza — usually with hardly a crowd in sight.",
-      tags: ["History", "Culture", "Photography"],
+      duration: window.I18n.source("duration.35"),
+      budgetLabel: window.I18n.source("price.11"),
+      description: window.I18n.source("text.316"),
+      tags: [
+        window.I18n.source("text.245"),
+        window.I18n.source("text.134"),
+        window.I18n.source("text.246"),
+      ],
       highlights: [
-        "Walk the full Cardo colonnaded street",
-        "Stand at the centre of the Oval Plaza",
-        "Catch a chariot-race re-enactment if timed right",
+        window.I18n.source("text.317"),
+        window.I18n.source("text.318"),
+        window.I18n.source("text.319"),
       ],
     },
   ];
 
   /* ===== More places across Jordan (added) ===== */
   const LOCATION_NAMES = {
-    amman: "Amman", petra: "Petra", "wadi-rum": "Wadi Rum", aqaba: "Aqaba", "dead-sea": "Dead Sea", jerash: "Jerash",
-    madaba: "Madaba & Mount Nebo", karak: "Karak", shobak: "Shobak", ajloun: "Ajloun", "umm-qais": "Umm Qais",
-    pella: "Pella", salt: "Salt", dana: "Dana", "wadi-mujib": "Wadi Mujib", azraq: "Azraq",
-    "baptism-site": "Baptism Site (Al-Maghtas)", anywhere: "Across Jordan",
+    amman: window.I18n.source("text.035"),
+    petra: window.I18n.source("text.034"),
+    "wadi-rum": window.I18n.source("text.181"),
+    aqaba: window.I18n.source("text.182"),
+    "dead-sea": window.I18n.source("text.184"),
+    jerash: window.I18n.source("text.183"),
+    madaba: window.I18n.source("text.320"),
+    karak: window.I18n.source("text.321"),
+    shobak: window.I18n.source("text.322"),
+    ajloun: window.I18n.source("text.323"),
+    "umm-qais": window.I18n.source("text.324"),
+    pella: window.I18n.source("text.325"),
+    salt: window.I18n.source("text.326"),
+    dana: window.I18n.source("text.327"),
+    "wadi-mujib": window.I18n.source("text.328"),
+    azraq: window.I18n.source("text.329"),
+    "baptism-site": window.I18n.source("text.330"),
+    anywhere: window.I18n.source("text.178"),
   };
 
   // Photos for these are looked up on Wikipedia at runtime (see resolveImage); `image` is the fallback.
   const wikiCache = {};
   function resolveImage(exp, imgEl) {
     if (!exp.wiki || !imgEl) return;
-    imgEl.onerror = function () { imgEl.onerror = null; imgEl.src = exp.image; };
-    if (exp._resolved) { imgEl.src = exp._resolved; return; }
+    imgEl.onerror = function () {
+      imgEl.onerror = null;
+      imgEl.src = exp.image;
+    };
+    if (exp._resolved) {
+      imgEl.src = exp._resolved;
+      return;
+    }
     if (wikiCache[exp.wiki] === undefined) {
-      wikiCache[exp.wiki] = fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(exp.wiki))
+      wikiCache[exp.wiki] = fetch(
+        "https://en.wikipedia.org/api/rest_v1/page/summary/" +
+          encodeURIComponent(exp.wiki),
+      )
         .then((r) => (r.ok ? r.json() : null))
         .then((d) => {
           const t = d && d.thumbnail && d.thumbnail.source;
@@ -384,182 +493,665 @@
         })
         .catch(() => null);
     }
-    wikiCache[exp.wiki].then((src) => { if (src) { exp._resolved = src; imgEl.src = src; } });
+    wikiCache[exp.wiki].then((src) => {
+      if (src) {
+        exp._resolved = src;
+        imgEl.src = src;
+      }
+    });
   }
 
   const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-  function X(id, name, location, wiki, fb, interests, time, walking, budget, duration, description, highlights) {
+  function X(
+    id,
+    name,
+    location,
+    wiki,
+    fb,
+    interests,
+    time,
+    walking,
+    budget,
+    duration,
+    description,
+    highlights,
+  ) {
     return {
-      id, name, location, wiki, image: fb, interests, time, walking, budget, duration,
-      budgetLabel: "check current prices", description,
-      tags: interests.slice(0, 3).map(cap), highlights,
+      id,
+      name,
+      location,
+      wiki,
+      image: fb,
+      interests,
+      time,
+      walking,
+      budget,
+      duration,
+      budgetLabel: window.I18n.source("text.331"),
+      description,
+      tags: interests.slice(0, 3).map(cap),
+      highlights,
     };
   }
 
   EXPERIENCES.push(
-    X("petra-monastery-trek", "Petra Monastery & High Place Trek", "petra", "Ad_Deir", IMG.petra2,
-      ["adventure", "history", "photography"], "1-day", "very-active", "moderate", "Full day",
-      "Climb the rock-cut stairway to the Monastery, then take in the wide views from the High Place of Sacrifice trail.",
-      ["Climb the long stairway up to Ad Deir", "Rest at a viewpoint with desert views", "Start early to beat the heat"]),
+    X(
+      "petra-monastery-trek",
+      window.I18n.source("text.332"),
+      "petra",
+      "Ad_Deir",
+      IMG.petra2,
+      ["adventure", "history", "photography"],
+      "1-day",
+      "very-active",
+      "moderate",
+      window.I18n.source("text.243"),
+      window.I18n.source("text.333"),
+      [
+        window.I18n.source("text.334"),
+        window.I18n.source("text.335"),
+        window.I18n.source("text.336"),
+      ],
+    ),
 
-    X("dead-sea-resort-day", "Dead Sea Float & Spa Day", "dead-sea", "Dead_Sea", IMG.deadsea,
-      ["relaxation", "family", "nature"], "half-day", "minimal", "premium", "5 hours",
-      "Float in the saltiest water you will ever swim in, coat yourself in mineral mud and unwind by the lowest point on land.",
-      ["Float effortlessly in the Dead Sea", "Try the mineral mud", "Relax at a resort pool or spa"]),
+    X(
+      "dead-sea-resort-day",
+      window.I18n.source("text.337"),
+      "dead-sea",
+      "Dead_Sea",
+      IMG.deadsea,
+      ["relaxation", "family", "nature"],
+      "half-day",
+      "minimal",
+      "premium",
+      window.I18n.source("duration.5"),
+      window.I18n.source("text.338"),
+      [
+        window.I18n.source("text.339"),
+        window.I18n.source("text.340"),
+        window.I18n.source("text.341"),
+      ],
+    ),
 
-    X("aqaba-snorkel", "Red Sea Snorkel & Glass-Bottom Boat", "aqaba", "Aqaba", IMG.aqaba,
-      ["nature", "family", "relaxation"], "half-day", "minimal", "moderate", "4 hours",
-      "Drift over the coral reefs of the Gulf of Aqaba by boat or with a mask and snorkel, with no experience needed.",
-      ["Snorkel over colorful reefs", "See the reef from a glass-bottom boat", "Swim and sunbathe on the Red Sea coast"]),
+    X(
+      "aqaba-snorkel",
+      window.I18n.source("text.342"),
+      "aqaba",
+      window.I18n.source("text.182"),
+      IMG.aqaba,
+      ["nature", "family", "relaxation"],
+      "half-day",
+      "minimal",
+      "moderate",
+      window.I18n.source("duration.4"),
+      window.I18n.source("text.343"),
+      [
+        window.I18n.source("text.344"),
+        window.I18n.source("text.345"),
+        window.I18n.source("text.346"),
+      ],
+    ),
 
-    X("aqaba-old-town", "Aqaba Fort & Seafront Walk", "aqaba", "Aqaba_Fort", IMG.aqaba,
-      ["food", "culture", "history"], "few-hours", "some", "budget", "3 hours",
-      "Visit Aqaba Fort, wander the town centre and finish with a meal by the sea.",
-      ["Explore Aqaba Fort", "Stroll the seafront at sunset", "Eat fresh seafood in town"]),
+    X(
+      "aqaba-old-town",
+      window.I18n.source("text.347"),
+      "aqaba",
+      "Aqaba_Fort",
+      IMG.aqaba,
+      ["food", "culture", "history"],
+      "few-hours",
+      "some",
+      "budget",
+      window.I18n.source("duration.3"),
+      window.I18n.source("text.348"),
+      [
+        window.I18n.source("text.349"),
+        window.I18n.source("text.350"),
+        window.I18n.source("text.351"),
+      ],
+    ),
 
-    X("jerash-local-guide", "Jerash with a Local Guide", "jerash", "Jerash", IMG.jerash,
-      ["history", "culture", "food"], "1-day", "active", "moderate", "Full day",
-      "Go beyond the columns: a guide brings the temples, theatres and streets of Jerash to life, followed by a local lunch.",
-      ["Hear the stories behind the Temple of Artemis", "Walk the colonnaded main street", "Have lunch at a local restaurant nearby"]),
+    X(
+      "jerash-local-guide",
+      window.I18n.source("text.352"),
+      "jerash",
+      window.I18n.source("text.183"),
+      IMG.jerash,
+      ["history", "culture", "food"],
+      "1-day",
+      "active",
+      "moderate",
+      window.I18n.source("text.243"),
+      window.I18n.source("text.353"),
+      [
+        window.I18n.source("text.354"),
+        window.I18n.source("text.355"),
+        window.I18n.source("text.356"),
+      ],
+    ),
 
-    X("amman-roman-citadel", "Amman Citadel & Roman Theatre", "amman", "Roman_Theatre_(Amman)", IMG.amman,
-      ["history", "culture", "family"], "few-hours", "some", "budget", "3 hours",
-      "Climb the Citadel hill for city views, then walk down to the Roman Theatre in the heart of downtown.",
-      ["Explore the Temple of Hercules on the Citadel", "See the Roman Theatre downtown", "Finish with coffee in the old market"]),
+    X(
+      "amman-roman-citadel",
+      window.I18n.source("text.357"),
+      "amman",
+      "Roman_Theatre_(Amman)",
+      IMG.amman,
+      ["history", "culture", "family"],
+      "few-hours",
+      "some",
+      "budget",
+      window.I18n.source("duration.3"),
+      window.I18n.source("text.358"),
+      [
+        window.I18n.source("text.359"),
+        window.I18n.source("text.360"),
+        window.I18n.source("text.361"),
+      ],
+    ),
 
-    X("madaba-mosaics", "Madaba Mosaics & Old Town", "madaba", "Madaba", IMG.ammanDowntown,
-      ["history", "culture", "photography"], "few-hours", "some", "budget", "3 hours",
-      "Known as the City of Mosaics, Madaba keeps a famous Byzantine mosaic map of the Holy Land on the floor of St George's Church.",
-      ["See the Byzantine mosaic map at St George's Church", "Visit a mosaic workshop", "Wander the old town streets"]),
+    X(
+      "madaba-mosaics",
+      window.I18n.source("text.362"),
+      "madaba",
+      window.I18n.source("text.363"),
+      IMG.ammanDowntown,
+      ["history", "culture", "photography"],
+      "few-hours",
+      "some",
+      "budget",
+      window.I18n.source("duration.3"),
+      window.I18n.source("text.364"),
+      [
+        window.I18n.source("text.365"),
+        window.I18n.source("text.366"),
+        window.I18n.source("text.367"),
+      ],
+    ),
 
-    X("mount-nebo-view", "Mount Nebo Viewpoint", "madaba", "Mount_Nebo", IMG.deadsea,
-      ["history", "nature", "photography"], "half-day", "some", "budget", "3 hours",
-      "Stand where tradition says Moses looked out over the Promised Land, with sweeping views of the Jordan Valley and Dead Sea.",
-      ["Take in the panorama over the valley and Dead Sea", "Visit the memorial church and its mosaics", "Time it for late afternoon light"]),
+    X(
+      "mount-nebo-view",
+      window.I18n.source("text.368"),
+      "madaba",
+      "Mount_Nebo",
+      IMG.deadsea,
+      ["history", "nature", "photography"],
+      "half-day",
+      "some",
+      "budget",
+      window.I18n.source("duration.3"),
+      window.I18n.source("text.369"),
+      [
+        window.I18n.source("text.370"),
+        window.I18n.source("text.371"),
+        window.I18n.source("text.372"),
+      ],
+    ),
 
-    X("main-hot-springs", "Ma'in Hot Springs Soak", "madaba", "Hammamat_Ma'in", IMG.deadsea,
-      ["relaxation", "nature", "family"], "half-day", "minimal", "moderate", "4 hours",
-      "Soak in naturally hot waterfalls and pools set in a desert valley near Madaba.",
-      ["Relax in warm mineral pools", "Walk up to the hot waterfalls", "Combine it with a Dead Sea day"]),
+    X(
+      "main-hot-springs",
+      window.I18n.source("text.373"),
+      "madaba",
+      "Hammamat_Ma'in",
+      IMG.deadsea,
+      ["relaxation", "nature", "family"],
+      "half-day",
+      "minimal",
+      "moderate",
+      window.I18n.source("duration.4"),
+      window.I18n.source("text.374"),
+      [
+        window.I18n.source("text.375"),
+        window.I18n.source("text.376"),
+        window.I18n.source("text.377"),
+      ],
+    ),
 
-    X("karak-castle", "Karak Castle & Town", "karak", "Kerak_Castle", IMG.wadirum,
-      ["history", "culture", "photography"], "half-day", "active", "budget", "4 hours",
-      "Explore a large Crusader-era castle on a hilltop, with long vaulted corridors and views over the surrounding valleys.",
-      ["Wander the vaulted halls and passages", "Look out over the countryside from the walls", "Try a local meal in Karak town"]),
+    X(
+      "karak-castle",
+      window.I18n.source("text.378"),
+      "karak",
+      "Kerak_Castle",
+      IMG.wadirum,
+      ["history", "culture", "photography"],
+      "half-day",
+      "active",
+      "budget",
+      window.I18n.source("duration.4"),
+      window.I18n.source("text.379"),
+      [
+        window.I18n.source("text.380"),
+        window.I18n.source("text.381"),
+        window.I18n.source("text.382"),
+      ],
+    ),
 
-    X("kings-highway-trip", "King's Highway Road Trip", "karak", "King's_Highway_(Transjordan)", IMG.wadirum,
-      ["history", "adventure", "photography"], "2-3-days", "some", "moderate", "2-3 days",
-      "Follow the ancient route that links Madaba, Karak, Shobak and Petra, stopping at castles and canyon viewpoints along the way.",
-      ["Stop at Madaba, Karak and Shobak", "Drive past dramatic canyon viewpoints", "End the trip in Petra"]),
+    X(
+      "kings-highway-trip",
+      window.I18n.source("text.383"),
+      "karak",
+      "King's_Highway_(Transjordan)",
+      IMG.wadirum,
+      ["history", "adventure", "photography"],
+      "2-3-days",
+      "some",
+      "moderate",
+      window.I18n.source("duration.days"),
+      window.I18n.source("text.384"),
+      [
+        window.I18n.source("text.385"),
+        window.I18n.source("text.386"),
+        window.I18n.source("text.387"),
+      ],
+    ),
 
-    X("shobak-castle", "Shobak Crusader Castle", "shobak", "Shobak_Castle", IMG.wadirum,
-      ["history", "photography", "adventure"], "few-hours", "active", "budget", "2-3 hours",
-      "Visit the Crusader fortress of Shobak, perched on a hill between Karak and Petra and often much quieter than the big sites.",
-      ["Explore the ruined fortress", "Take in the views over the valley", "Pair it with a visit to Petra"]),
+    X(
+      "shobak-castle",
+      window.I18n.source("text.388"),
+      "shobak",
+      "Shobak_Castle",
+      IMG.wadirum,
+      ["history", "photography", "adventure"],
+      "few-hours",
+      "active",
+      "budget",
+      window.I18n.source("duration.2to3"),
+      window.I18n.source("text.389"),
+      [
+        window.I18n.source("text.390"),
+        window.I18n.source("text.391"),
+        window.I18n.source("text.392"),
+      ],
+    ),
 
-    X("ajloun-castle-forest", "Ajloun Castle & Forest Trails", "ajloun", "Ajloun_Castle", IMG.jerash,
-      ["history", "nature", "family"], "half-day", "some", "budget", "4 hours",
-      "Visit a hilltop castle from the Ayyubid era, then walk among the oak and pine woods of northern Jordan.",
-      ["Climb through the castle's halls and towers", "See the Jordan Valley from the top", "Walk a forest trail in the hills"]),
+    X(
+      "ajloun-castle-forest",
+      window.I18n.source("text.393"),
+      "ajloun",
+      "Ajloun_Castle",
+      IMG.jerash,
+      ["history", "nature", "family"],
+      "half-day",
+      "some",
+      "budget",
+      window.I18n.source("duration.4"),
+      window.I18n.source("text.394"),
+      [
+        window.I18n.source("text.395"),
+        window.I18n.source("text.396"),
+        window.I18n.source("text.397"),
+      ],
+    ),
 
-    X("umm-qais-sunset", "Umm Qais (Gadara) at Sunset", "umm-qais", "Umm_Qais", IMG.jerash,
-      ["history", "photography", "nature"], "half-day", "some", "budget", "3-4 hours",
-      "Explore the ancient ruins of Gadara, including a theatre of black basalt, with views across to the Sea of Galilee and the Golan Heights.",
-      ["See the black basalt theatre", "Walk the old colonnaded street", "Watch the sunset over the valley"]),
+    X(
+      "umm-qais-sunset",
+      window.I18n.source("text.398"),
+      "umm-qais",
+      "Umm_Qais",
+      IMG.jerash,
+      ["history", "photography", "nature"],
+      "half-day",
+      "some",
+      "budget",
+      window.I18n.source("duration.34"),
+      window.I18n.source("text.399"),
+      [
+        window.I18n.source("text.400"),
+        window.I18n.source("text.401"),
+        window.I18n.source("text.402"),
+      ],
+    ),
 
-    X("pella-ruins", "Pella Hilltop Ruins", "pella", "Pella,_Jordan", IMG.jerash,
-      ["history", "nature", "family"], "half-day", "some", "budget", "3 hours",
-      "Explore the remains of Pella, one of the ancient Decapolis cities, overlooking the Jordan Valley and usually a quiet visit.",
-      ["Walk among ruins from many different eras", "Enjoy valley views from the hill", "Bring water, shade is limited"]),
+    X(
+      "pella-ruins",
+      window.I18n.source("text.403"),
+      "pella",
+      "Pella,_Jordan",
+      IMG.jerash,
+      ["history", "nature", "family"],
+      "half-day",
+      "some",
+      "budget",
+      window.I18n.source("duration.3"),
+      window.I18n.source("text.404"),
+      [
+        window.I18n.source("text.405"),
+        window.I18n.source("text.406"),
+        window.I18n.source("text.407"),
+      ],
+    ),
 
-    X("salt-old-town", "Salt Old Town Walk", "salt", "As-Salt", IMG.ammanDowntown,
-      ["culture", "history", "food"], "few-hours", "some", "budget", "3 hours",
-      "Walk the hillside streets of Salt, known for its Ottoman-era stone buildings and listed as a UNESCO World Heritage site.",
-      ["Admire the old limestone houses", "Browse the local market", "Stop for tea or coffee with the locals"]),
+    X(
+      "salt-old-town",
+      window.I18n.source("text.408"),
+      "salt",
+      window.I18n.source("text.409"),
+      IMG.ammanDowntown,
+      ["culture", "history", "food"],
+      "few-hours",
+      "some",
+      "budget",
+      window.I18n.source("duration.3"),
+      window.I18n.source("text.410"),
+      [
+        window.I18n.source("text.411"),
+        window.I18n.source("text.412"),
+        window.I18n.source("text.413"),
+      ],
+    ),
 
-    X("dana-hike", "Dana Reserve Day Hike", "dana", "Dana_Biosphere_Reserve", IMG.wadirum2,
-      ["nature", "adventure", "photography"], "1-day", "active", "moderate", "Full day",
-      "Hike trails in Jordan's largest nature reserve, with sweeping views over Wadi Dana, best done with a local guide.",
-      ["Walk a marked reserve trail", "Look for wildlife and wildflowers (season permitting)", "Spend time in the village of Dana"]),
+    X(
+      "dana-hike",
+      window.I18n.source("text.414"),
+      "dana",
+      "Dana_Biosphere_Reserve",
+      IMG.wadirum2,
+      ["nature", "adventure", "photography"],
+      "1-day",
+      "active",
+      "moderate",
+      window.I18n.source("text.243"),
+      window.I18n.source("text.415"),
+      [
+        window.I18n.source("text.416"),
+        window.I18n.source("text.417"),
+        window.I18n.source("text.418"),
+      ],
+    ),
 
-    X("dana-feynan-trek", "Dana to Feynan Trek & Eco-lodge", "dana", "Feynan_Ecolodge", IMG.wadirum2,
-      ["adventure", "nature", "relaxation"], "2-3-days", "very-active", "premium", "2-3 days",
-      "A guided trek down from the highlands into the desert valley of Feynan, with a night at a remote eco-lodge.",
-      ["Trek with a local guide", "Stay overnight at an eco-lodge", "Enjoy a night sky with very little light"]),
+    X(
+      "dana-feynan-trek",
+      window.I18n.source("text.419"),
+      "dana",
+      "Feynan_Ecolodge",
+      IMG.wadirum2,
+      ["adventure", "nature", "relaxation"],
+      "2-3-days",
+      "very-active",
+      "premium",
+      window.I18n.source("duration.days"),
+      window.I18n.source("text.420"),
+      [
+        window.I18n.source("text.421"),
+        window.I18n.source("text.422"),
+        window.I18n.source("text.423"),
+      ],
+    ),
 
-    X("wadi-mujib-siq", "Wadi Mujib Siq Trail", "wadi-mujib", "Wadi_Mujib", IMG.deadsea,
-      ["adventure", "nature", "family"], "half-day", "very-active", "moderate", "3-4 hours",
-      "Wade and scramble through a narrow gorge on a water trail that is usually open only in the warmer months, so check before you go.",
-      ["Wade through cool water between canyon walls", "Wear water shoes and bring a change of clothes", "Check seasonal opening and flooding"]),
+    X(
+      "wadi-mujib-siq",
+      window.I18n.source("text.424"),
+      "wadi-mujib",
+      "Wadi_Mujib",
+      IMG.deadsea,
+      ["adventure", "nature", "family"],
+      "half-day",
+      "very-active",
+      "moderate",
+      window.I18n.source("duration.34"),
+      window.I18n.source("text.425"),
+      [
+        window.I18n.source("text.426"),
+        window.I18n.source("text.427"),
+        window.I18n.source("text.428"),
+      ],
+    ),
 
-    X("azraq-wetland-castle", "Azraq Wetland & Desert Castle", "azraq", "Azraq_Wetland_Reserve", IMG.wadirum2,
-      ["nature", "history", "family"], "half-day", "some", "budget", "4 hours",
-      "Visit an oasis in the eastern desert known for birdlife, then see the black basalt fortress that T. E. Lawrence used as a base.",
-      ["Walk the wetland reserve", "Look for birds, especially during migration seasons", "Explore the basalt castle"]),
+    X(
+      "azraq-wetland-castle",
+      window.I18n.source("text.429"),
+      "azraq",
+      "Azraq_Wetland_Reserve",
+      IMG.wadirum2,
+      ["nature", "history", "family"],
+      "half-day",
+      "some",
+      "budget",
+      window.I18n.source("duration.4"),
+      window.I18n.source("text.430"),
+      [
+        window.I18n.source("text.431"),
+        window.I18n.source("text.432"),
+        window.I18n.source("text.433"),
+      ],
+    ),
 
-    X("baptism-site-visit", "Baptism Site (Al-Maghtas) Visit", "baptism-site", "Al-Maghtas", IMG.deadsea,
-      ["history", "culture", "relaxation"], "few-hours", "some", "budget", "3 hours",
-      "Visit the UNESCO-listed site on the east bank of the Jordan River, traditionally linked to the baptism of Jesus.",
-      ["Walk the site with a guide", "See the Jordan River up close", "Combine it with a Dead Sea stop"]),
+    X(
+      "baptism-site-visit",
+      window.I18n.source("text.434"),
+      "baptism-site",
+      window.I18n.source("text.435"),
+      IMG.deadsea,
+      ["history", "culture", "relaxation"],
+      "few-hours",
+      "some",
+      "budget",
+      window.I18n.source("duration.3"),
+      window.I18n.source("text.436"),
+      [
+        window.I18n.source("text.437"),
+        window.I18n.source("text.438"),
+        window.I18n.source("text.439"),
+      ],
+    ),
 
-    X("umm-qais-lunch", "Umm Qais Ruins & Lunch with a View", "umm-qais", "Umm_Qais", IMG.jerash,
-      ["culture", "food", "history"], "few-hours", "minimal", "budget", "3 hours",
-      "A slower visit: a stroll through the Gadara ruins, then a meal at a local restaurant overlooking the valley.",
-      ["Walk the main ruins at an easy pace", "Enjoy the view across to the Sea of Galilee", "Have lunch at a local restaurant"]),
+    X(
+      "umm-qais-lunch",
+      window.I18n.source("text.440"),
+      "umm-qais",
+      "Umm_Qais",
+      IMG.jerash,
+      ["culture", "food", "history"],
+      "few-hours",
+      "minimal",
+      "budget",
+      window.I18n.source("duration.3"),
+      window.I18n.source("text.441"),
+      [
+        window.I18n.source("text.442"),
+        window.I18n.source("text.443"),
+        window.I18n.source("text.444"),
+      ],
+    ),
 
-    X("pella-valley-day", "Pella & Jordan Valley Day Out", "pella", "Pella,_Jordan", IMG.jerash,
-      ["history", "food", "family"], "1-day", "some", "budget", "Full day",
-      "Combine the hilltop ruins of Pella with a drive through the farmland of the Jordan Valley.",
-      ["Explore the ruins of Pella", "Drive through the fertile Jordan Valley", "Stop for a simple local meal"]),
+    X(
+      "pella-valley-day",
+      window.I18n.source("text.445"),
+      "pella",
+      "Pella,_Jordan",
+      IMG.jerash,
+      ["history", "food", "family"],
+      "1-day",
+      "some",
+      "budget",
+      window.I18n.source("text.243"),
+      window.I18n.source("text.446"),
+      [
+        window.I18n.source("text.447"),
+        window.I18n.source("text.448"),
+        window.I18n.source("text.449"),
+      ],
+    ),
 
-    X("salt-market-food", "Salt Market & Local Bites", "salt", "As-Salt", IMG.ammanDowntown,
-      ["food", "culture", "family"], "few-hours", "minimal", "budget", "2-3 hours",
-      "Taste your way through Salt's market streets and cafes, an easy half-day from Amman.",
-      ["Sample local snacks at market stalls", "Sit for tea or coffee in the old town", "Pick up local sweets to take home"]),
+    X(
+      "salt-market-food",
+      window.I18n.source("text.450"),
+      "salt",
+      window.I18n.source("text.409"),
+      IMG.ammanDowntown,
+      ["food", "culture", "family"],
+      "few-hours",
+      "minimal",
+      "budget",
+      window.I18n.source("duration.2to3"),
+      window.I18n.source("text.451"),
+      [
+        window.I18n.source("text.452"),
+        window.I18n.source("text.453"),
+        window.I18n.source("text.454"),
+      ],
+    ),
 
-    X("shobak-photo-walk", "Shobak Castle Photo Walk", "shobak", "Shobak_Castle", IMG.wadirum,
-      ["photography", "history", "nature"], "few-hours", "some", "budget", "2 hours",
-      "A short, photogenic visit to the hilltop castle, best in the soft light of early morning or late afternoon.",
-      ["Frame the castle against the hills", "Shoot the valley views from the walls", "Go early or late for better light"]),
+    X(
+      "shobak-photo-walk",
+      window.I18n.source("text.455"),
+      "shobak",
+      "Shobak_Castle",
+      IMG.wadirum,
+      ["photography", "history", "nature"],
+      "few-hours",
+      "some",
+      "budget",
+      window.I18n.source("duration.2"),
+      window.I18n.source("text.456"),
+      [
+        window.I18n.source("text.457"),
+        window.I18n.source("text.458"),
+        window.I18n.source("text.459"),
+      ],
+    ),
 
-    X("ajloun-forest-walk", "Ajloun Forest Reserve Walk", "ajloun", "Ajloun_Forest_Reserve", IMG.jerash,
-      ["nature", "family", "adventure"], "half-day", "active", "moderate", "4 hours",
-      "Walk the trails of Ajloun's wooded hills, with oak trees, wildflowers in season and fresh air far from the city.",
-      ["Hike a marked forest trail", "Look for wildflowers in spring", "Bring water and sturdy shoes"]),
+    X(
+      "ajloun-forest-walk",
+      window.I18n.source("text.460"),
+      "ajloun",
+      "Ajloun_Forest_Reserve",
+      IMG.jerash,
+      ["nature", "family", "adventure"],
+      "half-day",
+      "active",
+      "moderate",
+      window.I18n.source("duration.4"),
+      window.I18n.source("text.461"),
+      [
+        window.I18n.source("text.462"),
+        window.I18n.source("text.463"),
+        window.I18n.source("text.464"),
+      ],
+    ),
 
-    X("baptism-dead-sea-day", "Baptism Site & Dead Sea Day", "baptism-site", "Al-Maghtas", IMG.deadsea,
-      ["history", "relaxation", "culture"], "1-day", "some", "moderate", "Full day",
-      "Start at the Baptism Site on the Jordan River, then head to the Dead Sea for a float and some rest.",
-      ["Guided walk at the Baptism Site", "Float in the Dead Sea", "Relax by the shore in the afternoon"]),
+    X(
+      "baptism-dead-sea-day",
+      window.I18n.source("text.465"),
+      "baptism-site",
+      window.I18n.source("text.435"),
+      IMG.deadsea,
+      ["history", "relaxation", "culture"],
+      "1-day",
+      "some",
+      "moderate",
+      window.I18n.source("text.243"),
+      window.I18n.source("text.466"),
+      [
+        window.I18n.source("text.467"),
+        window.I18n.source("text.468"),
+        window.I18n.source("text.469"),
+      ],
+    ),
 
-    X("azraq-desert-castles", "Desert Castles Loop", "azraq", "Desert_castles", IMG.wadirum2,
-      ["history", "adventure", "photography"], "1-day", "some", "moderate", "Full day",
-      "Drive a loop through the eastern desert to see Umayyad-era desert castles, such as Qasr Amra and Qasr Kharana.",
-      ["Visit Qasr Amra and Qasr Kharana", "Stop at Azraq Castle", "Drive through open desert scenery"]),
+    X(
+      "azraq-desert-castles",
+      window.I18n.source("text.470"),
+      "azraq",
+      "Desert_castles",
+      IMG.wadirum2,
+      ["history", "adventure", "photography"],
+      "1-day",
+      "some",
+      "moderate",
+      window.I18n.source("text.243"),
+      window.I18n.source("text.471"),
+      [
+        window.I18n.source("text.472"),
+        window.I18n.source("text.473"),
+        window.I18n.source("text.474"),
+      ],
+    ),
 
-    X("mujib-dead-sea-road", "Mujib Gorge Viewpoints & Dead Sea Road", "wadi-mujib", "Wadi_Mujib", IMG.deadsea,
-      ["nature", "photography", "relaxation"], "few-hours", "minimal", "budget", "2-3 hours",
-      "A relaxed alternative to the water trail: stop at viewpoints along the Dead Sea road near the Mujib gorge.",
-      ["Take in views of the gorge and the Dead Sea", "Easy stops with almost no walking", "Good for photos in the morning light"]),
+    X(
+      "mujib-dead-sea-road",
+      window.I18n.source("text.475"),
+      "wadi-mujib",
+      "Wadi_Mujib",
+      IMG.deadsea,
+      ["nature", "photography", "relaxation"],
+      "few-hours",
+      "minimal",
+      "budget",
+      window.I18n.source("duration.2to3"),
+      window.I18n.source("text.476"),
+      [
+        window.I18n.source("text.477"),
+        window.I18n.source("text.478"),
+        window.I18n.source("text.479"),
+      ],
+    ),
 
-    X("classic-jordan-3days", "Classic Jordan in 3 Days", "anywhere", "Jordan", IMG.petra,
-      ["history", "adventure", "photography"], "2-3-days", "active", "moderate", "3 days",
-      "A first-time route linking the big names: start in Amman, spend a day in Petra, and finish in Wadi Rum.",
-      ["Day 1: Amman or Jerash", "Day 2: Petra", "Day 3: Wadi Rum"]),
+    X(
+      "classic-jordan-3days",
+      window.I18n.source("text.480"),
+      "anywhere",
+      window.I18n.source("text.481"),
+      IMG.petra,
+      ["history", "adventure", "photography"],
+      "2-3-days",
+      "active",
+      "moderate",
+      "3 days",
+      window.I18n.source("text.482"),
+      [
+        window.I18n.source("text.483"),
+        window.I18n.source("text.484"),
+        window.I18n.source("text.485"),
+      ],
+    ),
 
-    X("north-jordan-loop", "Northern Jordan Loop", "anywhere", "Ajloun", IMG.jerash,
-      ["history", "nature", "culture"], "2-3-days", "some", "moderate", "2-3 days",
-      "A relaxed loop through the green north: Roman Jerash, the castle at Ajloun and the views at Umm Qais.",
-      ["Jerash ruins", "Ajloun Castle and forest", "Umm Qais at sunset"]),
+    X(
+      "north-jordan-loop",
+      window.I18n.source("text.486"),
+      "anywhere",
+      window.I18n.source("text.323"),
+      IMG.jerash,
+      ["history", "nature", "culture"],
+      "2-3-days",
+      "some",
+      "moderate",
+      window.I18n.source("duration.days"),
+      window.I18n.source("text.487"),
+      [
+        window.I18n.source("text.488"),
+        window.I18n.source("text.489"),
+        window.I18n.source("text.490"),
+      ],
+    ),
 
-    X("jordan-in-a-week", "Jordan in a Week", "anywhere", "Jordan", IMG.petra2,
-      ["history", "adventure", "relaxation"], "week-plus", "active", "premium", "7+ days",
-      "A full week from north to south: Amman, Jerash, Madaba, the Dead Sea, Karak, Petra, Wadi Rum and Aqaba.",
-      ["Roman ruins in the north", "Castles and canyons along the way", "Desert and Red Sea to finish"])
+    X(
+      "jordan-in-a-week",
+      window.I18n.source("text.491"),
+      "anywhere",
+      window.I18n.source("text.481"),
+      IMG.petra2,
+      ["history", "adventure", "relaxation"],
+      "week-plus",
+      "active",
+      "premium",
+      "7+ days",
+      window.I18n.source("text.492"),
+      [
+        window.I18n.source("text.493"),
+        window.I18n.source("text.494"),
+        window.I18n.source("text.495"),
+      ],
+    ),
   );
   /* ===== end of added places ===== */
 
-  const TIME_ORDER = ["few-hours", "half-day", "1-day", "2-3-days", "week-plus"];
+  const TIME_ORDER = [
+    "few-hours",
+    "half-day",
+    "1-day",
+    "2-3-days",
+    "week-plus",
+  ];
   const WALK_ORDER = ["minimal", "some", "active", "very-active"];
   const BUDGET_ORDER = ["budget", "moderate", "premium", "luxury"];
 
@@ -578,7 +1170,10 @@
 
     max += 35;
     if (answers.location) {
-      if (answers.location === "anywhere" || exp.location === answers.location) {
+      if (
+        answers.location === "anywhere" ||
+        exp.location === answers.location
+      ) {
         score += 35;
       } else if (exp.location === "anywhere") {
         score += 22; // multi-stop routes fit any starting point
@@ -587,7 +1182,9 @@
 
     max += 30;
     if (answers.interests && answers.interests.length) {
-      const overlap = exp.interests.filter((i) => answers.interests.includes(i)).length;
+      const overlap = exp.interests.filter((i) =>
+        answers.interests.includes(i),
+      ).length;
       score += Math.min(30, overlap * 12);
     }
 
@@ -609,7 +1206,8 @@
       answers.location && answers.location !== "anywhere"
         ? EXPERIENCES.filter((exp) => exp.location === answers.location)
         : EXPERIENCES;
-    return pool.map((exp) => ({ exp, score: scoreExperience(exp, answers) }))
+    return pool
+      .map((exp) => ({ exp, score: scoreExperience(exp, answers) }))
       .sort((a, b) => b.score - a.score)
       .slice(0, count || 3);
   }
@@ -655,7 +1253,7 @@
     const saved = getSavedExperiences();
 
     if (saved.some((item) => item.id === exp.id)) {
-      showToast("Experience already saved");
+      showToast(window.I18n.source("text.497"));
       return;
     }
 
@@ -670,7 +1268,7 @@
     });
 
     localStorage.setItem(SAVED_EXPERIENCES_KEY, JSON.stringify(saved));
-    showToast("Experience saved to favorites");
+    showToast(window.I18n.source("text.498"));
   }
 
   document.addEventListener("click", (e) => {
@@ -690,82 +1288,82 @@
     const QUESTIONS = [
       {
         key: "location",
-        label: "Where are you?",
-        hint: "Choose your current location.",
+        label: window.I18n.source("text.026"),
+        hint: window.I18n.source("text.066"),
         multi: false,
         options: [
-          { v: "amman", t: "Amman" },
-          { v: "petra", t: "Petra" },
-          { v: "wadi-rum", t: "Wadi Rum" },
-          { v: "aqaba", t: "Aqaba" },
-          { v: "dead-sea", t: "Dead Sea" },
-          { v: "jerash", t: "Jerash" },
-          { v: "madaba", t: "Madaba & Mount Nebo" },
-          { v: "karak", t: "Karak" },
-          { v: "shobak", t: "Shobak" },
-          { v: "ajloun", t: "Ajloun" },
-          { v: "umm-qais", t: "Umm Qais" },
-          { v: "pella", t: "Pella" },
-          { v: "salt", t: "Salt" },
-          { v: "dana", t: "Dana" },
-          { v: "wadi-mujib", t: "Wadi Mujib" },
-          { v: "azraq", t: "Azraq" },
-          { v: "baptism-site", t: "Baptism Site" },
-          { v: "anywhere", t: "Anywhere in Jordan" },
+          { v: "amman", t: window.I18n.source("text.035") },
+          { v: "petra", t: window.I18n.source("text.034") },
+          { v: "wadi-rum", t: window.I18n.source("text.181") },
+          { v: "aqaba", t: window.I18n.source("text.182") },
+          { v: "dead-sea", t: window.I18n.source("text.184") },
+          { v: "jerash", t: window.I18n.source("text.183") },
+          { v: "madaba", t: window.I18n.source("text.320") },
+          { v: "karak", t: window.I18n.source("text.321") },
+          { v: "shobak", t: window.I18n.source("text.322") },
+          { v: "ajloun", t: window.I18n.source("text.323") },
+          { v: "umm-qais", t: window.I18n.source("text.324") },
+          { v: "pella", t: window.I18n.source("text.325") },
+          { v: "salt", t: window.I18n.source("text.326") },
+          { v: "dana", t: window.I18n.source("text.327") },
+          { v: "wadi-mujib", t: window.I18n.source("text.328") },
+          { v: "azraq", t: window.I18n.source("text.329") },
+          { v: "baptism-site", t: window.I18n.source("text.499") },
+          { v: "anywhere", t: window.I18n.source("text.500") },
         ],
       },
       {
         key: "time",
-        label: "How much time do you have?",
-        hint: "Pick what fits your day.",
+        label: window.I18n.source("text.501"),
+        hint: window.I18n.source("text.502"),
         multi: false,
         options: [
-          { v: "few-hours", t: "A few hours" },
-          { v: "half-day", t: "Half a day" },
-          { v: "1-day", t: "1 day" },
-          { v: "2-3-days", t: "2–3 days" },
-          { v: "week-plus", t: "A week+" },
+          { v: "few-hours", t: window.I18n.source("text.503") },
+          { v: "half-day", t: window.I18n.source("text.504") },
+          { v: "1-day", t: window.I18n.source("duration.1") },
+          { v: "2-3-days", t: window.I18n.source("duration.23") },
+          { v: "week-plus", t: window.I18n.source("duration.week") },
         ],
       },
       {
         key: "interests",
-        label: "What interests you?",
-        hint: "Pick as many as you feel like.",
+        label: window.I18n.source("text.505"),
+        hint: window.I18n.source("text.506"),
         multi: true,
         options: [
-          { v: "history", t: "History" },
-          { v: "adventure", t: "Adventure" },
-          { v: "nature", t: "Nature" },
-          { v: "food", t: "Food" },
-          { v: "culture", t: "Culture" },
-          { v: "relaxation", t: "Relaxation" },
-          { v: "photography", t: "Photography" },
-          { v: "family", t: "Family" },
-          { v: "nightlife", t: "Nightlife" },
+          { v: "history", t: window.I18n.source("text.245") },
+          { v: "adventure", t: window.I18n.source("text.257") },
+          { v: "nature", t: window.I18n.source("text.135") },
+          { v: "food", t: window.I18n.source("text.131") },
+          { v: "culture", t: window.I18n.source("text.134") },
+          { v: "relaxation", t: window.I18n.source("text.269") },
+          { v: "photography", t: window.I18n.source("text.246") },
+          { v: "family", t: window.I18n.source("text.291") },
+          { v: "nightlife", t: window.I18n.source("text.285") },
         ],
       },
       {
         key: "walking",
-        label: "How much walking?",
-        hint: "Be honest — it'll shape your whole day.",
+        label: window.I18n.source("text.507"),
+        hint: window.I18n.source("text.508"),
         multi: false,
         options: [
-          { v: "minimal", t: "Minimal" },
-          { v: "some", t: "Some walking" },
-          { v: "active", t: "Active" },
-          { v: "very-active", t: "Very active" },
+          { v: "minimal", t: window.I18n.source("text.509") },
+          { v: "some", t: window.I18n.source("text.510") },
+          { v: "active", t: window.I18n.source("text.511") },
+          { v: "very-active", t: window.I18n.source("text.512") },
         ],
       },
       {
         key: "budget",
-        label: "What's your budget?",
-        hint: "Per person, roughly.",
+        label: window.I18n.source("text.513"),
+        hint: window.I18n.source("text.514"),
         multi: false,
         options: [
-          { v: "budget", t: "Budget" },
-          { v: "moderate", t: "Moderate" },
-          { v: "premium", t: "Premium" },
-          { v: "luxury", t: "Luxury" },
+          { v: "budget", t: window.I18n.source("text.515") },
+          { v: "moderate", t: window.I18n.source("text.516") },
+          { v: "premium", t: window.I18n.source("text.517") },
+          { v: "luxury", t: window.I18n.source("text.518") },
         ],
       },
     ];
@@ -780,21 +1378,33 @@
 
     const state = {
       step: 0,
-      answers: { location: null, time: null, interests: [], walking: null, budget: null },
+      answers: {
+        location: null,
+        time: null,
+        interests: [],
+        walking: null,
+        budget: null,
+      },
       status: "question", // question | loading | results
     };
 
     const mediaImg = finderApp.querySelector("[data-finder-media]");
     const progressWrap = finderApp.querySelector("[data-finder-progress]");
     const stepLabel = finderApp.querySelector("[data-finder-step-label]");
-    const questionTitle = finderApp.querySelector("[data-finder-question-title]");
+    const questionTitle = finderApp.querySelector(
+      "[data-finder-question-title]",
+    );
     const questionHint = finderApp.querySelector("[data-finder-question-hint]");
     const optionsWrap = finderApp.querySelector("[data-finder-options]");
     const backBtn = finderApp.querySelector("[data-finder-back]");
     const nextBtn = finderApp.querySelector("[data-finder-next]");
-    const selectedCount = finderApp.querySelector("[data-finder-selected-count]");
+    const selectedCount = finderApp.querySelector(
+      "[data-finder-selected-count]",
+    );
     const finderBody = finderApp.querySelector("[data-finder-body]");
-    const finderQuestionBlock = finderApp.querySelector("[data-finder-question-block]");
+    const finderQuestionBlock = finderApp.querySelector(
+      "[data-finder-question-block]",
+    );
     const resultsSection = document.getElementById("finder-results");
 
     function buildProgress() {
@@ -809,11 +1419,16 @@
     }
 
     function renderQuestion() {
+      finderBody.querySelector(".finder-loading-panel")?.remove();
       state.status = "question";
       const q = QUESTIONS[state.step];
-      if (mediaImg) mediaImg.src = FINDER_IMAGES[state.step % FINDER_IMAGES.length];
+      if (mediaImg)
+        mediaImg.src = FINDER_IMAGES[state.step % FINDER_IMAGES.length];
       buildProgress();
-      stepLabel.textContent = "STEP " + (state.step + 1) + " OF " + QUESTIONS.length;
+      stepLabel.textContent = window.I18n.t("finder.step", {
+        step: state.step + 1,
+        total: QUESTIONS.length,
+      });
       questionTitle.textContent = q.label;
       questionHint.textContent = q.hint;
 
@@ -846,15 +1461,18 @@
       });
 
       backBtn.hidden = state.step === 0;
-      const answered = q.multi ? state.answers[q.key].length > 0 : !!state.answers[q.key];
+      const answered = q.multi
+        ? state.answers[q.key].length > 0
+        : !!state.answers[q.key];
       nextBtn.disabled = !answered;
       nextBtn.innerHTML =
         state.step === QUESTIONS.length - 1
-          ? 'Find My Experience <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
-          : 'Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+          ? '<i18n-text data-i18n="text.104">Find My Experience</i18n-text> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+          : '<i18n-text data-i18n="text.068">Next</i18n-text> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
       const count = q.multi ? state.answers[q.key].length : answered ? 1 : 0;
-      selectedCount.textContent = count > 0 ? count + " selected" : "";
+      selectedCount.textContent =
+        count > 0 ? window.I18n.t("finder.selected", { count }) : "";
 
       finderQuestionBlock.hidden = false;
       if (resultsSection) resultsSection.classList.remove("is-active");
@@ -863,12 +1481,16 @@
 
     function renderLoading() {
       state.status = "loading";
-      finderQuestionBlock.innerHTML =
+      finderQuestionBlock.hidden = true;
+      const loadingPanel = document.createElement("div");
+      loadingPanel.className = "finder-loading-panel";
+      loadingPanel.innerHTML =
         '<div class="finder__loading">' +
-        '<p class="finder__step-label">RESULTS</p>' +
-        '<h3>Finding something you might enjoy…</h3>' +
+        '<p class="finder__step-label"><i18n-text data-i18n="finder.results">RESULTS</i18n-text></p>' +
+        '<h3><i18n-text data-i18n="finder.loading">Finding something you might enjoy…</i18n-text></h3>' +
         '<div class="dot-loader"><span></span><span></span><span></span></div>' +
         "</div>";
+      finderBody.appendChild(loadingPanel);
       finderApp.querySelector(".finder__foot").hidden = true;
     }
 
@@ -907,19 +1529,21 @@
         exp.image +
         '" alt="' +
         exp.name +
-        ' — ' +
+        " — " +
         prettyLocation(exp.location) +
         '" loading="lazy"><span class="result-card__match">' +
-        score +
-        '% match</span></div>' +
+        window.I18n.t("finder.match", { score }) +
+        "</span></div>" +
         '<div class="result-card__body">' +
         '<div class="result-card__meta"><span>' +
         prettyLocation(exp.location) +
         "</span><span>" +
         exp.duration +
         "</span><span>" +
-        prettyWalking(exp.walking) +
-        " walking</span></div>" +
+        window.I18n.t("finder.walking", {
+          level: window.I18n.translateText(prettyWalking(exp.walking)),
+        }) +
+        "</span></div>" +
         "<h3>" +
         exp.name +
         "</h3>" +
@@ -927,13 +1551,17 @@
         exp.description +
         "</p>" +
         '<div class="result-card__tags">' +
-        exp.tags.map((t) => '<span class="tag-pill">' + t + "</span>").join("") +
+        exp.tags
+          .map((t) => '<span class="tag-pill">' + t + "</span>")
+          .join("") +
         "</div>" +
         '<div class="result-card__actions">' +
         '<button class="btn btn-dark btn-sm" data-view="' +
         exp.id +
-        '">View Experience</button>' +
-        '<button class="btn btn-outline btn-sm" data-save="' + exp.id + '">Save</button>' +
+        '"><i18n-text data-i18n="experience.view">View Experience</i18n-text></button>' +
+        '<button class="btn btn-outline btn-sm" data-save="' +
+        exp.id +
+        '"><i18n-text data-i18n="experience.save">Save</i18n-text></button>' +
         "</div></div>";
       resolveImage(exp, card.querySelector(".result-card__img img"));
       return card;
@@ -943,10 +1571,24 @@
       return LOCATION_NAMES[v] || v;
     }
     function prettyWalking(v) {
-      return { minimal: "Minimal", some: "Light", active: "Active", "very-active": "Very active" }[v] || v;
+      return (
+        {
+          minimal: window.I18n.source("text.509"),
+          some: window.I18n.source("text.520"),
+          active: window.I18n.source("text.511"),
+          "very-active": window.I18n.source("text.512"),
+        }[v] || v
+      );
     }
     function prettyBudget(v) {
-      return { budget: "Budget", moderate: "Moderate", premium: "Premium", luxury: "Luxury" }[v] || v;
+      return (
+        {
+          budget: window.I18n.source("text.515"),
+          moderate: window.I18n.source("text.516"),
+          premium: window.I18n.source("text.517"),
+          luxury: window.I18n.source("text.518"),
+        }[v] || v
+      );
     }
 
     nextBtn.addEventListener("click", () => {
@@ -970,13 +1612,19 @@
     resetBtns.forEach((btn) =>
       btn.addEventListener("click", () => {
         state.step = 0;
-        state.answers = { location: null, time: null, interests: [], walking: null, budget: null };
+        state.answers = {
+          location: null,
+          time: null,
+          interests: [],
+          walking: null,
+          budget: null,
+        };
         finderApp.querySelector(".finder__foot").hidden = false;
         finderApp.hidden = false;
         if (resultsSection) resultsSection.classList.remove("is-active");
         renderQuestion();
         finderApp.scrollIntoView({ behavior: "smooth", block: "start" });
-      })
+      }),
     );
 
     // Modal for "View Experience"
@@ -989,21 +1637,44 @@
           exp.image +
           '" alt="' +
           exp.name +
-          '"><button class="modal__close" data-modal-close aria-label="Close">' +
+          '"><button class="modal__close" data-modal-close aria-label="Close" data-i18n-aria-label="common.close">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>' +
           '<div class="modal__body">' +
-          '<p class="eyebrow">' + prettyLocation(exp.location) + "</p>" +
-          "<h3>" + exp.name + "</h3>" +
-          '<div class="modal__meta"><span><strong>Duration</strong> ' + exp.duration + "</span>" +
-          '<span><strong>Walking</strong> ' + prettyWalking(exp.walking) + "</span>" +
-          '<span><strong>Budget</strong> ' + prettyBudget(exp.budget) + " (" + exp.budgetLabel + ")</span></div>" +
-          "<p>" + exp.description + "</p>" +
+          '<p class="eyebrow">' +
+          prettyLocation(exp.location) +
+          "</p>" +
+          "<h3>" +
+          exp.name +
+          "</h3>" +
+          '<div class="modal__meta"><span><strong><i18n-text data-i18n="experience.duration">Duration</i18n-text></strong> ' +
+          exp.duration +
+          "</span>" +
+          '<span><strong><i18n-text data-i18n="experience.walking">Walking</i18n-text></strong> ' +
+          prettyWalking(exp.walking) +
+          "</span>" +
+          '<span><strong><i18n-text data-i18n="experience.budget">Budget</i18n-text></strong> ' +
+          prettyBudget(exp.budget) +
+          " (" +
+          exp.budgetLabel +
+          ")</span></div>" +
+          "<p>" +
+          exp.description +
+          "</p>" +
           '<ul class="modal__highlights">' +
           exp.highlights
-            .map((h, i) => '<li><span class="idx">0' + (i + 1) + "</span><span>" + h + "</span></li>")
+            .map(
+              (h, i) =>
+                '<li><span class="idx">0' +
+                (i + 1) +
+                "</span><span>" +
+                h +
+                "</span></li>",
+            )
             .join("") +
           "</ul>" +
-          '<div class="result-card__actions"><button class="btn btn-primary" data-save="' + exp.id + '">Save Experience</button></div>' +
+          '<div class="result-card__actions"><button class="btn btn-primary" data-save="' +
+          exp.id +
+          '"><i18n-text data-i18n="experience.saveFull">Save Experience</i18n-text></button></div>' +
           "</div>";
         resolveImage(exp, modalBody.querySelector(".modal__img img"));
         modalOverlay.classList.add("is-open");
@@ -1016,10 +1687,15 @@
       document.addEventListener("click", (e) => {
         const viewBtn = e.target.closest("[data-view]");
         if (viewBtn) {
-          const exp = EXPERIENCES.find((x) => x.id === viewBtn.getAttribute("data-view"));
+          const exp = EXPERIENCES.find(
+            (x) => x.id === viewBtn.getAttribute("data-view"),
+          );
           if (exp) openModal(exp);
         }
-        if (e.target.closest("[data-modal-close]") || e.target === modalOverlay) {
+        if (
+          e.target.closest("[data-modal-close]") ||
+          e.target === modalOverlay
+        ) {
           closeModal();
         }
       });
@@ -1027,6 +1703,10 @@
         if (e.key === "Escape") closeModal();
       });
     }
+
+    document.addEventListener("masar:language-change", () => {
+      if (state.status === "question") renderQuestion();
+    });
 
     const presetLoc = new URLSearchParams(window.location.search).get("loc");
     const validLocs = QUESTIONS[0].options.map((o) => o.v);

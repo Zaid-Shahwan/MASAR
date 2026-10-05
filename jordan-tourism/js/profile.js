@@ -135,7 +135,7 @@ function renderSavedDestinations() {
                 type="button"
                 class="remove-saved"
                 data-id="${destination.id}"
-                aria-label="Remove ${destination.name}"
+                aria-label="${window.I18n.t("profile.remove", { name: window.I18n.translateText(destination.name) })}"
             >
                 ×
             </button>
@@ -232,7 +232,8 @@ onAuthStateChanged(auth, (user) => {
        USER NAME
     ================================================== */
 
-  const name = user.displayName || savedUser.name || "MASAR Traveler";
+  const name =
+    user.displayName || savedUser.name || window.I18n.source("text.547");
 
   const email = user.email || "";
 
@@ -267,8 +268,7 @@ onAuthStateChanged(auth, (user) => {
 
 if (showPasswordButton) {
   showPasswordButton.addEventListener("click", () => {
-    passwordMessage.textContent =
-      "For your security, Firebase does not allow your original password to be viewed or recovered. You can change it using the button below.";
+    passwordMessage.textContent = window.I18n.source("text.548");
 
     passwordMessage.style.color = "#777";
 
@@ -278,17 +278,20 @@ if (showPasswordButton) {
 
     showPasswordButton.setAttribute(
       "aria-label",
-      "Password cannot be displayed",
+      window.I18n.source("text.549"),
     );
 
-    showPasswordButton.setAttribute("title", "Password cannot be displayed");
+    showPasswordButton.setAttribute("title", window.I18n.source("text.549"));
 
     setTimeout(() => {
       showPasswordButton.classList.remove("active");
 
-      showPasswordButton.setAttribute("aria-label", "Show password");
+      showPasswordButton.setAttribute(
+        "aria-label",
+        window.I18n.source("text.223"),
+      );
 
-      showPasswordButton.setAttribute("title", "Show password");
+      showPasswordButton.setAttribute("title", window.I18n.source("text.223"));
     }, 1000);
   });
 }
@@ -301,7 +304,7 @@ changePasswordButton.addEventListener("click", async () => {
   const user = auth.currentUser;
 
   if (!user || !user.email) {
-    passwordMessage.textContent = "Please sign in again.";
+    passwordMessage.textContent = window.I18n.source("text.550");
 
     passwordMessage.style.display = "block";
 
@@ -310,12 +313,14 @@ changePasswordButton.addEventListener("click", async () => {
 
   changePasswordButton.disabled = true;
 
-  changePasswordButton.textContent = "Sending...";
+  changePasswordButton.textContent = window.I18n.source("text.551");
 
   try {
     await sendPasswordResetEmail(auth, user.email);
 
-    passwordMessage.textContent = `A password reset link has been sent to ${user.email}. Check your email.`;
+    passwordMessage.textContent = window.I18n.t("profile.reset", {
+      email: user.email,
+    });
 
     passwordMessage.style.color = "#6d7651";
 
@@ -323,8 +328,7 @@ changePasswordButton.addEventListener("click", async () => {
   } catch (error) {
     console.error("Password reset error:", error);
 
-    passwordMessage.textContent =
-      "Unable to send the password reset email. Please try again.";
+    passwordMessage.textContent = window.I18n.source("text.553");
 
     passwordMessage.style.color = "#a23a2b";
 
@@ -332,7 +336,7 @@ changePasswordButton.addEventListener("click", async () => {
   } finally {
     changePasswordButton.disabled = false;
 
-    changePasswordButton.textContent = "Change Password";
+    changePasswordButton.textContent = window.I18n.source("text.215");
   }
 });
 
@@ -343,7 +347,7 @@ changePasswordButton.addEventListener("click", async () => {
 signOutButton.addEventListener("click", async () => {
   signOutButton.disabled = true;
 
-  signOutButton.textContent = "Signing Out...";
+  signOutButton.textContent = window.I18n.source("text.554");
 
   try {
     await signOut(auth);
@@ -356,12 +360,12 @@ signOutButton.addEventListener("click", async () => {
   } catch (error) {
     console.error("Sign out error:", error);
 
-    profileMessage.textContent = "Unable to sign out. Please try again.";
+    profileMessage.textContent = window.I18n.source("text.556");
 
     profileMessage.style.display = "block";
 
     signOutButton.disabled = false;
 
-    signOutButton.textContent = "Sign Out";
+    signOutButton.textContent = window.I18n.source("text.222");
   }
 });

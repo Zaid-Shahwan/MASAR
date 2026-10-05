@@ -1,251 +1,609 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title data-i18n="text.000">Ask MASAR — Your AI Guide to Jordan</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png" />
+    <meta
+      name="description"
+      content="Chat with MASAR, a friendly AI travel guide. Ask about places to visit, local food, things to do and trip plans in Jordan."
+      data-i18n-content="text.038"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/ai.css" />
+    <!-- Map for the places assistant (Leaflet + CARTO basemap tiles, built on OpenStreetMap data: free, no API key) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+    />
+    <link rel="stylesheet" href="css/ai-geo.css" />
+    <script src="locales/catalog.js"></script>
+    <script src="js/i18n.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Ask MASAR — Your AI Guide to Jordan</title>
-  <link rel="icon" type="image/png" href="assets/images/logo.png">
-  <meta name="description"
-    content="Chat with MASAR, a friendly AI travel guide. Ask about places to visit, local food, things to do and trip plans in Jordan.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/ai.css">
-  <!-- Map for the places assistant (Leaflet + CARTO basemap tiles, built on OpenStreetMap data: free, no API key) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-  <link rel="stylesheet" href="css/ai-geo.css">
-</head>
+  <body>
+    <a class="skip-link" href="#main"
+      ><i18n-text data-i18n="text.001">Skip to content</i18n-text></a
+    >
 
-<body>
-  <a class="skip-link" href="#main">Skip to content</a>
-
-  <!-- ============================= HEADER (same as other pages) ============================= -->
-  <header class="site-header is-solid">
-    <div class="container">
-      <a href="index.html" class="brand">MASAR</a>
-      <nav class="nav-links" aria-label="Primary">
-        <a class="nav-link" href="index.html">Home</a>
-        <a class="nav-link" href="index.html#destinations">Destinations</a>
-        <a class="nav-link is-active" href="ai.html">AI Guide</a>
-        <a class="nav-link" href="explore.html">Plan Your Trip</a>
-        <a class="nav-link" href="profile.html">Profile</a>
-      </nav>
-      <div class="nav-cta">
-        <a href="explore.html" class="btn btn-primary">Find Your Experience
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M5 12h14M13 6l6 6-6 6" />
-          </svg>
-        </a>
-        <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
-          <span></span><span></span><span></span>
-        </button>
+    <!-- ============================= HEADER (same as other pages) ============================= -->
+    <header class="site-header is-solid">
+      <div class="container">
+        <a href="index.html" class="brand"
+          ><i18n-text data-i18n="text.002">MASAR</i18n-text></a
+        >
+        <nav
+          class="nav-links"
+          aria-label="Primary"
+          data-i18n-aria-label="text.039"
+        >
+          <a class="nav-link" href="index.html"
+            ><i18n-text data-i18n="text.003">Home</i18n-text></a
+          >
+          <a class="nav-link" href="index.html#destinations"
+            ><i18n-text data-i18n="text.004">Destinations</i18n-text></a
+          >
+          <a class="nav-link is-active" href="ai.html"
+            ><i18n-text data-i18n="text.005">AI Guide</i18n-text></a
+          >
+          <a class="nav-link" href="explore.html"
+            ><i18n-text data-i18n="text.006">Plan Your Trip</i18n-text></a
+          >
+          <a class="nav-link" href="profile.html"
+            ><i18n-text data-i18n="text.007">Profile</i18n-text></a
+          >
+        </nav>
+        <div class="nav-cta">
+          <select
+            class="language-select"
+            data-language-select
+            aria-label="Language"
+            data-i18n-aria-label="nav.language"
+          >
+            <option value="en" lang="en">English</option>
+            <option value="ar" lang="ar">العربية</option>
+            <option value="fr" lang="fr">Français</option>
+          </select>
+          <a href="explore.html" class="btn btn-primary"
+            ><i18n-text data-i18n="text.008">Find Your Experience</i18n-text>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </a>
+          <button
+            class="hamburger"
+            aria-label="Open menu"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile">
-    <a href="index.html">Home</a>
-    <a href="index.html#destinations">Destinations</a>
-    <a href="ai.html">AI Guide</a>
-    <a href="explore.html">Plan Your Trip</a>
-    <a href="profile.html">Profile</a>
-    <a href="explore.html" class="btn btn-primary btn-block">Find Your Experience</a>
-  </nav>
+    <nav
+      id="mobile-menu"
+      class="mobile-menu"
+      aria-label="Mobile"
+      data-i18n-aria-label="text.041"
+      inert
+      aria-hidden="true"
+    >
+      <select
+        class="language-select"
+        data-language-select
+        aria-label="Language"
+        data-i18n-aria-label="nav.language"
+      >
+        <option value="en" lang="en">English</option>
+        <option value="ar" lang="ar">العربية</option>
+        <option value="fr" lang="fr">Français</option>
+      </select>
+      <a href="index.html"><i18n-text data-i18n="text.003">Home</i18n-text></a>
+      <a href="index.html#destinations"
+        ><i18n-text data-i18n="text.004">Destinations</i18n-text></a
+      >
+      <a href="ai.html"><i18n-text data-i18n="text.005">AI Guide</i18n-text></a>
+      <a href="explore.html"
+        ><i18n-text data-i18n="text.006">Plan Your Trip</i18n-text></a
+      >
+      <a href="profile.html"
+        ><i18n-text data-i18n="text.007">Profile</i18n-text></a
+      >
+      <a href="explore.html" class="btn btn-primary btn-block"
+        ><i18n-text data-i18n="text.008">Find Your Experience</i18n-text></a
+      >
+    </nav>
 
-  <main id="main" class="ai-page">
-    <div class="container">
+    <main id="main" class="ai-page">
+      <div class="container">
+        <header class="ai-intro">
+          <p class="eyebrow">
+            <i18n-text data-i18n="text.009">Your AI guide to Jordan</i18n-text>
+          </p>
+          <h1>
+            <i18n-text data-i18n="text.010">MASAR AI Companion</i18n-text>
+          </h1>
+          <p class="lead">
+            <i18n-text data-i18n="text.011"
+              >Tell me what you're looking for and I'll help you discover
+              Jordan.</i18n-text
+            >
+          </p>
+        </header>
 
-      <header class="ai-intro">
-        <p class="eyebrow">Your AI guide to Jordan</p>
-        <h1>MASAR AI Companion</h1>
-        <p class="lead">Tell me what you're looking for and I'll help you discover Jordan.</p>
-      </header>
-
-      <section class="ai-chat" aria-label="Chat with MASAR">
-
-        <!-- ===================== THE CHARACTER =====================
+        <section
+          class="ai-chat"
+          aria-label="Chat with MASAR"
+          data-i18n-aria-label="text.042"
+        >
+          <!-- ===================== THE CHARACTER =====================
            To use your own artwork: replace the <svg> below with an <img>
            (e.g. assets/masar-ai.png). The eyes/mood animation only works with
            this SVG — with an <img> you'll still get the float animation and
            the speech clouds. Keep the wrapper id="ai-character". -->
-        <div class="ai-stage">
-          <div class="ai-character" id="ai-character" data-mood="idle">
-            <svg class="ai-svg" viewBox="0 0 240 250" role="img"
-              aria-label="MASAR, a friendly explorer character with big eyes and a hat">
-              <ellipse cx="120" cy="242" rx="58" ry="7" fill="#171717" opacity="0.12" />
+          <div class="ai-stage">
+            <div class="ai-character" id="ai-character" data-mood="idle">
+              <svg
+                class="ai-svg"
+                viewBox="0 0 240 250"
+                role="img"
+                aria-label="MASAR, a friendly explorer character with big eyes and a hat"
+                data-i18n-aria-label="text.043"
+              >
+                <ellipse
+                  cx="120"
+                  cy="242"
+                  rx="58"
+                  ry="7"
+                  fill="#171717"
+                  opacity="0.12"
+                />
 
-              <!-- body -->
-              <g class="ai-body">
-                <ellipse cx="66" cy="204" rx="13" ry="22" fill="#6f3128" transform="rotate(14 66 204)" />
-                <g class="ai-arm">
-                  <ellipse cx="174" cy="204" rx="13" ry="22" fill="#6f3128" transform="rotate(-14 174 204)" />
-                </g>
-                <rect x="72" y="168" width="96" height="68" rx="32" fill="#8c3f32" />
-                <circle cx="120" cy="208" r="13" fill="#e9d8b4" />
-                <path d="M120 198 L124 208 L120 218 L116 208 Z" fill="#a66b24" />
-                <path d="M84 170 Q120 190 156 170 L154 184 Q120 202 86 184 Z" fill="#e9d8b4" />
-              </g>
-
-              <!-- head (moves a little toward where the eyes look) -->
-              <g class="ai-head">
-                <circle cx="49" cy="116" r="10" fill="#e9d8b4" />
-                <circle cx="191" cy="116" r="10" fill="#e9d8b4" />
-                <rect x="50" y="44" width="140" height="126" rx="58" fill="#fbf4e4" stroke="#d9d5c9" stroke-width="2" />
-                <rect x="64" y="72" width="112" height="86" rx="40" fill="#231d1a" />
-
-                <!-- eyebrows -->
-                <g class="ai-brows" fill="none" stroke="#e9d8b4" stroke-width="3.5" stroke-linecap="round">
-                  <path d="M82 92 Q96 85 110 92" />
-                  <path d="M130 92 Q144 85 158 92" />
-                </g>
-
-                <!-- eyes: sclera blinks, pupils follow --look-x / --look-y -->
-                <g class="ai-eye">
-                  <circle cx="96" cy="112" r="17" fill="#ffffff" />
-                  <g class="ai-pupil">
-                    <circle cx="96" cy="112" r="8" fill="#171717" />
-                    <circle cx="99" cy="108" r="2.6" fill="#ffffff" />
+                <!-- body -->
+                <g class="ai-body">
+                  <ellipse
+                    cx="66"
+                    cy="204"
+                    rx="13"
+                    ry="22"
+                    fill="#6f3128"
+                    transform="rotate(14 66 204)"
+                  />
+                  <g class="ai-arm">
+                    <ellipse
+                      cx="174"
+                      cy="204"
+                      rx="13"
+                      ry="22"
+                      fill="#6f3128"
+                      transform="rotate(-14 174 204)"
+                    />
                   </g>
+                  <rect
+                    x="72"
+                    y="168"
+                    width="96"
+                    height="68"
+                    rx="32"
+                    fill="#8c3f32"
+                  />
+                  <circle cx="120" cy="208" r="13" fill="#e9d8b4" />
+                  <path
+                    d="M120 198 L124 208 L120 218 L116 208 Z"
+                    fill="#a66b24"
+                  />
+                  <path
+                    d="M84 170 Q120 190 156 170 L154 184 Q120 202 86 184 Z"
+                    fill="#e9d8b4"
+                  />
                 </g>
-                <g class="ai-eye">
-                  <circle cx="144" cy="112" r="17" fill="#ffffff" />
-                  <g class="ai-pupil">
-                    <circle cx="144" cy="112" r="8" fill="#171717" />
-                    <circle cx="147" cy="108" r="2.6" fill="#ffffff" />
+
+                <!-- head (moves a little toward where the eyes look) -->
+                <g class="ai-head">
+                  <circle cx="49" cy="116" r="10" fill="#e9d8b4" />
+                  <circle cx="191" cy="116" r="10" fill="#e9d8b4" />
+                  <rect
+                    x="50"
+                    y="44"
+                    width="140"
+                    height="126"
+                    rx="58"
+                    fill="#fbf4e4"
+                    stroke="#d9d5c9"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="64"
+                    y="72"
+                    width="112"
+                    height="86"
+                    rx="40"
+                    fill="#231d1a"
+                  />
+
+                  <!-- eyebrows -->
+                  <g
+                    class="ai-brows"
+                    fill="none"
+                    stroke="#e9d8b4"
+                    stroke-width="3.5"
+                    stroke-linecap="round"
+                  >
+                    <path d="M82 92 Q96 85 110 92" />
+                    <path d="M130 92 Q144 85 158 92" />
                   </g>
+
+                  <!-- eyes: sclera blinks, pupils follow --look-x / --look-y -->
+                  <g class="ai-eye">
+                    <circle cx="96" cy="112" r="17" fill="#ffffff" />
+                    <g class="ai-pupil">
+                      <circle cx="96" cy="112" r="8" fill="#171717" />
+                      <circle cx="99" cy="108" r="2.6" fill="#ffffff" />
+                    </g>
+                  </g>
+                  <g class="ai-eye">
+                    <circle cx="144" cy="112" r="17" fill="#ffffff" />
+                    <g class="ai-pupil">
+                      <circle cx="144" cy="112" r="8" fill="#171717" />
+                      <circle cx="147" cy="108" r="2.6" fill="#ffffff" />
+                    </g>
+                  </g>
+
+                  <!-- cheeks -->
+                  <circle cx="76" cy="138" r="7" fill="#c9604d" opacity="0.6" />
+                  <circle
+                    cx="164"
+                    cy="138"
+                    r="7"
+                    fill="#c9604d"
+                    opacity="0.6"
+                  />
+
+                  <!-- mouths (one is shown at a time, depending on mood) -->
+                  <path
+                    class="mouth mouth--smile"
+                    d="M104 138 Q120 150 136 138"
+                    fill="none"
+                    stroke="#e9d8b4"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                  />
+                  <ellipse
+                    class="mouth mouth--o"
+                    cx="120"
+                    cy="142"
+                    rx="5"
+                    ry="6"
+                    fill="#e9d8b4"
+                  />
+                  <path
+                    class="mouth mouth--happy"
+                    d="M102 136 Q120 160 138 136 Z"
+                    fill="#e9d8b4"
+                  />
+
+                  <!-- explorer hat -->
+                  <path
+                    d="M74 62 Q76 20 120 20 Q164 20 166 62 Z"
+                    fill="#8c3f32"
+                  />
+                  <path
+                    d="M75 52 Q120 62 165 52 L166 62 Q120 72 74 62 Z"
+                    fill="#e9d8b4"
+                  />
+                  <ellipse cx="120" cy="66" rx="80" ry="12" fill="#8c3f32" />
+                  <ellipse
+                    cx="120"
+                    cy="68"
+                    rx="80"
+                    ry="12"
+                    fill="#6f3128"
+                    opacity="0.25"
+                  />
                 </g>
-
-                <!-- cheeks -->
-                <circle cx="76" cy="138" r="7" fill="#c9604d" opacity="0.6" />
-                <circle cx="164" cy="138" r="7" fill="#c9604d" opacity="0.6" />
-
-                <!-- mouths (one is shown at a time, depending on mood) -->
-                <path class="mouth mouth--smile" d="M104 138 Q120 150 136 138" fill="none" stroke="#e9d8b4"
-                  stroke-width="4" stroke-linecap="round" />
-                <ellipse class="mouth mouth--o" cx="120" cy="142" rx="5" ry="6" fill="#e9d8b4" />
-                <path class="mouth mouth--happy" d="M102 136 Q120 160 138 136 Z" fill="#e9d8b4" />
-
-                <!-- explorer hat -->
-                <path d="M74 62 Q76 20 120 20 Q164 20 166 62 Z" fill="#8c3f32" />
-                <path d="M75 52 Q120 62 165 52 L166 62 Q120 72 74 62 Z" fill="#e9d8b4" />
-                <ellipse cx="120" cy="66" rx="80" ry="12" fill="#8c3f32" />
-                <ellipse cx="120" cy="68" rx="80" ry="12" fill="#6f3128" opacity="0.25" />
-              </g>
-            </svg>
-          </div>
-        </div>
-
-        <!-- ===================== CONVERSATION ===================== -->
-        <div class="ai-log" id="ai-log" role="log" aria-live="polite" aria-relevant="additions"
-          aria-label="Conversation with MASAR" tabindex="0">
-
-          <!-- First greeting is plain HTML so the page works even before JS loads -->
-          <div class="cloud-wrap cloud-wrap--pop is-latest">
-            <div class="cloud cloud--greeting">
-              <span class="cloud__tail" aria-hidden="true"><i></i><i></i></span>
-              <p class="cloud__hello">Hi! I'm MASAR <span aria-hidden="true">👋</span></p>
-              <p>What would you like to discover in Jordan?</p>
+              </svg>
             </div>
           </div>
-        </div>
 
-        <!-- ===================== SUGGESTIONS ===================== -->
-        <div class="ai-chips chip-group" role="group" aria-label="Conversation starters">
-          <button type="button" class="chip" data-question="What are the best places to visit in Jordan?"><span
-              aria-hidden="true">🏛️</span> Places to visit</button>
-          <button type="button" class="chip" data-question="What Jordanian food should I try?"><span
-              aria-hidden="true">🍴</span> Local food</button>
-          <button type="button" class="chip" data-question="Can you help me plan a trip around Jordan?"><span
-              aria-hidden="true">🗺️</span> Plan my trip</button>
-          <button type="button" class="chip" data-question="What can I do near me?"><span aria-hidden="true">📍</span>
-            Near me</button>
-          <button type="button" class="chip" data-question="What can I do today?"><span aria-hidden="true">🌅</span>
-            Things to do today</button>
-          <button type="button" class="chip" data-question="Where is the nearest pharmacy?"><span
-              aria-hidden="true">💊</span> Nearest pharmacy</button>
-          <button type="button" class="chip" data-question="I need help"><span aria-hidden="true">🚨</span> Emergency
-            help</button>
-        </div>
-
-        <!-- ===================== INPUT ===================== -->
-        <form class="ai-form" id="ai-form" novalidate>
-          <label class="visually-hidden" for="ai-input">Ask MASAR a question about Jordan</label>
-          <input id="ai-input" class="ai-form__input" type="text" name="message"
-            placeholder="Ask me anything about Jordan..." autocomplete="off" maxlength="300" enterkeyhint="send">
-          <button type="submit" class="ai-form__send" id="ai-send" aria-label="Send message">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-              stroke-linejoin="round" aria-hidden="true">
-              <path d="M5 12h14M13 6l6 6-6 6" />
-            </svg>
-          </button>
-        </form>
-        <p class="ai-note">MASAR shares general travel ideas. Please check opening hours and prices before you go.
-          Nearby places come from OpenStreetMap and may be incomplete. In an emergency, call <a href="tel:911">911</a>.
-        </p>
-
-        <!-- ===================== LOCATION + MAP (used by js/ai-geo.js) ===================== -->
-        <div class="geo-bar" id="geo-bar">
-          <span class="geo-bar__status" id="geo-status" aria-live="polite">📍 Location not confirmed</span>
-          <button type="button" class="btn btn-outline btn-sm" id="geo-open">Confirm location</button>
-          <button type="button" class="geo-bar__clear" id="geo-clear" hidden>Forget</button>
-        </div>
-
-        <section class="geo-panel" id="geo-panel" aria-label="Map and location" hidden>
-          <div class="geo-panel__head">
-            <h2>Where are you?</h2>
-            <button type="button" class="geo-panel__close" id="geo-close" aria-label="Close map">&times;</button>
+          <!-- ===================== CONVERSATION ===================== -->
+          <div
+            class="ai-log"
+            id="ai-log"
+            role="log"
+            aria-live="polite"
+            aria-relevant="additions"
+            aria-label="Conversation with MASAR"
+            data-i18n-aria-label="text.044"
+            tabindex="0"
+          >
+            <!-- First greeting is plain HTML so the page works even before JS loads -->
+            <div class="cloud-wrap cloud-wrap--pop is-latest">
+              <div class="cloud cloud--greeting">
+                <span class="cloud__tail" aria-hidden="true"
+                  ><i></i><i></i
+                ></span>
+                <p class="cloud__hello">
+                  <i18n-text data-i18n="text.012">Hi! I'm MASAR</i18n-text>
+                  <span aria-hidden="true">👋</span>
+                </p>
+                <p>
+                  <i18n-text data-i18n="text.013"
+                    >What would you like to discover in Jordan?</i18n-text
+                  >
+                </p>
+              </div>
+            </div>
           </div>
-          <div class="geo-map" id="geo-map" role="application" aria-label="Map of Jordan"></div>
-          <div class="geo-panel__controls">
-            <button type="button" class="btn btn-outline btn-sm" id="geo-locate">Use my current location</button>
-            <label class="visually-hidden" for="geo-city">Or choose a city</label>
-            <select id="geo-city" class="geo-select">
-              <option value="">Or choose a city…</option>
-            </select>
-            <button type="button" class="btn btn-primary btn-sm" id="geo-confirm" disabled>Confirm this
-              location</button>
+
+          <!-- ===================== SUGGESTIONS ===================== -->
+          <div
+            class="ai-chips chip-group"
+            role="group"
+            aria-label="Conversation starters"
+            data-i18n-aria-label="text.045"
+          >
+            <button
+              type="button"
+              class="chip"
+              data-question="What are the best places to visit in Jordan?"
+              data-i18n-data-question="text.046"
+            >
+              <span aria-hidden="true">🏛️</span>
+              <i18n-text data-i18n="text.014">Places to visit</i18n-text>
+            </button>
+            <button
+              type="button"
+              class="chip"
+              data-question="What Jordanian food should I try?"
+              data-i18n-data-question="text.047"
+            >
+              <span aria-hidden="true">🍴</span>
+              <i18n-text data-i18n="text.015">Local food</i18n-text>
+            </button>
+            <button
+              type="button"
+              class="chip"
+              data-question="Can you help me plan a trip around Jordan?"
+              data-i18n-data-question="text.048"
+            >
+              <span aria-hidden="true">🗺️</span>
+              <i18n-text data-i18n="text.016">Plan my trip</i18n-text>
+            </button>
+            <button
+              type="button"
+              class="chip"
+              data-question="What can I do near me?"
+              data-i18n-data-question="text.049"
+            >
+              <span aria-hidden="true">📍</span>
+              <i18n-text data-i18n="text.017">Near me</i18n-text>
+            </button>
+            <button
+              type="button"
+              class="chip"
+              data-question="What can I do today?"
+              data-i18n-data-question="text.050"
+            >
+              <span aria-hidden="true">🌅</span>
+              <i18n-text data-i18n="text.018">Things to do today</i18n-text>
+            </button>
+            <button
+              type="button"
+              class="chip"
+              data-question="Where is the nearest pharmacy?"
+              data-i18n-data-question="text.051"
+            >
+              <span aria-hidden="true">💊</span>
+              <i18n-text data-i18n="text.019">Nearest pharmacy</i18n-text>
+            </button>
+            <button
+              type="button"
+              class="chip"
+              data-question="I need help"
+              data-i18n-data-question="text.052"
+            >
+              <span aria-hidden="true">🚨</span>
+              <i18n-text data-i18n="text.020">Emergency help</i18n-text>
+            </button>
           </div>
-          <p class="geo-help" id="geo-help" aria-live="polite"></p>
+
+          <!-- ===================== INPUT ===================== -->
+          <form class="ai-form" id="ai-form" novalidate>
+            <label class="visually-hidden" for="ai-input"
+              ><i18n-text data-i18n="text.021"
+                >Ask MASAR a question about Jordan</i18n-text
+              ></label
+            >
+            <input
+              id="ai-input"
+              class="ai-form__input"
+              type="text"
+              name="message"
+              placeholder="Ask me anything about Jordan..."
+              data-i18n-placeholder="text.053"
+              autocomplete="off"
+              maxlength="300"
+              enterkeyhint="send"
+            />
+            <button
+              type="submit"
+              class="ai-form__send"
+              id="ai-send"
+              aria-label="Send message"
+              data-i18n-aria-label="text.054"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </button>
+          </form>
+          <p class="ai-note">
+            <i18n-text data-i18n="text.022"
+              >MASAR shares general travel ideas. Please check opening hours and
+              prices before you go. Nearby places come from OpenStreetMap and
+              may be incomplete. In an emergency, call</i18n-text
+            >
+            <a href="tel:911">911</a>.
+          </p>
+
+          <!-- ===================== LOCATION + MAP (used by js/ai-geo.js) ===================== -->
+          <div class="geo-bar" id="geo-bar">
+            <span class="geo-bar__status" id="geo-status" aria-live="polite"
+              ><i18n-text data-i18n="text.023"
+                >📍 Location not confirmed</i18n-text
+              ></span
+            >
+            <button type="button" class="btn btn-outline btn-sm" id="geo-open">
+              <i18n-text data-i18n="text.024">Confirm location</i18n-text>
+            </button>
+            <button type="button" class="geo-bar__clear" id="geo-clear" hidden>
+              <i18n-text data-i18n="text.025">Forget</i18n-text>
+            </button>
+          </div>
+
+          <section
+            class="geo-panel"
+            id="geo-panel"
+            aria-label="Map and location"
+            data-i18n-aria-label="text.055"
+            hidden
+          >
+            <div class="geo-panel__head">
+              <h2>
+                <i18n-text data-i18n="text.026">Where are you?</i18n-text>
+              </h2>
+              <button
+                type="button"
+                class="geo-panel__close"
+                id="geo-close"
+                aria-label="Close map"
+                data-i18n-aria-label="text.056"
+              >
+                <i18n-text data-i18n="text.027">&times;</i18n-text>
+              </button>
+            </div>
+            <div
+              class="geo-map"
+              id="geo-map"
+              role="application"
+              aria-label="Map of Jordan"
+              data-i18n-aria-label="text.057"
+            ></div>
+            <div class="geo-panel__controls">
+              <button
+                type="button"
+                class="btn btn-outline btn-sm"
+                id="geo-locate"
+              >
+                <i18n-text data-i18n="text.028"
+                  >Use my current location</i18n-text
+                >
+              </button>
+              <label class="visually-hidden" for="geo-city"
+                ><i18n-text data-i18n="text.029"
+                  >Or choose a city</i18n-text
+                ></label
+              >
+              <select id="geo-city" class="geo-select">
+                <option value="" data-i18n="text.030">Or choose a city…</option>
+              </select>
+              <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                id="geo-confirm"
+                disabled
+              >
+                <i18n-text data-i18n="text.031"
+                  >Confirm this location</i18n-text
+                >
+              </button>
+            </div>
+            <p class="geo-help" id="geo-help" aria-live="polite"></p>
+          </section>
         </section>
-      </section>
+      </div>
+    </main>
 
-    </div>
-  </main>
-
-  <!-- ============================= FOOTER ============================= -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-top">
-        <div>
-          <p class="footer-brand">MASAR</p>
-          <p class="footer-tag">Go beyond the landmark.</p>
+    <!-- ============================= FOOTER ============================= -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-top">
+          <div>
+            <p class="footer-brand">
+              <i18n-text data-i18n="text.002">MASAR</i18n-text>
+            </p>
+            <p class="footer-tag">
+              <i18n-text data-i18n="text.032"
+                >Go beyond the landmark.</i18n-text
+              >
+            </p>
+          </div>
+          <nav
+            class="footer-links"
+            aria-label="Footer"
+            data-i18n-aria-label="text.058"
+          >
+            <a href="index.html#destinations"
+              ><i18n-text data-i18n="text.004">Destinations</i18n-text></a
+            >
+            <a href="explore.html"
+              ><i18n-text data-i18n="text.033">Experiences</i18n-text></a
+            >
+            <a href="ai.html"
+              ><i18n-text data-i18n="text.005">AI Guide</i18n-text></a
+            >
+            <a href="index.html#petra"
+              ><i18n-text data-i18n="text.034">Petra</i18n-text></a
+            >
+            <a href="index.html#amman"
+              ><i18n-text data-i18n="text.035">Amman</i18n-text></a
+            >
+          </nav>
         </div>
-        <nav class="footer-links" aria-label="Footer">
-          <a href="index.html#destinations">Destinations</a>
-          <a href="explore.html">Experiences</a>
-          <a href="ai.html">AI Guide</a>
-          <a href="index.html#petra">Petra</a>
-          <a href="index.html#amman">Amman</a>
-        </nav>
+        <div class="footer-bottom">
+          <p>
+            <i18n-text data-i18n="text.036"
+              >Made with care for the people of Jordan.</i18n-text
+            >
+          </p>
+          <p><i18n-text data-i18n="text.037">&copy; 2026 MASAR</i18n-text></p>
+        </div>
       </div>
-      <div class="footer-bottom">
-        <p>Made with care for the people of Jordan.</p>
-        <p>&copy; 2026 MASAR</p>
-      </div>
-    </div>
-  </footer>
+    </footer>
 
-  <script src="js/main.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
-  <!-- Local config (CARTO Basemaps API key). Not committed -- see js/config.example.js. -->
-  <script src="js/config.js" defer></script>
-  <script src="js/ai-geo.js" defer></script>
-  <script src="js/jordan-intelligence.js" defer></script>
-  <script src="js/ai.js" defer></script>
-</body>
-
+    <script src="js/main.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"
+      defer
+    ></script>
+    <!-- Local config (CARTO Basemaps API key). Not committed -- see js/config.example.js. -->
+    <script src="js/config.js" defer></script>
+    <script src="js/ai-geo.js" defer></script>
+    <script src="js/ai.js" defer></script>
+  </body>
 </html>

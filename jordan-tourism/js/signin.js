@@ -5,14 +5,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
 import {
-    getAuth,
-    setPersistence,
-    browserLocalPersistence,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    updateProfile
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-
 
 /* ==================================================
    FIREBASE CONFIG
@@ -21,14 +20,14 @@ import {
 const firebaseConfig = {
   apiKey: "AIzaSyBLi9GZ9I-yARpthtf2zVrcugBxLlUwXSU",
   authDomain: "masar-bb6bb.firebaseapp.com",
-  databaseURL: "https://masar-bb6bb-default-rtdb.europe-west1.firebasedatabase.app",
+  databaseURL:
+    "https://masar-bb6bb-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "masar-bb6bb",
   storageBucket: "masar-bb6bb.firebasestorage.app",
   messagingSenderId: "525831043288",
   appId: "1:525831043288:web:531ac5150c0cea9c5a7fad",
-  measurementId: "G-1YV5H3LZ7C"
+  measurementId: "G-1YV5H3LZ7C",
 };
-
 
 /* ==================================================
    INITIALIZE FIREBASE
@@ -36,7 +35,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
 
 /* ==================================================
    ELEMENTS
@@ -54,362 +52,278 @@ const signUpForm = document.getElementById("signUpForm");
 const signInError = document.getElementById("signInError");
 const signUpError = document.getElementById("signUpError");
 
-
 /* ==================================================
    SWITCH TO SIGN IN
 ================================================== */
 
 signInTab.addEventListener("click", function () {
+  signInTab.classList.add("is-active");
+  signUpTab.classList.remove("is-active");
 
-    signInTab.classList.add("is-active");
-    signUpTab.classList.remove("is-active");
+  signInPanel.classList.add("is-active");
+  signUpPanel.classList.remove("is-active");
 
-    signInPanel.classList.add("is-active");
-    signUpPanel.classList.remove("is-active");
-
-    signInError.style.display = "none";
-    signUpError.style.display = "none";
+  signInError.style.display = "none";
+  signUpError.style.display = "none";
 });
-
 
 /* ==================================================
    SWITCH TO SIGN UP
 ================================================== */
 
 signUpTab.addEventListener("click", function () {
+  signUpTab.classList.add("is-active");
+  signInTab.classList.remove("is-active");
 
-    signUpTab.classList.add("is-active");
-    signInTab.classList.remove("is-active");
+  signUpPanel.classList.add("is-active");
+  signInPanel.classList.remove("is-active");
 
-    signUpPanel.classList.add("is-active");
-    signInPanel.classList.remove("is-active");
-
-    signInError.style.display = "none";
-    signUpError.style.display = "none";
+  signInError.style.display = "none";
+  signUpError.style.display = "none";
 });
-
 
 /* ==================================================
    SIGN UP
 ================================================== */
 
 signUpForm.addEventListener("submit", async function (event) {
+  event.preventDefault();
 
-    event.preventDefault();
+  signUpError.style.display = "none";
 
-    signUpError.style.display = "none";
+  const name = document.getElementById("signUpName").value.trim();
 
-    const name = document
-        .getElementById("signUpName")
-        .value
-        .trim();
+  const email = document
+    .getElementById("signUpEmail")
+    .value.trim()
+    .toLowerCase();
 
-    const email = document
-        .getElementById("signUpEmail")
-        .value
-        .trim()
-        .toLowerCase();
+  const password = document.getElementById("signUpPassword").value;
 
-    const password =
-        document.getElementById("signUpPassword").value;
+  const confirmPassword = document.getElementById(
+    "signUpConfirmPassword",
+  ).value;
 
-    const confirmPassword =
-        document.getElementById("signUpConfirmPassword").value;
+  /* Password match */
 
+  if (password !== confirmPassword) {
+    signUpError.textContent = window.I18n.source("text.521");
+    signUpError.style.color = "#a23a2b";
+    signUpError.style.display = "block";
 
-    /* Password match */
+    return;
+  }
 
-    if (password !== confirmPassword) {
+  /* Password length */
 
-        signUpError.textContent = "Passwords do not match.";
-        signUpError.style.color = "#a23a2b";
-        signUpError.style.display = "block";
+  if (password.length < 6) {
+    signUpError.textContent = window.I18n.source("text.522");
 
-        return;
-    }
+    signUpError.style.color = "#a23a2b";
+    signUpError.style.display = "block";
 
+    return;
+  }
 
-    /* Password length */
+  /* Name */
 
-    if (password.length < 6) {
+  if (!name) {
+    signUpError.textContent = window.I18n.source("text.523");
 
-        signUpError.textContent =
-            "Password must be at least 6 characters.";
+    signUpError.style.color = "#a23a2b";
+    signUpError.style.display = "block";
 
-        signUpError.style.color = "#a23a2b";
-        signUpError.style.display = "block";
+    return;
+  }
 
-        return;
-    }
+  const signUpButton = signUpForm.querySelector('button[type="submit"]');
 
+  signUpButton.disabled = true;
+  signUpButton.textContent = window.I18n.source("text.524");
 
-    /* Name */
+  try {
+    /*
+     * Make sure Firebase stores the authentication
+     * session locally in the browser.
+     */
 
-    if (!name) {
+    await setPersistence(auth, browserLocalPersistence);
 
-        signUpError.textContent =
-            "Please enter your name.";
+    /* Create account */
 
-        signUpError.style.color = "#a23a2b";
-        signUpError.style.display = "block";
-
-        return;
-    }
-
-
-    const signUpButton =
-        signUpForm.querySelector('button[type="submit"]');
-
-    signUpButton.disabled = true;
-    signUpButton.textContent = "Creating Account...";
-
-
-    try {
-
-        /*
-         * Make sure Firebase stores the authentication
-         * session locally in the browser.
-         */
-
-        await setPersistence(
-            auth,
-            browserLocalPersistence
-        );
-
-
-        /* Create account */
-
-const userCredential =
-    await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password,
     );
 
-const user = userCredential.user;
+    const user = userCredential.user;
 
+    /* Save the user's name inside Firebase */
 
-/* Save the user's name inside Firebase */
+    await updateProfile(user, {
+      displayName: name,
+    });
 
-await updateProfile(user, {
-    displayName: name
-});
+    console.log("ACCOUNT CREATED:", user.email);
+    console.log("USER NAME:", user.displayName);
 
+    /* Save basic user information */
 
-console.log("ACCOUNT CREATED:", user.email);
-console.log("USER NAME:", user.displayName);
-
-
-/* Save basic user information */
-
-localStorage.setItem(
-    "masar_current_user",
-    JSON.stringify({
+    localStorage.setItem(
+      "masar_current_user",
+      JSON.stringify({
         name: name,
         email: user.email,
-        uid: user.uid
-    })
-);
+        uid: user.uid,
+      }),
+    );
 
-        signUpError.textContent =
-            "Account created successfully. You can sign in now.";
+    signUpError.textContent = window.I18n.source("text.527");
 
-        signUpError.style.color = "#6d7651";
-        signUpError.style.display = "block";
+    signUpError.style.color = "#6d7651";
+    signUpError.style.display = "block";
 
+    /* Switch to Sign In */
 
-        /* Switch to Sign In */
+    signUpTab.classList.remove("is-active");
+    signInTab.classList.add("is-active");
 
-        signUpTab.classList.remove("is-active");
-        signInTab.classList.add("is-active");
+    signUpPanel.classList.remove("is-active");
+    signInPanel.classList.add("is-active");
 
-        signUpPanel.classList.remove("is-active");
-        signInPanel.classList.add("is-active");
+    document.getElementById("signInEmail").value = email;
+    document.getElementById("signInPassword").value = "";
+  } catch (error) {
+    console.error("Firebase signup error:", error);
 
+    switch (error.code) {
+      case "auth/email-already-in-use":
+        signUpError.textContent = window.I18n.source("text.529");
+        break;
 
-        document.getElementById("signInEmail").value = email;
-        document.getElementById("signInPassword").value = "";
+      case "auth/invalid-email":
+        signUpError.textContent = window.I18n.source("text.530");
+        break;
 
+      case "auth/weak-password":
+        signUpError.textContent = window.I18n.source("text.522");
+        break;
 
-    } catch (error) {
+      case "auth/network-request-failed":
+        signUpError.textContent = window.I18n.source("text.531");
+        break;
 
-        console.error("Firebase signup error:", error);
+      case "auth/operation-not-allowed":
+        signUpError.textContent = window.I18n.source("text.532");
+        break;
 
-        switch (error.code) {
-
-            case "auth/email-already-in-use":
-                signUpError.textContent =
-                    "This email is already registered. Please sign in instead.";
-                break;
-
-            case "auth/invalid-email":
-                signUpError.textContent =
-                    "Please enter a valid email address.";
-                break;
-
-            case "auth/weak-password":
-                signUpError.textContent =
-                    "Password must be at least 6 characters.";
-                break;
-
-            case "auth/network-request-failed":
-                signUpError.textContent =
-                    "Network error. Please check your internet connection.";
-                break;
-
-            case "auth/operation-not-allowed":
-                signUpError.textContent =
-                    "Email and password authentication is not enabled.";
-                break;
-
-            default:
-                signUpError.textContent =
-                    "Unable to create your account. Please try again.";
-        }
-
-        signUpError.style.color = "#a23a2b";
-        signUpError.style.display = "block";
-
-    } finally {
-
-        signUpButton.disabled = false;
-        signUpButton.textContent = "Create Account";
+      default:
+        signUpError.textContent = window.I18n.source("text.533");
     }
 
+    signUpError.style.color = "#a23a2b";
+    signUpError.style.display = "block";
+  } finally {
+    signUpButton.disabled = false;
+    signUpButton.textContent = window.I18n.source("text.235");
+  }
 });
-
 
 /* ==================================================
    SIGN IN
 ================================================== */
 
 signInForm.addEventListener("submit", async function (event) {
+  event.preventDefault();
 
-    event.preventDefault();
+  signInError.style.display = "none";
 
-    signInError.style.display = "none";
+  const email = document
+    .getElementById("signInEmail")
+    .value.trim()
+    .toLowerCase();
 
-    const email = document
-        .getElementById("signInEmail")
-        .value
-        .trim()
-        .toLowerCase();
+  const password = document.getElementById("signInPassword").value;
 
-    const password =
-        document.getElementById("signInPassword").value;
+  const signInButton = signInForm.querySelector('button[type="submit"]');
 
+  signInButton.disabled = true;
+  signInButton.textContent = window.I18n.source("text.534");
 
-    const signInButton =
-        signInForm.querySelector('button[type="submit"]');
+  try {
+    /*
+     * IMPORTANT:
+     * Set Firebase persistence BEFORE signing in.
+     */
 
-    signInButton.disabled = true;
-    signInButton.textContent = "Signing In...";
+    await setPersistence(auth, browserLocalPersistence);
 
+    /* Sign in */
 
-    try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
 
-        /*
-         * IMPORTANT:
-         * Set Firebase persistence BEFORE signing in.
-         */
+    const user = userCredential.user;
 
-        await setPersistence(
-            auth,
-            browserLocalPersistence
-        );
+    console.log("SIGNED IN USER:", user);
+    console.log("SIGNED IN EMAIL:", user.email);
 
+    /* Save login state */
 
-        /* Sign in */
+    localStorage.setItem("masar_logged_in", "true");
 
-        const userCredential =
-            await signInWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
+    localStorage.setItem(
+      "masar_current_user",
+      JSON.stringify({
+        name: user.displayName || "",
+        email: user.email,
+        uid: user.uid,
+      }),
+    );
 
-        const user = userCredential.user;
+    console.log("LOGIN SAVED SUCCESSFULLY");
 
+    /* Go to Home */
 
-        console.log("SIGNED IN USER:", user);
-        console.log("SIGNED IN EMAIL:", user.email);
+    window.location.href = "index.html";
+  } catch (error) {
+    console.error("Firebase signin error:", error);
 
+    switch (error.code) {
+      case "auth/invalid-credential":
+      case "auth/wrong-password":
+      case "auth/user-not-found":
+        signInError.textContent = window.I18n.source("text.539");
 
-        /* Save login state */
+        break;
 
-        localStorage.setItem(
-            "masar_logged_in",
-            "true"
-        );
+      case "auth/invalid-email":
+        signInError.textContent = window.I18n.source("text.530");
 
-        localStorage.setItem(
-            "masar_current_user",
-            JSON.stringify({
-                name: user.displayName || "",
-                email: user.email,
-                uid: user.uid
-            })
-        );
+        break;
 
+      case "auth/too-many-requests":
+        signInError.textContent = window.I18n.source("text.540");
 
-        console.log("LOGIN SAVED SUCCESSFULLY");
+        break;
 
+      case "auth/network-request-failed":
+        signInError.textContent = window.I18n.source("text.531");
 
-        /* Go to Home */
+        break;
 
-        window.location.href = "index.html";
-
-
-    } catch (error) {
-
-        console.error("Firebase signin error:", error);
-
-        switch (error.code) {
-
-            case "auth/invalid-credential":
-            case "auth/wrong-password":
-            case "auth/user-not-found":
-
-                signInError.textContent =
-                    "Incorrect email or password.";
-
-                break;
-
-            case "auth/invalid-email":
-
-                signInError.textContent =
-                    "Please enter a valid email address.";
-
-                break;
-
-            case "auth/too-many-requests":
-
-                signInError.textContent =
-                    "Too many login attempts. Please try again later.";
-
-                break;
-
-            case "auth/network-request-failed":
-
-                signInError.textContent =
-                    "Network error. Please check your internet connection.";
-
-                break;
-
-            default:
-
-                signInError.textContent =
-                    "Unable to sign in. Please check your email and password.";
-        }
-
-        signInError.style.color = "#a23a2b";
-        signInError.style.display = "block";
-
-
-    } finally {
-
-        signInButton.disabled = false;
-        signInButton.textContent = "Sign In";
+      default:
+        signInError.textContent = window.I18n.source("text.541");
     }
 
+    signInError.style.color = "#a23a2b";
+    signInError.style.display = "block";
+  } finally {
+    signInButton.disabled = false;
+    signInButton.textContent = window.I18n.source("text.091");
+  }
 });

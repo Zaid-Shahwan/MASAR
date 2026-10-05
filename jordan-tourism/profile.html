@@ -2,9 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
 
-    <title>My Profile — MASAR</title>
+    <title data-i18n="text.206">My Profile — MASAR</title>
 
     <link rel="icon" type="image/png" href="assets/images/logo.png" />
 
@@ -18,6 +21,8 @@
 
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/profile.css" />
+    <script src="locales/catalog.js"></script>
+    <script src="js/i18n.js"></script>
   </head>
 
   <body>
@@ -28,24 +33,49 @@
     <header class="site-header">
       <div class="container">
         <a href="index.html" class="brand">
-          <img src="assets/images/MASAR_AI.png" alt="MASAR" height="80" />
+          <img
+            src="assets/images/MASAR_AI.png"
+            alt="MASAR"
+            data-i18n-alt="text.002"
+            height="80"
+          />
         </a>
 
         <nav class="nav-links">
-          <a class="nav-link" href="index.html"> Home </a>
+          <a class="nav-link" href="index.html">
+            <i18n-text data-i18n="text.003">Home</i18n-text>
+          </a>
 
-          <a class="nav-link" href="index.html#destinations"> Destinations </a>
+          <a class="nav-link" href="index.html#destinations">
+            <i18n-text data-i18n="text.004">Destinations</i18n-text>
+          </a>
 
-          <a class="nav-link" href="ai.html"> AI Guide </a>
+          <a class="nav-link" href="ai.html">
+            <i18n-text data-i18n="text.005">AI Guide</i18n-text>
+          </a>
 
-          <a class="nav-link" href="explore.html"> Plan Your Trip </a>
+          <a class="nav-link" href="explore.html">
+            <i18n-text data-i18n="text.006">Plan Your Trip</i18n-text>
+          </a>
 
-          <a class="nav-link is-active" href="profile.html"> Profile </a>
+          <a class="nav-link is-active" href="profile.html">
+            <i18n-text data-i18n="text.007">Profile</i18n-text>
+          </a>
         </nav>
 
         <div class="nav-cta">
+          <select
+            class="language-select"
+            data-language-select
+            aria-label="Language"
+            data-i18n-aria-label="nav.language"
+          >
+            <option value="en" lang="en">English</option>
+            <option value="ar" lang="ar">العربية</option>
+            <option value="fr" lang="fr">Français</option>
+          </select>
           <a href="explore.html" class="btn btn-primary">
-            Find Your Experience
+            <i18n-text data-i18n="text.008">Find Your Experience</i18n-text>
           </a>
           <button
             class="hamburger"
@@ -59,13 +89,38 @@
       </div>
     </header>
 
-    <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile">
-      <a href="index.html">Home</a>
-      <a href="index.html#destinations">Destinations</a>
-      <a href="ai.html">AI Guide</a>
-      <a href="explore.html">Plan Your Trip</a>
-      <a href="profile.html">Profile</a>
-      <a href="explore.html" class="btn btn-primary btn-block">Find Your Experience</a>
+    <nav
+      id="mobile-menu"
+      class="mobile-menu"
+      aria-label="Mobile"
+      data-i18n-aria-label="text.041"
+      inert
+      aria-hidden="true"
+    >
+      <select
+        class="language-select"
+        data-language-select
+        aria-label="Language"
+        data-i18n-aria-label="nav.language"
+      >
+        <option value="en" lang="en">English</option>
+        <option value="ar" lang="ar">العربية</option>
+        <option value="fr" lang="fr">Français</option>
+      </select>
+      <a href="index.html"><i18n-text data-i18n="text.003">Home</i18n-text></a>
+      <a href="index.html#destinations"
+        ><i18n-text data-i18n="text.004">Destinations</i18n-text></a
+      >
+      <a href="ai.html"><i18n-text data-i18n="text.005">AI Guide</i18n-text></a>
+      <a href="explore.html"
+        ><i18n-text data-i18n="text.006">Plan Your Trip</i18n-text></a
+      >
+      <a href="profile.html"
+        ><i18n-text data-i18n="text.007">Profile</i18n-text></a
+      >
+      <a href="explore.html" class="btn btn-primary btn-block"
+        ><i18n-text data-i18n="text.008">Find Your Experience</i18n-text></a
+      >
     </nav>
 
     <!-- ==================================================
@@ -80,30 +135,46 @@
           <div class="profile-avatar" id="profileAvatar">?</div>
 
           <div class="profile-intro">
-            <p class="profile-label">YOUR MASAR PROFILE</p>
+            <p class="profile-label">
+              <i18n-text data-i18n="text.207">YOUR MASAR PROFILE</i18n-text>
+            </p>
 
-            <h1 id="profileName">Loading...</h1>
+            <h1 id="profileName">
+              <i18n-text data-i18n="text.208">Loading...</i18n-text>
+            </h1>
 
-            <p id="profileEmail">Loading...</p>
+            <p id="profileEmail">
+              <i18n-text data-i18n="text.208">Loading...</i18n-text>
+            </p>
           </div>
         </div>
 
         <!-- ACCOUNT INFORMATION -->
 
         <section class="profile-section">
-          <h2>Account Information</h2>
+          <h2>
+            <i18n-text data-i18n="text.209">Account Information</i18n-text>
+          </h2>
 
           <div class="info-grid">
             <div class="info-item">
-              <span class="info-label"> Full Name </span>
+              <span class="info-label">
+                <i18n-text data-i18n="text.210">Full Name</i18n-text>
+              </span>
 
-              <strong id="infoName"> Loading... </strong>
+              <strong id="infoName">
+                <i18n-text data-i18n="text.208">Loading...</i18n-text>
+              </strong>
             </div>
 
             <div class="info-item">
-              <span class="info-label"> Email </span>
+              <span class="info-label">
+                <i18n-text data-i18n="text.211">Email</i18n-text>
+              </span>
 
-              <strong id="infoEmail"> Loading... </strong>
+              <strong id="infoEmail">
+                <i18n-text data-i18n="text.208">Loading...</i18n-text>
+              </strong>
             </div>
           </div>
         </section>
@@ -111,11 +182,13 @@
         <!-- PASSWORD -->
 
         <section class="profile-section">
-          <h2>Security</h2>
+          <h2><i18n-text data-i18n="text.212">Security</i18n-text></h2>
 
           <div class="security-box">
             <div class="security-password-content">
-              <span class="info-label"> Password </span>
+              <span class="info-label">
+                <i18n-text data-i18n="text.213">Password</i18n-text>
+              </span>
 
               <div class="password-row">
                 <div class="password-display" id="passwordDisplay">
@@ -127,15 +200,19 @@
                   class="password-toggle"
                   id="showPasswordButton"
                   aria-label="Show password"
+                  data-i18n-aria-label="text.223"
                   title="Show password"
+                  data-i18n-title="text.223"
                 >
                   👁
                 </button>
               </div>
 
               <p class="security-note" id="passwordNote">
-                Your password is securely managed by Firebase and cannot be
-                displayed.
+                <i18n-text data-i18n="text.214"
+                  >Your password is securely managed by Firebase and cannot be
+                  displayed.</i18n-text
+                >
               </p>
             </div>
 
@@ -144,7 +221,7 @@
               class="profile-button secondary-button"
               id="changePasswordButton"
             >
-              Change Password
+              <i18n-text data-i18n="text.215">Change Password</i18n-text>
             </button>
           </div>
 
@@ -160,10 +237,13 @@
         <section class="profile-section">
           <div class="saved-header">
             <div>
-              <h2>Favorites</h2>
+              <h2><i18n-text data-i18n="text.216">Favorites</i18n-text></h2>
 
               <p class="section-description">
-                Experiences you saved from your trip recommendations.
+                <i18n-text data-i18n="text.217"
+                  >Experiences you saved from your trip
+                  recommendations.</i18n-text
+                >
               </p>
             </div>
           </div>
@@ -175,12 +255,18 @@
           <div class="empty-saved" id="emptySaved" style="display: none">
             <div class="empty-icon">♡</div>
 
-            <h3>No favorites yet</h3>
+            <h3>
+              <i18n-text data-i18n="text.218">No favorites yet</i18n-text>
+            </h3>
 
-            <p>Choose an experience and press Save to add it here.</p>
+            <p>
+              <i18n-text data-i18n="text.219"
+                >Choose an experience and press Save to add it here.</i18n-text
+              >
+            </p>
 
             <a href="explore.html" class="btn btn-primary">
-              Find Experiences
+              <i18n-text data-i18n="text.220">Find Experiences</i18n-text>
             </a>
           </div>
         </section>
@@ -188,14 +274,14 @@
         <!-- ACCOUNT ACTIONS -->
 
         <section class="profile-section account-actions-section">
-          <h2>Account</h2>
+          <h2><i18n-text data-i18n="text.221">Account</i18n-text></h2>
 
           <button
             type="button"
             id="signOutButton"
             class="profile-button logout-button"
           >
-            Sign Out
+            <i18n-text data-i18n="text.222">Sign Out</i18n-text>
           </button>
 
           <p

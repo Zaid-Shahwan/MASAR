@@ -2,12 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Find Your Experience — MASAR</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title data-i18n="text.059">Find Your Experience — MASAR</title>
     <link rel="icon" type="image/png" href="assets/images/logo.png" />
     <meta
       name="description"
       content="Answer five quick questions and get a personalized shortlist of things to do in Jordan, matched to your location, time, interests, walking level and budget."
+      data-i18n-content="text.086"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,25 +20,57 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/style.css" />
+    <script src="locales/catalog.js"></script>
+    <script src="js/i18n.js"></script>
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main"
+      ><i18n-text data-i18n="text.001">Skip to content</i18n-text></a
+    >
 
     <header class="site-header is-solid">
       <div class="container">
         <a href="index.html" class="brand"
-          ><img src="assets/images/MASAR_AI.png" alt="MASAR_AI" height="80"
+          ><img
+            src="assets/images/MASAR_AI.png"
+            alt="MASAR_AI"
+            data-i18n-alt="text.087"
+            height="80"
         /></a>
-        <nav class="nav-links" aria-label="Primary">
-          <a class="nav-link" href="index.html">Home</a>
-          <a class="nav-link" href="index.html#destinations">Destinations</a>
-          <a class="nav-link" href="ai.html">AI Guide</a>
-          <a class="nav-link is-active" href="explore.html">Plan Your Trip</a>
-          <a class="nav-link" href="profile.html">Profile</a>
+        <nav
+          class="nav-links"
+          aria-label="Primary"
+          data-i18n-aria-label="text.039"
+        >
+          <a class="nav-link" href="index.html"
+            ><i18n-text data-i18n="text.003">Home</i18n-text></a
+          >
+          <a class="nav-link" href="index.html#destinations"
+            ><i18n-text data-i18n="text.004">Destinations</i18n-text></a
+          >
+          <a class="nav-link" href="ai.html"
+            ><i18n-text data-i18n="text.005">AI Guide</i18n-text></a
+          >
+          <a class="nav-link is-active" href="explore.html"
+            ><i18n-text data-i18n="text.006">Plan Your Trip</i18n-text></a
+          >
+          <a class="nav-link" href="profile.html"
+            ><i18n-text data-i18n="text.007">Profile</i18n-text></a
+          >
         </nav>
         <div class="nav-cta">
+          <select
+            class="language-select"
+            data-language-select
+            aria-label="Language"
+            data-i18n-aria-label="nav.language"
+          >
+            <option value="en" lang="en">English</option>
+            <option value="ar" lang="ar">العربية</option>
+            <option value="fr" lang="fr">Français</option>
+          </select>
           <a href="#finder-app" class="btn btn-primary"
-            >Find Your Experience
+            ><i18n-text data-i18n="text.008">Find Your Experience</i18n-text>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -56,16 +92,43 @@
       </div>
     </header>
 
-    <nav id="mobile-menu" class="mobile-menu" aria-label="Mobile">
-      <a href="index.html">Home</a>
-      <a href="index.html#destinations">Destinations</a>
-      <a href="index.html#petra">Petra</a>
-      <a href="index.html#amman">Amman</a>
-      <a href="ai.html">AI Guide</a>
-      <a href="explore.html">Plan Your Trip</a>
-      <a href="profile.html">Profile</a>
+    <nav
+      id="mobile-menu"
+      class="mobile-menu"
+      aria-label="Mobile"
+      data-i18n-aria-label="text.041"
+      inert
+      aria-hidden="true"
+    >
+      <select
+        class="language-select"
+        data-language-select
+        aria-label="Language"
+        data-i18n-aria-label="nav.language"
+      >
+        <option value="en" lang="en">English</option>
+        <option value="ar" lang="ar">العربية</option>
+        <option value="fr" lang="fr">Français</option>
+      </select>
+      <a href="index.html"><i18n-text data-i18n="text.003">Home</i18n-text></a>
+      <a href="index.html#destinations"
+        ><i18n-text data-i18n="text.004">Destinations</i18n-text></a
+      >
+      <a href="index.html#petra"
+        ><i18n-text data-i18n="text.034">Petra</i18n-text></a
+      >
+      <a href="index.html#amman"
+        ><i18n-text data-i18n="text.035">Amman</i18n-text></a
+      >
+      <a href="ai.html"><i18n-text data-i18n="text.005">AI Guide</i18n-text></a>
+      <a href="explore.html"
+        ><i18n-text data-i18n="text.006">Plan Your Trip</i18n-text></a
+      >
+      <a href="profile.html"
+        ><i18n-text data-i18n="text.007">Profile</i18n-text></a
+      >
       <a href="#finder-app" class="btn btn-primary btn-block"
-        >Find Your Experience</a
+        ><i18n-text data-i18n="text.008">Find Your Experience</i18n-text></a
       >
     </nav>
 
@@ -75,13 +138,19 @@
         style="padding-top: calc(var(--nav-h) + clamp(2rem, 5vw, 3.5rem))"
       >
         <div class="finder-page-head reveal">
-          <p class="eyebrow">Five quick choices</p>
+          <p class="eyebrow">
+            <i18n-text data-i18n="text.060">Five quick choices</i18n-text>
+          </p>
           <h1 style="font-size: var(--step-h1)">
-            A local journey shaped around you.
+            <i18n-text data-i18n="text.061"
+              >A local journey shaped around you.</i18n-text
+            >
           </h1>
           <p class="lead" style="margin-inline: auto">
-            No account, no research. Answer five short questions and we'll match
-            you with things to do right now.
+            <i18n-text data-i18n="text.062"
+              >No account, no research. Answer five short questions and we'll
+              match you with things to do right now.</i18n-text
+            >
           </p>
         </div>
 
@@ -94,9 +163,18 @@
               loading="lazy"
             />
             <div>
-              <h2>Tell us what you feel like experiencing.</h2>
+              <h2>
+                <i18n-text data-i18n="text.063"
+                  >Tell us what you feel like experiencing.</i18n-text
+                >
+              </h2>
             </div>
-            <p>Five quick choices. A local journey shaped around you.</p>
+            <p>
+              <i18n-text data-i18n="text.064"
+                >Five quick choices. A local journey shaped around
+                you.</i18n-text
+              >
+            </p>
           </div>
 
           <div class="finder__panel">
@@ -105,18 +183,23 @@
             <div class="finder__body" data-finder-body>
               <div data-finder-question-block>
                 <p class="finder__step-label" data-finder-step-label>
-                  STEP 1 OF 5
+                  <i18n-text data-i18n="text.065">STEP 1 OF 5</i18n-text>
                 </p>
                 <div class="finder__question">
-                  <h3 data-finder-question-title>Where are you?</h3>
+                  <h3 data-finder-question-title>
+                    <i18n-text data-i18n="text.026">Where are you?</i18n-text>
+                  </h3>
                   <p class="lead" data-finder-question-hint>
-                    Choose your current location.
+                    <i18n-text data-i18n="text.066"
+                      >Choose your current location.</i18n-text
+                    >
                   </p>
                   <div
                     class="finder__options"
                     data-finder-options
                     role="group"
                     aria-label="Answer options"
+                    data-i18n-aria-label="text.088"
                   ></div>
                 </div>
               </div>
@@ -129,7 +212,7 @@
                 data-finder-back
                 hidden
               >
-                Back
+                <i18n-text data-i18n="text.067">Back</i18n-text>
               </button>
               <span
                 class="finder__selected-count"
@@ -141,7 +224,7 @@
                 data-finder-next
                 disabled
               >
-                Next
+                <i18n-text data-i18n="text.068">Next</i18n-text>
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -158,8 +241,16 @@
         <section id="finder-results" class="results section-tight">
           <div class="results__head">
             <div>
-              <p class="eyebrow">Something you might enjoy</p>
-              <h2>Your Jordan Experiences</h2>
+              <p class="eyebrow">
+                <i18n-text data-i18n="text.069"
+                  >Something you might enjoy</i18n-text
+                >
+              </p>
+              <h2>
+                <i18n-text data-i18n="text.070"
+                  >Your Jordan Experiences</i18n-text
+                >
+              </h2>
               <p
                 class="lead"
                 data-no-match
@@ -170,8 +261,10 @@
                   margin-top: 0.5rem;
                 "
               >
-                We couldn't find an exact match — here are the closest
-                experiences based on what you chose.
+                <i18n-text data-i18n="text.071"
+                  >We couldn't find an exact match — here are the closest
+                  experiences based on what you chose.</i18n-text
+                >
               </p>
             </div>
             <div style="display: flex; gap: 0.6rem; flex-wrap: wrap">
@@ -180,10 +273,12 @@
                 class="btn btn-outline btn-sm"
                 data-finder-reset
               >
-                Change Answers
+                <i18n-text data-i18n="text.072">Change Answers</i18n-text>
               </button>
               <a href="index.html#destinations" class="btn btn-outline btn-sm"
-                >Explore Another Destination</a
+                ><i18n-text data-i18n="text.073"
+                  >Explore Another Destination</i18n-text
+                ></a
               >
             </div>
           </div>
@@ -192,8 +287,10 @@
 
           <div class="results__empty" data-results-empty hidden>
             <p class="lead" style="margin-inline: auto">
-              No exact match — here is the closest experience based on what you
-              selected.
+              <i18n-text data-i18n="text.074"
+                >No exact match — here is the closest experience based on what
+                you selected.</i18n-text
+              >
             </p>
             <button
               type="button"
@@ -201,7 +298,7 @@
               data-finder-reset
               style="margin-top: 1rem"
             >
-              Adapt My Experience
+              <i18n-text data-i18n="text.075">Adapt My Experience</i18n-text>
             </button>
           </div>
         </section>
@@ -210,35 +307,57 @@
       <section class="section bg-sand" style="margin-top: 2rem">
         <div class="container">
           <div class="section-head reveal">
-            <p class="eyebrow">How it works</p>
-            <h2>Clear feedback at every step.</h2>
+            <p class="eyebrow">
+              <i18n-text data-i18n="text.076">How it works</i18n-text>
+            </p>
+            <h2>
+              <i18n-text data-i18n="text.077"
+                >Clear feedback at every step.</i18n-text
+              >
+            </h2>
           </div>
           <div
             class="editorial-grid reveal"
             style="grid-template-columns: repeat(4, 1fr)"
           >
             <div class="compare-panel compare-panel--old">
-              <p class="label">Step 1–5</p>
+              <p class="label">
+                <i18n-text data-i18n="text.078">Step 1–5</i18n-text>
+              </p>
               <p class="path" style="font-size: 1.1rem">
-                Five short questions, one at a time.
+                <i18n-text data-i18n="text.079"
+                  >Five short questions, one at a time.</i18n-text
+                >
               </p>
             </div>
             <div class="compare-panel compare-panel--old">
-              <p class="label">Matching</p>
+              <p class="label">
+                <i18n-text data-i18n="text.080">Matching</i18n-text>
+              </p>
               <p class="path" style="font-size: 1.1rem">
-                We score every experience against your answers.
+                <i18n-text data-i18n="text.081"
+                  >We score every experience against your answers.</i18n-text
+                >
               </p>
             </div>
             <div class="compare-panel compare-panel--old">
-              <p class="label">Results</p>
+              <p class="label">
+                <i18n-text data-i18n="text.082">Results</i18n-text>
+              </p>
               <p class="path" style="font-size: 1.1rem">
-                Your top three, ranked by match.
+                <i18n-text data-i18n="text.083"
+                  >Your top three, ranked by match.</i18n-text
+                >
               </p>
             </div>
             <div class="compare-panel compare-panel--new">
-              <p class="label" style="color: #e9d8b4">Something changed?</p>
+              <p class="label" style="color: #e9d8b4">
+                <i18n-text data-i18n="text.084">Something changed?</i18n-text>
+              </p>
               <p class="path" style="font-size: 1.1rem">
-                Adapt the experience without starting over.
+                <i18n-text data-i18n="text.085"
+                  >Adapt the experience without starting over.</i18n-text
+                >
               </p>
             </div>
           </div>
@@ -252,6 +371,7 @@
       role="dialog"
       aria-modal="true"
       aria-label="Experience details"
+      data-i18n-aria-label="text.089"
     >
       <div class="modal">
         <div data-modal-body></div>
@@ -262,20 +382,44 @@
       <div class="container">
         <div class="footer-top">
           <div>
-            <p class="footer-brand">MASAR</p>
-            <p class="footer-tag">Go beyond the landmark.</p>
+            <p class="footer-brand">
+              <i18n-text data-i18n="text.002">MASAR</i18n-text>
+            </p>
+            <p class="footer-tag">
+              <i18n-text data-i18n="text.032"
+                >Go beyond the landmark.</i18n-text
+              >
+            </p>
           </div>
-          <nav class="footer-links" aria-label="Footer">
-            <a href="index.html#destinations">Destinations</a>
-            <a href="explore.html">Experiences</a>
-            <a href="ai.html">AI Guide</a>
-            <a href="index.html#petra">Petra</a>
-            <a href="index.html#amman">Amman</a>
+          <nav
+            class="footer-links"
+            aria-label="Footer"
+            data-i18n-aria-label="text.058"
+          >
+            <a href="index.html#destinations"
+              ><i18n-text data-i18n="text.004">Destinations</i18n-text></a
+            >
+            <a href="explore.html"
+              ><i18n-text data-i18n="text.033">Experiences</i18n-text></a
+            >
+            <a href="ai.html"
+              ><i18n-text data-i18n="text.005">AI Guide</i18n-text></a
+            >
+            <a href="index.html#petra"
+              ><i18n-text data-i18n="text.034">Petra</i18n-text></a
+            >
+            <a href="index.html#amman"
+              ><i18n-text data-i18n="text.035">Amman</i18n-text></a
+            >
           </nav>
         </div>
         <div class="footer-bottom">
-          <p>Made with care for the people of Jordan.</p>
-          <p>&copy; 2026 MASAR</p>
+          <p>
+            <i18n-text data-i18n="text.036"
+              >Made with care for the people of Jordan.</i18n-text
+            >
+          </p>
+          <p><i18n-text data-i18n="text.037">&copy; 2026 MASAR</i18n-text></p>
         </div>
       </div>
     </footer>

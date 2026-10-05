@@ -2,9 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
 
-    <title>MASAR — Sign In</title>
+    <title data-i18n="text.224">MASAR — Sign In</title>
 
     <link rel="icon" type="image/png" href="assets/images/logo.png" />
 
@@ -13,6 +16,8 @@
 
     <!-- Authentication page styles -->
     <link rel="stylesheet" href="css/signin.css" />
+    <script src="locales/catalog.js"></script>
+    <script src="js/i18n.js"></script>
   </head>
 
   <body>
@@ -27,6 +32,7 @@
           <img
             src="assets/images/petra.jpg"
             alt="Petra Treasury in Jordan"
+            data-i18n-alt="text.236"
             class="auth-image"
           />
 
@@ -35,21 +41,30 @@
 
           <!-- Brand -->
           <a href="index.html" class="auth-brand">
-            <img src="assets/images/MASAR_AI.png" alt="MASAR_AI" height="80" />
+            <img
+              src="assets/images/MASAR_AI.png"
+              alt="MASAR_AI"
+              data-i18n-alt="text.087"
+              height="80"
+            />
           </a>
 
           <!-- Text over image -->
           <div class="auth-visual-content">
-            <span class="auth-label"> DISCOVER JORDAN </span>
+            <span class="auth-label">
+              <i18n-text data-i18n="text.225">DISCOVER JORDAN</i18n-text>
+            </span>
 
             <h1>
-              Your journey<br />
-              starts here.
+              <i18n-text data-i18n="text.226">Your journey</i18n-text><br />
+              <i18n-text data-i18n="text.227">starts here.</i18n-text>
             </h1>
 
             <p>
-              Explore Jordan, discover unforgettable places, and plan your
-              perfect journey with MASAR.
+              <i18n-text data-i18n="text.228"
+                >Explore Jordan, discover unforgettable places, and plan your
+                perfect journey with MASAR.</i18n-text
+              >
             </p>
           </div>
         </section>
@@ -64,13 +79,23 @@
                          TABS
                     ========================== -->
 
+            <select
+              class="language-select"
+              data-language-select
+              aria-label="Language"
+              data-i18n-aria-label="nav.language"
+            >
+              <option value="en" lang="en">English</option>
+              <option value="ar" lang="ar">العربية</option>
+              <option value="fr" lang="fr">Français</option>
+            </select>
             <div class="auth-tabs">
               <button type="button" class="auth-tab is-active" id="signInTab">
-                Sign In
+                <i18n-text data-i18n="text.091">Sign In</i18n-text>
               </button>
 
               <button type="button" class="auth-tab" id="signUpTab">
-                Sign Up
+                <i18n-text data-i18n="text.229">Sign Up</i18n-text>
               </button>
             </div>
 
@@ -80,27 +105,38 @@
 
             <div class="auth-panel is-active" id="signInPanel">
               <div class="auth-heading">
-                <h2>Welcome back</h2>
+                <h2>
+                  <i18n-text data-i18n="text.230">Welcome back</i18n-text>
+                </h2>
 
-                <p>Sign in to continue your journey.</p>
+                <p>
+                  <i18n-text data-i18n="text.231"
+                    >Sign in to continue your journey.</i18n-text
+                  >
+                </p>
               </div>
 
               <div class="form-error" id="signInError"></div>
 
               <form id="signInForm">
                 <div class="auth-field">
-                  <label for="signInEmail"> Email </label>
+                  <label for="signInEmail">
+                    <i18n-text data-i18n="text.211">Email</i18n-text>
+                  </label>
 
                   <input
                     type="email"
                     id="signInEmail"
                     placeholder="you@example.com"
+                    data-i18n-placeholder="text.237"
                     required
                   />
                 </div>
 
                 <div class="auth-field">
-                  <label for="signInPassword"> Password </label>
+                  <label for="signInPassword">
+                    <i18n-text data-i18n="text.213">Password</i18n-text>
+                  </label>
 
                   <input
                     type="password"
@@ -110,7 +146,9 @@
                   />
                 </div>
 
-                <button type="submit" class="auth-button">Sign In</button>
+                <button type="submit" class="auth-button">
+                  <i18n-text data-i18n="text.091">Sign In</i18n-text>
+                </button>
               </form>
             </div>
 
@@ -120,38 +158,52 @@
 
             <div class="auth-panel" id="signUpPanel">
               <div class="auth-heading">
-                <h2>Create account</h2>
+                <h2>
+                  <i18n-text data-i18n="text.232">Create account</i18n-text>
+                </h2>
 
-                <p>Start planning your Jordan adventure.</p>
+                <p>
+                  <i18n-text data-i18n="text.233"
+                    >Start planning your Jordan adventure.</i18n-text
+                  >
+                </p>
               </div>
 
               <div class="form-error" id="signUpError"></div>
 
               <form id="signUpForm">
                 <div class="auth-field">
-                  <label for="signUpName"> Full Name </label>
+                  <label for="signUpName">
+                    <i18n-text data-i18n="text.210">Full Name</i18n-text>
+                  </label>
 
                   <input
                     type="text"
                     id="signUpName"
                     placeholder="Your name"
+                    data-i18n-placeholder="text.238"
                     required
                   />
                 </div>
 
                 <div class="auth-field">
-                  <label for="signUpEmail"> Email </label>
+                  <label for="signUpEmail">
+                    <i18n-text data-i18n="text.211">Email</i18n-text>
+                  </label>
 
                   <input
                     type="email"
                     id="signUpEmail"
                     placeholder="you@example.com"
+                    data-i18n-placeholder="text.237"
                     required
                   />
                 </div>
 
                 <div class="auth-field">
-                  <label for="signUpPassword"> Password </label>
+                  <label for="signUpPassword">
+                    <i18n-text data-i18n="text.213">Password</i18n-text>
+                  </label>
 
                   <input
                     type="password"
@@ -162,7 +214,9 @@
                 </div>
 
                 <div class="auth-field">
-                  <label for="signUpConfirmPassword"> Confirm Password </label>
+                  <label for="signUpConfirmPassword">
+                    <i18n-text data-i18n="text.234">Confirm Password</i18n-text>
+                  </label>
 
                   <input
                     type="password"
@@ -173,7 +227,7 @@
                 </div>
 
                 <button type="submit" class="auth-button">
-                  Create Account
+                  <i18n-text data-i18n="text.235">Create Account</i18n-text>
                 </button>
               </form>
             </div>

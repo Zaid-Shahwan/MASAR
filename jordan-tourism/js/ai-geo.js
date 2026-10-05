@@ -12,21 +12,21 @@
   var STORAGE_KEY = "masar_location";
 
   var CITIES = [
-    { name: "Amman", lat: 31.9539, lng: 35.9106 },
-    { name: "Zarqa", lat: 32.0728, lng: 36.0876 },
-    { name: "Irbid", lat: 32.5556, lng: 35.85 },
-    { name: "Mafraq", lat: 32.3406, lng: 36.208 },
-    { name: "Jerash", lat: 32.2747, lng: 35.8961 },
-    { name: "Ajloun", lat: 32.3326, lng: 35.7517 },
-    { name: "Salt", lat: 32.0392, lng: 35.7272 },
-    { name: "Madaba", lat: 31.7196, lng: 35.7936 },
-    { name: "Dead Sea", lat: 31.559, lng: 35.4732 },
-    { name: "Karak", lat: 31.1853, lng: 35.7048 },
-    { name: "Tafilah", lat: 30.8375, lng: 35.6042 },
-    { name: "Petra (Wadi Musa)", lat: 30.3285, lng: 35.4444 },
-    { name: "Ma'an", lat: 30.1962, lng: 35.7341 },
-    { name: "Wadi Rum", lat: 29.5764, lng: 35.4195 },
-    { name: "Aqaba", lat: 29.5321, lng: 35.0063 },
+    { name: window.I18n.source("text.035"), lat: 31.9539, lng: 35.9106 },
+    { name: window.I18n.source("text.611"), lat: 32.0728, lng: 36.0876 },
+    { name: window.I18n.source("text.612"), lat: 32.5556, lng: 35.85 },
+    { name: window.I18n.source("text.613"), lat: 32.3406, lng: 36.208 },
+    { name: window.I18n.source("text.183"), lat: 32.2747, lng: 35.8961 },
+    { name: window.I18n.source("text.323"), lat: 32.3326, lng: 35.7517 },
+    { name: window.I18n.source("text.326"), lat: 32.0392, lng: 35.7272 },
+    { name: window.I18n.source("text.363"), lat: 31.7196, lng: 35.7936 },
+    { name: window.I18n.source("text.184"), lat: 31.559, lng: 35.4732 },
+    { name: window.I18n.source("text.321"), lat: 31.1853, lng: 35.7048 },
+    { name: window.I18n.source("text.614"), lat: 30.8375, lng: 35.6042 },
+    { name: window.I18n.source("text.615"), lat: 30.3285, lng: 35.4444 },
+    { name: window.I18n.source("text.616"), lat: 30.1962, lng: 35.7341 },
+    { name: window.I18n.source("text.181"), lat: 29.5764, lng: 35.4195 },
+    { name: window.I18n.source("text.182"), lat: 29.5321, lng: 35.0063 },
   ];
 
   /* rough bounding box of Jordan */
@@ -49,9 +49,7 @@
   var log = $("ai-log");
 
   if (!panel || !mapEl || !window.L) {
-    if (helpEl)
-      helpEl.textContent =
-        "The map could not load. Check your internet connection.";
+    if (helpEl) helpEl.textContent = window.I18n.source("text.617");
     return;
   }
 
@@ -117,12 +115,14 @@
 
   function updateStatus() {
     if (confirmed) {
-      statusEl.textContent = "📍 Location confirmed: " + confirmed.city;
-      openBtn.textContent = "Change location";
+      statusEl.textContent = window.I18n.t("geo.confirmed", {
+        city: window.I18n.translateText(confirmed.city),
+      });
+      openBtn.textContent = window.I18n.source("text.619");
       clearBtn.hidden = false;
     } else {
-      statusEl.textContent = "📍 Location not confirmed";
-      openBtn.textContent = "Confirm location";
+      statusEl.textContent = window.I18n.source("text.023");
+      openBtn.textContent = window.I18n.source("text.024");
       clearBtn.hidden = true;
     }
   }
@@ -165,7 +165,7 @@
     L.tileLayer(tileUrl, {
       maxZoom: 18,
       subdomains: "abcd",
-      attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
+      attribution: window.I18n.source("text.620"),
     }).addTo(map);
 
     map.on("click", function (e) {
@@ -177,9 +177,7 @@
 
   function setPick(lat, lng, fly) {
     if (!inJordan(lat, lng)) {
-      setHelp(
-        "That spot is outside Jordan. Please pick a place inside Jordan.",
-      );
+      setHelp(window.I18n.source("text.621"));
       confirmBtn.disabled = true;
       return;
     }
@@ -201,9 +199,9 @@
 
     confirmBtn.disabled = false;
     setHelp(
-      "Selected: near " +
-        nearestCity(lat, lng) +
-        ". Press “Confirm this location”.",
+      window.I18n.t("geo.selected", {
+        city: window.I18n.translateText(nearestCity(lat, lng)),
+      }),
     );
   }
 
@@ -239,7 +237,9 @@
     updateStatus();
     closePanel();
 
-    addUserBubble("📍 I'm near " + city);
+    addUserBubble(
+      window.I18n.t("geo.near", { city: window.I18n.translateText(city) }),
+    );
     if (log) log.scrollTop = log.scrollHeight;
 
     /* ai.js listens for this and shows MASAR's thinking cloud + reply,
@@ -281,18 +281,16 @@
 
   locateBtn.addEventListener("click", function () {
     if (!navigator.geolocation) {
-      setHelp("Your browser can't share your location. Click the map instead.");
+      setHelp(window.I18n.source("text.624"));
       return;
     }
-    setHelp("Finding your location…");
+    setHelp(window.I18n.source("text.625"));
     navigator.geolocation.getCurrentPosition(
       function (pos) {
         setPick(pos.coords.latitude, pos.coords.longitude, true);
       },
       function () {
-        setHelp(
-          "Couldn't get your location. Click the map or choose a city instead.",
-        );
+        setHelp(window.I18n.source("text.626"));
       },
       { enableHighAccuracy: true, timeout: 10000 },
     );
@@ -321,7 +319,7 @@
       return Promise.resolve(null);
     pendingQuestion = message;
     return Promise.resolve({
-      text: "I'd love to help with that. First, tell me where you are by confirming your location on the map, and then I'll answer.",
+      text: window.I18n.source("text.627"),
       extras: { locationPrompt: true },
     });
   }
@@ -336,7 +334,7 @@
       var b = document.createElement("button");
       b.type = "button";
       b.className = "btn btn-primary btn-sm";
-      b.textContent = "📍 Confirm my location";
+      b.textContent = window.I18n.source("text.629");
       b.addEventListener("click", openPanel);
       box.appendChild(b);
     }
@@ -356,17 +354,17 @@
   }
 
   function onLocationConfirmed() {
-    var city = confirmed ? confirmed.city : "your area";
+    var city = confirmed ? confirmed.city : window.I18n.source("text.630");
     var reply = {
-      text:
-        "Got it, you're near " + city + ". What would you like to do or find?",
+      text: window.I18n.t("geo.reply", {
+        city: window.I18n.translateText(city),
+      }),
     };
     if (pendingQuestion) {
       reply = {
-        text:
-          "Got it, you're near " +
-          city +
-          ". Want me to answer your earlier question now?",
+        text: window.I18n.t("geo.previous", {
+          city: window.I18n.translateText(city),
+        }),
         extras: { chips: [pendingQuestion] },
       };
       pendingQuestion = null;

@@ -11,7 +11,10 @@
   gap: 0.6rem 0.9rem;
   margin-top: 1rem;
 }
-.geo-bar__status { font-size: 0.9rem; color: var(--c-muted); }
+.geo-bar__status {
+  font-size: 0.9rem;
+  color: var(--c-muted);
+}
 .geo-bar__clear {
   border: 0;
   background: transparent;
@@ -20,7 +23,9 @@
   text-decoration: underline;
   cursor: pointer;
 }
-.geo-bar__clear[hidden] { display: none; }
+.geo-bar__clear[hidden] {
+  display: none;
+}
 
 .geo-panel {
   margin-top: 1rem;
@@ -29,7 +34,9 @@
   border-radius: 24px;
   padding: 1rem 1rem 1.1rem;
 }
-.geo-panel[hidden] { display: none; }
+.geo-panel[hidden] {
+  display: none;
+}
 
 .geo-panel__head {
   display: flex;
@@ -37,12 +44,18 @@
   justify-content: space-between;
   margin-bottom: 0.75rem;
 }
-.geo-panel__head h2 { font-size: 1.25rem; margin: 0; }
+.geo-panel__head h2 {
+  font-size: 1.25rem;
+  margin: 0;
+}
 .geo-panel__close {
-  width: 36px; height: 36px;
-  border: 0; border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
   background: var(--c-secondary);
-  font-size: 1.4rem; line-height: 1;
+  font-size: 1.4rem;
+  line-height: 1;
   cursor: pointer;
 }
 
@@ -70,14 +83,23 @@
   background: #fff;
   font-size: 0.9rem;
 }
-.geo-panel__controls .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.geo-panel__controls .btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
 
-.geo-help { margin-top: 0.6rem; min-height: 1.2em; font-size: 0.85rem; color: var(--c-muted); }
+.geo-help {
+  margin-top: 0.6rem;
+  min-height: 1.2em;
+  font-size: 0.85rem;
+  color: var(--c-muted);
+}
 
 /* map pin (drawn with CSS so no image files are needed) */
 .geo-pin span {
   display: block;
-  width: 28px; height: 28px;
+  width: 28px;
+  height: 28px;
   background: var(--c-accent, #b85c43);
   border: 3px solid #fff;
   border-radius: 50% 50% 50% 0;
@@ -86,10 +108,21 @@
 }
 
 @media (max-width: 600px) {
-  .geo-panel { padding: 0.8rem; border-radius: 20px; }
+  .geo-panel {
+    padding: 0.8rem;
+    border-radius: 20px;
+  }
   .geo-panel__controls .btn,
-  .geo-select { flex: 1 1 100%; }
+  .geo-select {
+    flex: 1 1 100%;
+  }
 }
 
 /* buttons MASAR adds under a cloud (location prompt, quick replies) */
-.geo-extras { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 0.9rem; }
+.geo-extras {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}

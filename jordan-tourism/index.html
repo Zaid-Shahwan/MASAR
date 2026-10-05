@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>MASAR — Discover Jordan, Your Way</title>
+<title data-i18n="text.090">MASAR — Discover Jordan, Your Way</title>
 
 <link rel="icon" type="image/png" href="assets/images/logo.png">
 
-<meta name="description" content="Plan a Jordan trip that goes beyond the landmarks. Explore Petra, Wadi Rum, Amman, the Dead Sea and Aqaba, then build a personal itinerary with the Experience Finder.">
+<meta name="description" content="Plan a Jordan trip that goes beyond the landmarks. Explore Petra, Wadi Rum, Amman, the Dead Sea and Aqaba, then build a personal itinerary with the Experience Finder." data-i18n-content="text.187">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin">
@@ -16,37 +16,42 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="css/style.css">
+<script src="locales/catalog.js"></script>
+<script src="js/i18n.js"></script>
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main"><i18n-text data-i18n="text.001">Skip to content</i18n-text></a>
 
 <header class="site-header is-transparent">
   <div class="container">
-    <a href="index.html" class="brand"><img src="assets/images/MASAR_AI.png" alt="MASAR_AI" height="80"></a>
-    <nav class="nav-links" aria-label="Primary">
-        <a class="nav-link is-active" href="index.html">Home</a>
-        <a class="nav-link" href="index.html#destinations">Destinations</a>
-        <a class="nav-link" href="ai.html">AI Guide</a>
-        <a class="nav-link" href="explore.html">Plan Your Trip</a>
+    <a href="index.html" class="brand"><img src="assets/images/MASAR_AI.png" alt="MASAR_AI" data-i18n-alt="text.087" height="80"></a>
+    <nav class="nav-links" aria-label="Primary" data-i18n-aria-label="text.039">
+        <a class="nav-link is-active" href="index.html"><i18n-text data-i18n="text.003">Home</i18n-text></a>
+        <a class="nav-link" href="index.html#destinations"><i18n-text data-i18n="text.004">Destinations</i18n-text></a>
+        <a class="nav-link" href="ai.html"><i18n-text data-i18n="text.005">AI Guide</i18n-text></a>
+        <a class="nav-link" href="explore.html"><i18n-text data-i18n="text.006">Plan Your Trip</i18n-text></a>
         <a class="nav-link" id="authNavLink" href="signin.html">Sign In</a>
     </nav>
     <div class="nav-cta">
-      <a href="explore.html" class="btn btn-primary">Find Your Experience
+<select class="language-select" data-language-select aria-label="Language" data-i18n-aria-label="nav.language"><option value="en" lang="en">English</option><option value="ar" lang="ar">العربية</option><option value="fr" lang="fr">Français</option></select>
+      <a href="explore.html" class="btn btn-primary"><i18n-text data-i18n="text.008">Find Your Experience</i18n-text>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
-      <button class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <button class="hamburger" aria-label="Open menu"  aria-expanded="false" aria-controls="mobile-menu">
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
 </header>
 
-<nav id="mobile-menu" class="mobile-menu" aria-label="Mobile">
-  <a href="index.html">Home</a>
-  <a href="index.html#destinations">Destinations</a>
-  <a href="ai.html">AI Guide</a>
-  <a href="explore.html">Plan Your Trip</a>
-  <a href="explore.html" class="btn btn-primary btn-block">Find Your Experience</a>
+<nav id="mobile-menu" class="mobile-menu" aria-label="Mobile" data-i18n-aria-label="text.041" inert aria-hidden="true">
+<a id="mobileAuthLink" href="signin.html">Sign In</a>
+<select class="language-select" data-language-select aria-label="Language" data-i18n-aria-label="nav.language"><option value="en" lang="en">English</option><option value="ar" lang="ar">العربية</option><option value="fr" lang="fr">Français</option></select>
+  <a href="index.html"><i18n-text data-i18n="text.003">Home</i18n-text></a>
+  <a href="index.html#destinations"><i18n-text data-i18n="text.004">Destinations</i18n-text></a>
+  <a href="ai.html"><i18n-text data-i18n="text.005">AI Guide</i18n-text></a>
+  <a href="explore.html"><i18n-text data-i18n="text.006">Plan Your Trip</i18n-text></a>
+  <a href="explore.html" class="btn btn-primary btn-block"><i18n-text data-i18n="text.008">Find Your Experience</i18n-text></a>
 </nav>
 
 <main id="main">
@@ -54,28 +59,28 @@
   <section class="hero">
     <div class="hero__media">
       <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury),_Petra,_Jordan.jpg"
-           alt="The Treasury at Petra, seen through the narrow sandstone canyon of the Siq" loading="eager">
+           alt="The Treasury at Petra, seen through the narrow sandstone canyon of the Siq" data-i18n-alt="text.188" loading="eager">
     </div>
     <div class="hero__content">
-      <p class="eyebrow" style="color:#e9d8b4">JORDAN · BEYOND THE LANDMARK</p>
-      <h1>Discover Jordan, your way.</h1>
-      <p class="hero__lead">Ancient cities, red desert, a sea you can float on, and people who'll happily tell you where to eat. Tell us what you're after — we'll shape the rest.</p>
+      <p class="eyebrow" style="color:#e9d8b4"><i18n-text data-i18n="text.092">JORDAN · BEYOND THE LANDMARK</i18n-text></p>
+      <h1><i18n-text data-i18n="text.093">Discover Jordan, your way.</i18n-text></h1>
+      <p class="hero__lead"><i18n-text data-i18n="text.094">Ancient cities, red desert, a sea you can float on, and people who'll happily tell you where to eat. Tell us what you're after — we'll shape the rest.</i18n-text></p>
       <div class="hero__actions">
-        <a href="explore.html" class="btn btn-primary">Find Your Experience
+        <a href="explore.html" class="btn btn-primary"><i18n-text data-i18n="text.008">Find Your Experience</i18n-text>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
-        <a href="#destinations" class="btn btn-outline-light">Explore Jordan</a>
+        <a href="#destinations" class="btn btn-outline-light"><i18n-text data-i18n="text.095">Explore Jordan</i18n-text></a>
       </div>
-      <p class="hero__scroll">Scroll to go beyond ↓</p>
+      <p class="hero__scroll"><i18n-text data-i18n="text.096">Scroll to go beyond ↓</i18n-text></p>
     </div>
 
     <div class="hero__strip">
       <div class="container">
-        <span class="strip-field">I'm in <strong>Amman</strong></span>
-        <span class="strip-field">I have <strong>2 hours</strong></span>
-        <span class="strip-field">My budget <strong>15 JOD</strong></span>
-        <span class="strip-field">Interested in <strong>Food + History</strong></span>
-        <a href="explore.html" class="btn btn-primary btn-sm">Find My Experience
+        <span class="strip-field"><i18n-text data-i18n="text.097">I'm in</i18n-text> <strong><i18n-text data-i18n="text.035">Amman</i18n-text></strong></span>
+        <span class="strip-field"><i18n-text data-i18n="text.098">I have</i18n-text> <strong><i18n-text data-i18n="text.099">2 hours</i18n-text></strong></span>
+        <span class="strip-field"><i18n-text data-i18n="text.100">My budget</i18n-text> <strong><i18n-text data-i18n="text.101">15 JOD</i18n-text></strong></span>
+        <span class="strip-field"><i18n-text data-i18n="text.102">Interested in</i18n-text> <strong><i18n-text data-i18n="text.103">Food + History</i18n-text></strong></span>
+        <a href="explore.html" class="btn btn-primary btn-sm"><i18n-text data-i18n="text.104">Find My Experience</i18n-text>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
       </div>
@@ -85,17 +90,17 @@
   <section class="section section-tight">
     <div class="container">
       <div class="section-head reveal">
-        <p class="eyebrow">A different way to travel</p>
-        <h2>Jordan has more to offer than a checklist.</h2>
+        <p class="eyebrow"><i18n-text data-i18n="text.105">A different way to travel</i18n-text></p>
+        <h2><i18n-text data-i18n="text.106">Jordan has more to offer than a checklist.</i18n-text></h2>
       </div>
       <div class="compare-grid reveal">
         <div class="compare-panel compare-panel--old">
-          <p class="label">Traditional visit</p>
-          <p class="path">Landmark → Photo → Leave</p>
+          <p class="label"><i18n-text data-i18n="text.107">Traditional visit</i18n-text></p>
+          <p class="path"><i18n-text data-i18n="text.108">Landmark → Photo → Leave</i18n-text></p>
         </div>
         <div class="compare-panel compare-panel--new">
-          <p class="label label--highlight">MASAR experience</p>
-          <p class="path">Landmark → Story → Taste → Meet → Discover → Remember</p>
+          <p class="label label--highlight"><i18n-text data-i18n="text.109">MASAR experience</i18n-text></p>
+          <p class="path"><i18n-text data-i18n="text.110">Landmark → Story → Taste → Meet → Discover → Remember</i18n-text></p>
         </div>
       </div>
     </div>
@@ -104,15 +109,15 @@
   <section class="section bg-ink">
     <div class="container split-feature reveal">
       <div>
-        <p class="eyebrow" style="color:#e9d8b4">Begin with a feeling</p>
-        <h2>What do you want to experience right now?</h2>
-        <p class="lead">Tell us what you feel like doing. We'll shape a local journey around your time, your budget and your energy — no research required.</p>
-        <a href="explore.html" class="btn btn-primary" style="margin-top:1.5rem;">Find My Experience
+        <p class="eyebrow" style="color:#e9d8b4"><i18n-text data-i18n="text.111">Begin with a feeling</i18n-text></p>
+        <h2><i18n-text data-i18n="text.112">What do you want to experience right now?</i18n-text></h2>
+        <p class="lead"><i18n-text data-i18n="text.113">Tell us what you feel like doing. We'll shape a local journey around your time, your budget and your energy — no research required.</i18n-text></p>
+        <a href="explore.html" class="btn btn-primary" style="margin-top:1.5rem;"><i18n-text data-i18n="text.104">Find My Experience</i18n-text>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
       </div>
       <div class="split-feature__media">
-        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/AmmanDowntown.jpg" alt="A lively market street in downtown Amman lined with shops and stalls" loading="lazy">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/AmmanDowntown.jpg" alt="A lively market street in downtown Amman lined with shops and stalls" data-i18n-alt="text.189" loading="lazy">
       </div>
     </div>
   </section>
@@ -120,17 +125,17 @@
   <section class="section" id="destinations">
     <div class="container">
       <div class="section-head reveal">
-        <p class="eyebrow">Look again</p>
-        <h2>Every destination has another side.</h2>
-        <p class="lead">Six places, each with a quieter story than the one on the postcard.</p>
+        <p class="eyebrow"><i18n-text data-i18n="text.114">Look again</i18n-text></p>
+        <h2><i18n-text data-i18n="text.115">Every destination has another side.</i18n-text></h2>
+        <p class="lead"><i18n-text data-i18n="text.116">Six places, each with a quieter story than the one on the postcard.</i18n-text></p>
       </div>
 
       <div class="dest-grid reveal">
         <a class="dest-card dest-card--lg" href="explore.html?loc=petra" id="petra">
-          <span class="dest-card__tag">PETRA</span>
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury)_2,_Petra,_Jordan.jpg" alt="The Treasury facade carved into rose-red sandstone at Petra" loading="lazy">
+          <span class="dest-card__tag"><i18n-text data-i18n="text.117">PETRA</i18n-text></span>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury)_2,_Petra,_Jordan.jpg" alt="The Treasury facade carved into rose-red sandstone at Petra" data-i18n-alt="text.190" loading="lazy">
           <span class="dest-card__body">
-            <h3>Beyond the Treasury</h3>
+            <h3><i18n-text data-i18n="text.118">Beyond the Treasury</i18n-text></h3>
             <span class="dest-card__go" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </span>
@@ -138,10 +143,10 @@
         </a>
 
         <a class="dest-card dest-card--lg" href="explore.html?loc=wadi-rum">
-          <span class="dest-card__tag">WADI RUM</span>
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_27.JPG" alt="Red desert mountains and sand dunes in Wadi Rum" loading="lazy">
+          <span class="dest-card__tag"><i18n-text data-i18n="text.119">WADI RUM</i18n-text></span>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_27.JPG" alt="Red desert mountains and sand dunes in Wadi Rum" data-i18n-alt="text.191" loading="lazy">
           <span class="dest-card__body">
-            <h3>Beyond the Desert</h3>
+            <h3><i18n-text data-i18n="text.120">Beyond the Desert</i18n-text></h3>
             <span class="dest-card__go" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </span>
@@ -149,10 +154,10 @@
         </a>
 
         <a class="dest-card" href="explore.html?loc=amman">
-          <span class="dest-card__tag">AMMAN</span>
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Amman_Citadel.jpg" alt="The ancient citadel overlooking the hills of Amman" loading="lazy">
+          <span class="dest-card__tag"><i18n-text data-i18n="text.121">AMMAN</i18n-text></span>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Amman_Citadel.jpg" alt="The ancient citadel overlooking the hills of Amman" data-i18n-alt="text.192" loading="lazy">
           <span class="dest-card__body">
-            <h3>Beyond the Citadel</h3>
+            <h3><i18n-text data-i18n="text.122">Beyond the Citadel</i18n-text></h3>
             <span class="dest-card__go" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </span>
@@ -160,10 +165,10 @@
         </a>
 
         <a class="dest-card" href="explore.html?loc=dead-sea">
-          <span class="dest-card__tag">DEAD SEA</span>
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Dead_Sea_by_David_Shankbone.jpg" alt="The still, mineral-rich waters of the Dead Sea" loading="lazy">
+          <span class="dest-card__tag"><i18n-text data-i18n="text.123">DEAD SEA</i18n-text></span>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Dead_Sea_by_David_Shankbone.jpg" alt="The still, mineral-rich waters of the Dead Sea" data-i18n-alt="text.193" loading="lazy">
           <span class="dest-card__body">
-            <h3>Beyond the Float</h3>
+            <h3><i18n-text data-i18n="text.124">Beyond the Float</i18n-text></h3>
             <span class="dest-card__go" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </span>
@@ -171,10 +176,10 @@
         </a>
 
         <a class="dest-card" href="explore.html?loc=aqaba">
-          <span class="dest-card__tag">AQABA</span>
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Aqaba_BW_2.JPG" alt="Sunset over the Red Sea coastline at Aqaba" loading="lazy">
+          <span class="dest-card__tag"><i18n-text data-i18n="text.125">AQABA</i18n-text></span>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Aqaba_BW_2.JPG" alt="Sunset over the Red Sea coastline at Aqaba" data-i18n-alt="text.194" loading="lazy">
           <span class="dest-card__body">
-            <h3>Beyond the Beach</h3>
+            <h3><i18n-text data-i18n="text.126">Beyond the Beach</i18n-text></h3>
             <span class="dest-card__go" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </span>
@@ -182,10 +187,10 @@
         </a>
 
         <a class="dest-card" href="explore.html?loc=jerash">
-          <span class="dest-card__tag">JERASH</span>
-          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Jerash_City.jpg" alt="The colonnaded Roman street at Jerash" loading="lazy">
+          <span class="dest-card__tag"><i18n-text data-i18n="text.127">JERASH</i18n-text></span>
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Jerash_City.jpg" alt="The colonnaded Roman street at Jerash" data-i18n-alt="text.195" loading="lazy">
           <span class="dest-card__body">
-            <h3>Beyond the Ruins</h3>
+            <h3><i18n-text data-i18n="text.128">Beyond the Ruins</i18n-text></h3>
             <span class="dest-card__go" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </span>
@@ -198,12 +203,12 @@
   <section id="petra-feature">
     <div class="hero" style="min-height:70vh;">
       <div class="hero__media">
-        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury),_Petra,_Jordan.jpg" alt="Two travelers walking through the Siq toward the Treasury at Petra" loading="lazy">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury),_Petra,_Jordan.jpg" alt="Two travelers walking through the Siq toward the Treasury at Petra" data-i18n-alt="text.196" loading="lazy">
       </div>
       <div class="hero__content" style="max-width:640px;">
-        <p class="eyebrow" style="color:#e9d8b4">PETRA</p>
-        <h2 style="color:#fff; font-size:var(--step-display);">More than a monument.</h2>
-        <p class="hero__lead">A living landscape of carved facades, quiet trails and the Bedouin families who still call it home.</p>
+        <p class="eyebrow" style="color:#e9d8b4"><i18n-text data-i18n="text.117">PETRA</i18n-text></p>
+        <h2 style="color:#fff; font-size:var(--step-display);"><i18n-text data-i18n="text.129">More than a monument.</i18n-text></h2>
+        <p class="hero__lead"><i18n-text data-i18n="text.130">A living landscape of carved facades, quiet trails and the Bedouin families who still call it home.</i18n-text></p>
       </div>
     </div>
 
@@ -212,13 +217,13 @@
         <div class="chip-group reveal">
           <span class="chip" aria-pressed="true">
             <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
-            <span>Food</span>
+            <span><i18n-text data-i18n="text.131">Food</i18n-text></span>
           </span>
-          <span class="chip">Stories</span>
-          <span class="chip">People</span>
-          <span class="chip">Culture</span>
-          <span class="chip">Nature</span>
-          <span class="chip">Hidden Places</span>
+          <span class="chip"><i18n-text data-i18n="text.132">Stories</i18n-text></span>
+          <span class="chip"><i18n-text data-i18n="text.133">People</i18n-text></span>
+          <span class="chip"><i18n-text data-i18n="text.134">Culture</i18n-text></span>
+          <span class="chip"><i18n-text data-i18n="text.135">Nature</i18n-text></span>
+          <span class="chip"><i18n-text data-i18n="text.136">Hidden Places</i18n-text></span>
         </div>
       </div>
     </div>
@@ -226,46 +231,46 @@
     <div class="section">
       <div class="container">
         <div class="section-head reveal">
-          <p class="eyebrow">A local guidebook</p>
-          <h2>Go beyond the Treasury.</h2>
-          <p class="lead">Petra rewards a slower pace. Here's what locals would tell you to do with an extra hour.</p>
+          <p class="eyebrow"><i18n-text data-i18n="text.137">A local guidebook</i18n-text></p>
+          <h2><i18n-text data-i18n="text.138">Go beyond the Treasury.</i18n-text></h2>
+          <p class="lead"><i18n-text data-i18n="text.139">Petra rewards a slower pace. Here's what locals would tell you to do with an extra hour.</i18n-text></p>
         </div>
         <div class="editorial-grid reveal">
           <article class="editorial-card">
-            <div class="editorial-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury)_2,_Petra,_Jordan.jpg" alt="Walking the narrow sandstone Siq at Petra" loading="lazy"></div>
+            <div class="editorial-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury)_2,_Petra,_Jordan.jpg" alt="Walking the narrow sandstone Siq at Petra" data-i18n-alt="text.197" loading="lazy"></div>
             <div class="editorial-card__body">
-              <p class="eyebrow">The Siq</p>
-              <h4>Walk it at first light</h4>
-              <p>The canyon walls glow before the crowds arrive — the single best hour in Petra.</p>
+              <p class="eyebrow"><i18n-text data-i18n="text.140">The Siq</i18n-text></p>
+              <h4><i18n-text data-i18n="text.141">Walk it at first light</i18n-text></h4>
+              <p><i18n-text data-i18n="text.142">The canyon walls glow before the crowds arrive — the single best hour in Petra.</i18n-text></p>
             </div>
           </article>
           <article class="editorial-card">
-            <div class="editorial-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury),_Petra,_Jordan.jpg" alt="The Treasury facade at Petra" loading="lazy"></div>
+            <div class="editorial-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Al-Khazneh_(The_Treasury),_Petra,_Jordan.jpg" alt="The Treasury facade at Petra" data-i18n-alt="text.198" loading="lazy"></div>
             <div class="editorial-card__body">
-              <p class="eyebrow">The Treasury</p>
-              <h4>Sit with your tea</h4>
-              <p>Bedouin families run tea stalls facing the facade — stay a while instead of snapping one photo.</p>
+              <p class="eyebrow"><i18n-text data-i18n="text.143">The Treasury</i18n-text></p>
+              <h4><i18n-text data-i18n="text.144">Sit with your tea</i18n-text></h4>
+              <p><i18n-text data-i18n="text.145">Bedouin families run tea stalls facing the facade — stay a while instead of snapping one photo.</i18n-text></p>
             </div>
           </article>
           <article class="editorial-card">
-            <div class="editorial-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_27.JPG" alt="A steep desert trail leading up toward a sandstone monastery" loading="lazy"></div>
+            <div class="editorial-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_27.JPG" alt="A steep desert trail leading up toward a sandstone monastery" data-i18n-alt="text.199" loading="lazy"></div>
             <div class="editorial-card__body">
-              <p class="eyebrow">The Monastery</p>
-              <h4>Climb the 800 steps</h4>
-              <p>Bigger than the Treasury and far quieter — the reward is a wide-open desert view.</p>
+              <p class="eyebrow"><i18n-text data-i18n="text.146">The Monastery</i18n-text></p>
+              <h4><i18n-text data-i18n="text.147">Climb the 800 steps</i18n-text></h4>
+              <p><i18n-text data-i18n="text.148">Bigger than the Treasury and far quieter — the reward is a wide-open desert view.</i18n-text></p>
             </div>
           </article>
           <article class="editorial-card">
-            <div class="editorial-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/AmmanDowntown.jpg" alt="A Bedouin guide sharing local knowledge with a visitor" loading="lazy"></div>
+            <div class="editorial-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/AmmanDowntown.jpg" alt="A Bedouin guide sharing local knowledge with a visitor" data-i18n-alt="text.200" loading="lazy"></div>
             <div class="editorial-card__body">
-              <p class="eyebrow">Local Voices</p>
-              <h4>Hike with a Bedouin guide</h4>
-              <p>Routes their families have walked for generations, including a few no map shows.</p>
+              <p class="eyebrow"><i18n-text data-i18n="text.149">Local Voices</i18n-text></p>
+              <h4><i18n-text data-i18n="text.150">Hike with a Bedouin guide</i18n-text></h4>
+              <p><i18n-text data-i18n="text.151">Routes their families have walked for generations, including a few no map shows.</i18n-text></p>
             </div>
           </article>
         </div>
         <div style="margin-top:2.5rem;" class="reveal">
-          <a href="explore.html?loc=petra" class="btn btn-outline">See Petra Experiences
+          <a href="explore.html?loc=petra" class="btn btn-outline"><i18n-text data-i18n="text.152">See Petra Experiences</i18n-text>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
         </div>
@@ -278,19 +283,19 @@
       <div class="container">
         <div class="split-feature reverse reveal">
           <div class="split-feature__media">
-            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/AmmanDowntown.jpg" alt="Bustling downtown Amman street with shops, signage and pedestrians" loading="lazy">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/AmmanDowntown.jpg" alt="Bustling downtown Amman street with shops, signage and pedestrians" data-i18n-alt="text.201" loading="lazy">
           </div>
           <div>
-            <p class="eyebrow">AMMAN</p>
-            <h2>A different side of Amman.</h2>
-            <p class="lead">Skip the highlight reel. Amman's best moments are downtown markets, rooftop dinners and cafés that have been serving the same neighbourhood for decades.</p>
+            <p class="eyebrow"><i18n-text data-i18n="text.121">AMMAN</i18n-text></p>
+            <h2><i18n-text data-i18n="text.153">A different side of Amman.</i18n-text></h2>
+            <p class="lead"><i18n-text data-i18n="text.154">Skip the highlight reel. Amman's best moments are downtown markets, rooftop dinners and cafés that have been serving the same neighbourhood for decades.</i18n-text></p>
             <ul class="modal__highlights" style="margin-top:1.5rem; max-width:440px;">
-              <li><span class="idx">01</span><span>Discover downtown's gold and spice souks</span></li>
-              <li><span class="idx">02</span><span>Taste a local dish at a family-run kitchen</span></li>
-              <li><span class="idx">03</span><span>Meet an artisan keeping mosaic craft alive</span></li>
-              <li><span class="idx">04</span><span>Watch the city light up from a Rainbow Street rooftop</span></li>
+              <li><span class="idx">01</span><span><i18n-text data-i18n="text.155">Discover downtown's gold and spice souks</i18n-text></span></li>
+              <li><span class="idx">02</span><span><i18n-text data-i18n="text.156">Taste a local dish at a family-run kitchen</i18n-text></span></li>
+              <li><span class="idx">03</span><span><i18n-text data-i18n="text.157">Meet an artisan keeping mosaic craft alive</i18n-text></span></li>
+              <li><span class="idx">04</span><span><i18n-text data-i18n="text.158">Watch the city light up from a Rainbow Street rooftop</i18n-text></span></li>
             </ul>
-            <a href="explore.html?loc=amman" class="btn btn-dark" style="margin-top:1.5rem;">See Amman Experiences
+            <a href="explore.html?loc=amman" class="btn btn-dark" style="margin-top:1.5rem;"><i18n-text data-i18n="text.159">See Amman Experiences</i18n-text>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
           </div>
@@ -302,13 +307,13 @@
   <section class="section bg-sand">
     <div class="container split-feature reveal">
       <div class="split-feature__media">
-        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Jerash_City.jpg" alt="An artisan at work in a small Jordanian craft studio" loading="lazy">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Jerash_City.jpg" alt="An artisan at work in a small Jordanian craft studio" data-i18n-alt="text.202" loading="lazy">
       </div>
       <div>
-        <p class="eyebrow">Local voices</p>
-        <h2>Meet the people behind the place.</h2>
-        <p class="lead">Every experience on MASAR is run by someone who lives here — a guide, a cook, a potter, a driver who knows every back road between Amman and the Dead Sea.</p>
-        <a href="explore.html" class="btn btn-outline" style="margin-top:1rem;">Meet Your Guide</a>
+        <p class="eyebrow"><i18n-text data-i18n="text.160">Local voices</i18n-text></p>
+        <h2><i18n-text data-i18n="text.161">Meet the people behind the place.</i18n-text></h2>
+        <p class="lead"><i18n-text data-i18n="text.162">Every experience on MASAR is run by someone who lives here — a guide, a cook, a potter, a driver who knows every back road between Amman and the Dead Sea.</i18n-text></p>
+        <a href="explore.html" class="btn btn-outline" style="margin-top:1rem;"><i18n-text data-i18n="text.163">Meet Your Guide</i18n-text></a>
       </div>
     </div>
   </section>
@@ -316,15 +321,15 @@
   <section class="section">
     <div class="container">
       <div class="section-head wide reveal">
-        <p class="eyebrow">Travel that stays</p>
-        <h2>Tourism should benefit the people who make Jordan special.</h2>
+        <p class="eyebrow"><i18n-text data-i18n="text.164">Travel that stays</i18n-text></p>
+        <h2><i18n-text data-i18n="text.165">Tourism should benefit the people who make Jordan special.</i18n-text></h2>
       </div>
       <div class="impact-grid reveal">
-        <div class="impact-item"><p class="num">01</p><h4>Traveler</h4></div>
-        <div class="impact-item"><p class="num">02</p><h4>MASAR</h4></div>
-        <div class="impact-item"><p class="num">03</p><h4>Local Experience</h4></div>
-        <div class="impact-item"><p class="num">04</p><h4>Local Business</h4></div>
-        <div class="impact-item"><p class="num">05</p><h4>Community</h4></div>
+        <div class="impact-item"><p class="num">01</p><h4><i18n-text data-i18n="text.166">Traveler</i18n-text></h4></div>
+        <div class="impact-item"><p class="num">02</p><h4><i18n-text data-i18n="text.002">MASAR</i18n-text></h4></div>
+        <div class="impact-item"><p class="num">03</p><h4><i18n-text data-i18n="text.167">Local Experience</i18n-text></h4></div>
+        <div class="impact-item"><p class="num">04</p><h4><i18n-text data-i18n="text.168">Local Business</i18n-text></h4></div>
+        <div class="impact-item"><p class="num">05</p><h4><i18n-text data-i18n="text.169">Community</i18n-text></h4></div>
       </div>
     </div>
   </section>
@@ -332,24 +337,24 @@
   <section class="section bg-surface">
     <div class="container">
       <div class="section-head reveal">
-        <p class="eyebrow">Field notes</p>
-        <h2>The people make the place.</h2>
+        <p class="eyebrow"><i18n-text data-i18n="text.170">Field notes</i18n-text></p>
+        <h2><i18n-text data-i18n="text.171">The people make the place.</i18n-text></h2>
       </div>
       <div class="notes-grid reveal">
         <article class="note-card">
-          <div class="note-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/AmmanDowntown.jpg" alt="A family preparing traditional flatbread together" loading="lazy"></div>
-          <h4>A Family Recipe</h4>
-          <p>Three generations, one kitchen.</p>
+          <div class="note-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/AmmanDowntown.jpg" alt="A family preparing traditional flatbread together" data-i18n-alt="text.203" loading="lazy"></div>
+          <h4><i18n-text data-i18n="text.172">A Family Recipe</i18n-text></h4>
+          <p><i18n-text data-i18n="text.173">Three generations, one kitchen.</i18n-text></p>
         </article>
         <article class="note-card">
-          <div class="note-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_16.JPG" alt="A Bedouin guide standing in the Wadi Rum desert" loading="lazy"></div>
-          <h4>The Desert Guide</h4>
-          <p>Reading the land by memory.</p>
+          <div class="note-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wadi_Rum_BW_16.JPG" alt="A Bedouin guide standing in the Wadi Rum desert" data-i18n-alt="text.204" loading="lazy"></div>
+          <h4><i18n-text data-i18n="text.174">The Desert Guide</i18n-text></h4>
+          <p><i18n-text data-i18n="text.175">Reading the land by memory.</i18n-text></p>
         </article>
         <article class="note-card">
-          <div class="note-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Jerash_City.jpg" alt="An artisan working on a mosaic piece" loading="lazy"></div>
-          <h4>The Artisan</h4>
-          <p>Keeping mosaic craft alive.</p>
+          <div class="note-card__img"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Jerash_City.jpg" alt="An artisan working on a mosaic piece" data-i18n-alt="text.205" loading="lazy"></div>
+          <h4><i18n-text data-i18n="text.176">The Artisan</i18n-text></h4>
+          <p><i18n-text data-i18n="text.177">Keeping mosaic craft alive.</i18n-text></p>
         </article>
       </div>
     </div>
@@ -360,24 +365,24 @@
     <div class="container">
       <div class="wordcloud-grid reveal">
         <div>
-          <p class="eyebrow">Across Jordan</p>
-          <h2>Follow the stories, not just the road.</h2>
-          <p class="lead">Every place below has its own Experience Finder results — tap one to start planning.</p>
+          <p class="eyebrow"><i18n-text data-i18n="text.178">Across Jordan</i18n-text></p>
+          <h2><i18n-text data-i18n="text.179">Follow the stories, not just the road.</i18n-text></h2>
+          <p class="lead"><i18n-text data-i18n="text.180">Every place below has its own Experience Finder results — tap one to start planning.</i18n-text></p>
           <div class="word-tags">
-            <a href="explore.html?loc=amman">Amman</a>
-            <a href="explore.html?loc=petra">Petra</a>
-            <a href="explore.html?loc=wadi-rum">Wadi Rum</a>
-            <a href="explore.html?loc=aqaba">Aqaba</a>
-            <a href="explore.html?loc=jerash">Jerash</a>
-            <a href="explore.html?loc=dead-sea">Dead Sea</a>
+            <a href="explore.html?loc=amman"><i18n-text data-i18n="text.035">Amman</i18n-text></a>
+            <a href="explore.html?loc=petra"><i18n-text data-i18n="text.034">Petra</i18n-text></a>
+            <a href="explore.html?loc=wadi-rum"><i18n-text data-i18n="text.181">Wadi Rum</i18n-text></a>
+            <a href="explore.html?loc=aqaba"><i18n-text data-i18n="text.182">Aqaba</i18n-text></a>
+            <a href="explore.html?loc=jerash"><i18n-text data-i18n="text.183">Jerash</i18n-text></a>
+            <a href="explore.html?loc=dead-sea"><i18n-text data-i18n="text.184">Dead Sea</i18n-text></a>
           </div>
         </div>
         <div class="wordcloud-panel">
-          <span><a href="explore.html?loc=jerash">JERASH</a></span>
-          <span><a href="explore.html?loc=amman">AMMAN</a> · <a href="explore.html?loc=dead-sea">DEAD SEA</a></span>
-          <span><a href="explore.html?loc=petra">PETRA</a></span>
-          <span><a href="explore.html?loc=wadi-rum">WADI RUM</a></span>
-          <span><a href="explore.html?loc=aqaba">AQABA</a></span>
+          <span><a href="explore.html?loc=jerash"><i18n-text data-i18n="text.127">JERASH</i18n-text></a></span>
+          <span><a href="explore.html?loc=amman"><i18n-text data-i18n="text.121">AMMAN</i18n-text></a> · <a href="explore.html?loc=dead-sea"><i18n-text data-i18n="text.123">DEAD SEA</i18n-text></a></span>
+          <span><a href="explore.html?loc=petra"><i18n-text data-i18n="text.117">PETRA</i18n-text></a></span>
+          <span><a href="explore.html?loc=wadi-rum"><i18n-text data-i18n="text.119">WADI RUM</i18n-text></a></span>
+          <span><a href="explore.html?loc=aqaba"><i18n-text data-i18n="text.125">AQABA</i18n-text></a></span>
         </div>
       </div>
     </div>
@@ -385,9 +390,9 @@
 
   <section class="section bg-accent cta-band reveal">
     <div class="container">
-      <h2>Go beyond the landmark.</h2>
-      <p class="lead">Jordan is ready to share more. What do you want to experience?</p>
-      <a href="explore.html" class="btn btn-ghost-light">Start Exploring
+      <h2><i18n-text data-i18n="text.032">Go beyond the landmark.</i18n-text></h2>
+      <p class="lead"><i18n-text data-i18n="text.185">Jordan is ready to share more. What do you want to experience?</i18n-text></p>
+      <a href="explore.html" class="btn btn-ghost-light"><i18n-text data-i18n="text.186">Start Exploring</i18n-text>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
     </div>
@@ -399,25 +404,26 @@
   <div class="container">
     <div class="footer-top">
       <div>
-        <p class="footer-brand">MASAR</p>
-        <p class="footer-tag">Go beyond the landmark.</p>
+        <p class="footer-brand"><i18n-text data-i18n="text.002">MASAR</i18n-text></p>
+        <p class="footer-tag"><i18n-text data-i18n="text.032">Go beyond the landmark.</i18n-text></p>
       </div>
-      <nav class="footer-links" aria-label="Footer">
-        <a href="index.html#destinations">Destinations</a>
-        <a href="explore.html">Experiences</a>
-        <a href="ai.html">AI Guide</a>
-        <a href="index.html#petra">Petra</a>
-        <a href="index.html#amman">Amman</a>
+      <nav class="footer-links" aria-label="Footer" data-i18n-aria-label="text.058">
+        <a href="index.html#destinations"><i18n-text data-i18n="text.004">Destinations</i18n-text></a>
+        <a href="explore.html"><i18n-text data-i18n="text.033">Experiences</i18n-text></a>
+        <a href="ai.html"><i18n-text data-i18n="text.005">AI Guide</i18n-text></a>
+        <a href="index.html#petra"><i18n-text data-i18n="text.034">Petra</i18n-text></a>
+        <a href="index.html#amman"><i18n-text data-i18n="text.035">Amman</i18n-text></a>
       </nav>
     </div>
     <div class="footer-bottom">
-      <p>Made with care for the people of Jordan.</p>
-      <p>&copy; 2026 MASAR</p>
+      <p><i18n-text data-i18n="text.036">Made with care for the people of Jordan.</i18n-text></p>
+      <p><i18n-text data-i18n="text.037">&copy; 2026 MASAR</i18n-text></p>
     </div>
   </div>
 </footer>
 
 
+<script src="js/main.js"></script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import {
@@ -450,7 +456,7 @@
     mobileAuthLink = document.createElement("a");
     mobileAuthLink.id = "mobileAuthLink";
     mobileAuthLink.href = "signin.html";
-    mobileAuthLink.textContent = "Sign In";
+    mobileAuthLink.textContent = window.I18n.source("text.091");
 
     const experienceButton = mobileMenu.querySelector(".btn");
 
@@ -463,24 +469,24 @@
 
   function showProfile() {
     if (authNavLink) {
-      authNavLink.textContent = "Profile";
+      authNavLink.textContent = window.I18n.source("text.007");
       authNavLink.href = "profile.html";
     }
 
     if (mobileAuthLink) {
-      mobileAuthLink.textContent = "Profile";
+      mobileAuthLink.textContent = window.I18n.source("text.007");
       mobileAuthLink.href = "profile.html";
     }
   }
 
   function showSignIn() {
     if (authNavLink) {
-      authNavLink.textContent = "Sign In";
+      authNavLink.textContent = window.I18n.source("text.091");
       authNavLink.href = "signin.html";
     }
 
     if (mobileAuthLink) {
-      mobileAuthLink.textContent = "Sign In";
+      mobileAuthLink.textContent = window.I18n.source("text.091");
       mobileAuthLink.href = "signin.html";
     }
   }
@@ -503,7 +509,7 @@
     console.log("USER IS SIGNED IN:", user.email);
 
     if (authNavLink) {
-      authNavLink.textContent = "Profile";
+      authNavLink.textContent = window.I18n.source("text.007");
       authNavLink.href = "profile.html";
     }
 
@@ -511,7 +517,7 @@
     console.log("NO USER IS SIGNED IN");
 
     if (authNavLink) {
-      authNavLink.textContent = "Sign In";
+      authNavLink.textContent = window.I18n.source("text.091");
       authNavLink.href = "signin.html";
     }
   }

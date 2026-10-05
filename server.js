@@ -49,7 +49,8 @@ app.use(express.static(path.join(__dirname, "jordan-tourism")));
 
 app.post("/api/masar-chat", async (req, res) => {
   try {
-    const { messages, location } = req.body;
+    const { messages, location, language } = req.body;
+    const replyLanguage = {en:"English",ar:"Arabic",fr:"French"}[language];
 
     /* ==================================================
            VALIDATE REQUEST
@@ -227,13 +228,9 @@ Do not use generic fallback responses when you can answer the question.
 
 LANGUAGE:
 
-Answer in the same language as the visitor whenever possible.
+${replyLanguage ? "Answer in " + replyLanguage + ", the visitor’s selected website language." : "Answer in the same language as the visitor whenever possible."}
 
-If the visitor asks in Arabic, answer in Arabic.
-
-If the visitor asks in English, answer in English.
-
-If the visitor mixes Arabic and English, naturally mix both.
+Use the selected website language when supplied. Otherwise follow the visitor’s language.
 
 
 LOCATION:
